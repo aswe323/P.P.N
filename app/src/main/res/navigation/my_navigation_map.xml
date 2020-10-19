@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_navigation_map"
+    app:startDestination="@id/main_Activity_fragment">
+
+    <fragment
+        android:id="@+id/edit_reminder_fragment"
+        android:name="com.example.rems.edit_reminder_fragment"
+        android:label="fragment_edit_reminder_fragment"
+        tools:layout="@layout/fragment_edit_reminder_fragment" />
+    <fragment
+        android:id="@+id/main_Activity_fragment"
+        android:name="com.example.rems.Main_Activity_fragment"
+        android:label="fragment_main__activity_fragment"
+        tools:layout="@layout/fragment_main__activity_fragment">
+        <action
+            android:id="@+id/action_main_Activity_fragment_to_edit_reminder_fragment"
+            app:destination="@id/edit_reminder_fragment" />
+        <action
+            android:id="@+id/action_main_Activity_fragment_to_key_words_fragment"
+            app:destination="@id/key_words_fragment" />
+        <action
+            android:id="@+id/action_main_Activity_fragment_to_edit_words_fragment"
+            app:destination="@id/edit_words_fragment" />
+        <action
+            android:id="@+id/action_main_Activity_fragment_to_groups_and_points_fragment"
+            app:destination="@id/groups_and_points_fragment" />
+        <action
+            android:id="@+id/action_main_Activity_fragment_to_fragment_Past_Reminders"
+            app:destination="@id/fragment_Past_Reminders" />
+    </fragment>
+    <fragment
+        android:id="@+id/key_words_fragment"
+        android:name="com.example.rems.key_words_fragment"
+        android:label="fragment_key_words_fragment"
+        tools:layout="@layout/fragment_key_words_fragment">
+        <action
+            android:id="@+id/action_key_words_fragment_to_main_Activity_fragment"
+            app:destination="@id/main_Activity_fragment" />
+        <action
+            android:id="@+id/action_key_words_fragment_to_edit_words_fragment"
+            app:destination="@id/edit_words_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/groups_and_points_fragment"
+        android:name="com.example.rems.groups_and_points_fragment"
+        android:label="fragment_groups_and_points_fragment"
+        tools:layout="@layout/fragment_groups_and_points_fragment">
+        <action
+            android:id="@+id/action_groups_and_points_fragment_to_main_Activity_fragment"
+            app:destination="@id/main_Activity_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/edit_words_fragment"
+        android:name="com.example.rems.edit_words_fragment"
+        android:label="fragment_edit_words_fragment"
+        tools:layout="@layout/fragment_edit_words_fragment" />
+    <fragment
+        android:id="@+id/fragment_Past_Reminders"
+        android:name="com.example.rems.Fragment_Past_Reminders"
+        android:label="fragment_past_reminders"
+        tools:layout="@layout/fragment_past_reminders">
+        <action
+            android:id="@+id/action_fragment_Past_Reminders_to_main_Activity_fragment"
+            app:destination="@id/main_Activity_fragment" />
+    </fragment>
+</navigation>

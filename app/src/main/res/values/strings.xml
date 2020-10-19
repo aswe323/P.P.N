@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">rems</string>
+    <string-array name="Spinner_Edit_frequency">
+        <item>no repeating</item>
+        <item>every 24 hours</item>
+        <item>every week</item>
+        <item>every sunday</item>
+        <item>every monday</item>
+        <item>every tuesday</item>
+        <item>every wednesday</item>
+        <item>every thursday</item>
+        <item>every friday</item>
+        <item>every saturday</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

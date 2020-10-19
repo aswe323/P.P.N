@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="ltr"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="610dp"
+            android:orientation="vertical">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/ViewPager"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent" />
+
+        </LinearLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/Tablayouting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#000000"
+            app:tabGravity="fill"
+            app:tabTextColor="#FFFFFF"
+            app:tabIndicatorColor="#FFD400"
+            app:tabIndicatorGravity="bottom"
+            app:tabSelectedTextColor="#FFFFD400">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/Tabitem1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Home page" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/Tabitem2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="key words" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/Tabitem3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="points and groups" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/Tabitem4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="past reminders" />
+
+        </com.google.android.material.tabs.TabLayout>
+        <!--
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#870000"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="136dp"
+                        android:layout_height="match_parent"
+                        android:background="#4B5DD5"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="136dp"
+                        android:background="#D5C6C6"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="136dp"
+                        android:background="#1E701C"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+
+                    </LinearLayout>
+                </LinearLayout>-->
+
+    </LinearLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
