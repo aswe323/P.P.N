@@ -6,7 +6,6 @@ import java.util.Date;
 public class ActivityTask {
 
     //TODO: make sure the ID is assigned correctly!
-
     private int activityTaskID;
     private int priority;
     private MasloCategorys category;
