@@ -1,3 +1,5 @@
+package module;
+
 public enum MasloCategorys {
     none,
     Physiological_needs,

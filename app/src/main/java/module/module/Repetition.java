@@ -1,3 +1,5 @@
+package module;
+
 public enum Repetition {
     no_repeating,
     every_24_hours,

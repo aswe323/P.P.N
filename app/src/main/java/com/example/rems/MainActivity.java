@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private TabItem tabItem1=findViewById(R.id.Tabitem1);
     private TabItem tabItem2=findViewById(R.id.Tabitem2);
     private TabItem tabItem3=findViewById(R.id.Tabitem3);*/
-
+    //private DataBaseHelper db = new DataBaseHelper(this);////////////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
         final ViewPager viewPager = findViewById(R.id.ViewPager);
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tableLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
+
+        DataBaseHelper db = new DataBaseHelper(this);
+
 
         tableLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
