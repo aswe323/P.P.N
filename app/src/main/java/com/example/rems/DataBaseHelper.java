@@ -2,6 +2,7 @@ package com.example.rems;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -69,7 +71,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         //delete the old database by dropping the tables
         db.execSQL("DROP TABLE IF EXISTS " + "ActivityTasks");
         db.execSQL("DROP TABLE IF EXISTS " + "SubActivity");
-        db.execSQL("DROP TABLE IF EXISTS " + "WordPriority");
+        db.execSQL("DROP TABLE IF EXISTS " + "WordPriority");//TODO: what about the data? you created the database again with the tables, but lost ALL of the data you had there.
+        // you didn't UPDATE anything.. you resetted the DB.
+        //pls fix.
 
         onCreate(db);// Create tables again
     }
@@ -79,6 +83,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     * in this section there are methods for the table @WordPriority will be int the order of C.R.U.D
     *
      */
+    //TODO: int the order of C.R.U.D ? what?
     public boolean insertPriorityWord(String word, int priority){
 
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
@@ -89,14 +94,29 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("Content", word);//insert the value to Content values
             values.put("Priority", priority);//insert the value to values
             //check if the item was added successfully if not retuning false
-            if(values.size()<1)
+            if (values.size() < 1)
                 return false;
             else
                 db.insert("WordPriority", null, values);//insert into table WordPriority the new word
 
-            return  true;
+            return true;
         }
         return false;
+    }
+
+    public Map<String, Integer> queryForPriorityWords() {// get ALL of the priority words from the table. and return them as a Map.
+        Map<String, Integer> returned = null;//the Map that will be returned
+
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
+        if (db.isOpen()) {
+            Cursor data = db.rawQuery("select * from WordPriority", null);//we don't need Args because we wan't ALL of the data.
+            data.moveToFirst();//required because the cursor is set on the 0th element, which hold is nothing.
+            do {
+                returned.put(data.getString(0), data.getInt(0));//WordPriority only got 2 columns, the Word(String), and the Priority(Int).
+            } while (data.moveToNext());
+        }
+        return returned;
     }
 
 
