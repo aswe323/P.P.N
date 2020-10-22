@@ -25,7 +25,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
         sysDB = getWritableDatabase();
     }
 
@@ -161,14 +160,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     /*
      *
-     * in this section there are methods for the table @SubActivity will be int the order of C.R.U.D
+     * in this section there are methods for the table @SubActivity will be in the order of C.R.U.D
      *
      */
     public boolean insertSubActivity(SubActivity subActivity, int ActivityTaskID){//inserting the SubActivity to the database
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
         //check if the database opened if not retuning false
         if(db.isOpen()) {
-            ContentValues values = new ContentValues(); //will hold Strings of the values to insert into the table
+            ContentValues values = new ContentValues(); //will hold data of the values to insert into the table
             values.put("Content", subActivity.getContent());//insert the value to Content values
             values.put("ActivityTaskID", ActivityTaskID);//insert the id of the ActivityTask to values
             //check if the item was added successfully if not retuning false
@@ -188,14 +187,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();//open the database for read/write
 
         if(db.isOpen()){
+            //TODO: @LIOR ..."where ActivityTaskID = ActivityTaskID" <--- this is an error, you did not use the argument, this will essentially give you EVERY AT once.
             Cursor cursor = db.rawQuery("select * from SubActivity where ActivityTaskID = ActivityTaskID",null); //selecting all the SubActivities of the ActivityTask
-            while(cursor.moveToNext()) {
+            while (cursor.moveToNext()) {//TODO: @LIOR why the nested loop?
                 do {
-                    SubActivity subActivity=new SubActivity(cursor.getInt(0),cursor.getInt(1),cursor.getString(2)); //create the SubActivity object from the DB data
+                    SubActivity subActivity = new SubActivity(cursor.getInt(0), cursor.getInt(1), cursor.getString(2)); //create the SubActivity object from the DB data
                     subarray.add(subActivity); //add the SubActivity to the ArrayList
-                }while(cursor.moveToNext());//move to the next line,if there is no more lines then end the loop
+                } while (cursor.moveToNext());//move to the next line,if there is no more lines then end the loop
             }
         }
+        //TODO: @LIOR notice that Cursors needs to be closed too. it raises a warning about it.
         db.close();
         return subarray;
     }
@@ -220,7 +221,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             if (db.delete("SubActivity", "SubActivityID = " + subActivity.getSubActivityID(), null) > 0)
                 return true; //db.delete returns the number of effected rows, if it is larger the 0, somthing was deleted.
             db.close();
-            return true;//note that Word is also the PK of the row, so there can only be 0/1 as a return value;
+            return true;//note that Word is also the PK of the row, so there can only be 0/1 as a return value;//TODO: @LIOR the least you can do is fix the comments when copy pasting code...
         }
         return false;
     }
