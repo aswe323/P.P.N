@@ -119,5 +119,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return returned;
     }
 
+    public boolean updatePrioritiyOfWord(String word, Integer newPriority) {
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
+        if (db.isOpen()) {
+            ContentValues values = new ContentValues();
+            values.put("priority", newPriority);
+            db.update("WordPriority", values, "Word = " + word, null);//TODO: not sure if this is how the whereClause is used here.
+            return true;
+        }
+        return false;
+    }
+
 
 }
