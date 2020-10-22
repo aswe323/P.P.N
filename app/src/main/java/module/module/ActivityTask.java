@@ -18,6 +18,16 @@ public class ActivityTask {
 
 
     //this constructor is used when creating an ActivityTask manuelly.
+
+    /***
+     *
+     * @param priority
+     * @param category
+     * @param repetition
+     * @param content
+     * @param timeOfActivity
+     * @param subActivities
+     */
     public ActivityTask(int priority, MasloCategorys category, Repetition repetition, String content, Date timeOfActivity, ArrayList<SubActivity> subActivities) {
         this.priority = priority;
         this.category = category;
@@ -32,6 +42,15 @@ public class ActivityTask {
     }
 
     //this constructor is used when the system creates an ActivityTask by itself. notice the lack of Date. this ActivityTask should  be passed to AI_Assignment.assignDate method.
+
+    /***
+     *
+     * @param priority
+     * @param category
+     * @param repetition
+     * @param content
+     * @param subActivities
+     */
     public ActivityTask(int priority, MasloCategorys category, Repetition repetition, String content, ArrayList<SubActivity> subActivities) {
         this.priority = priority;// the priority is
         this.category = category;
@@ -44,8 +63,13 @@ public class ActivityTask {
         //this.activityTaskID = DataBaseHelper.getMaxIdOfActivityTask() + 1;// unimplamented yet
     }
 
-    //TODO: implament remoce() method, using the databasehelper and ActivityTasksUsed classes.
+    //TODO: implament remove() method, using the databasehelper and ActivityTasksUsed classes.
 
+    /***
+     *
+     * @param subActivity
+     * @return
+     */
     public boolean addSubActivity(SubActivity subActivity) {//if the subActivity already exist in the array, do not add it to the array.
         for (SubActivity subActivityCurrent : subActivities
         ) {
@@ -57,6 +81,11 @@ public class ActivityTask {
         return true;
     }
 
+    /***
+     *
+     * @param content
+     * @return
+     */
     public boolean removeSubActivity(String content) {//if subActivity exists, remove it from the array, otherwise return false;
         for (SubActivity subActivityCurrent : subActivities
         ) {
@@ -68,6 +97,14 @@ public class ActivityTask {
         return false;
     }
 
+    /***
+     *
+     * @param newContent
+     * @param newTime
+     * @param newCategory
+     * @param newRepetition
+     * @return
+     */
     public boolean editReminder(String newContent, Date newTime, MasloCategorys newCategory, Repetition newRepetition) {
         if (newContent != null) this.setContent(newContent);
         if (newTime != null) this.setTimeOfActivity(newTime);

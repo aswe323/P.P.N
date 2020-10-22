@@ -7,15 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Map;
 
+import module.ActivityTask;
+import module.MasloCategorys;
+import module.Repetition;
 import module.SubActivity;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -47,6 +45,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "ActivityTaskID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "DateAndTime TEXT," +
                 "Content TEXT," +
+                "Repetition TEXT," +
                 "Category TEXT," +
                 "Priority INTEGER" +
                 ")");
@@ -211,4 +210,48 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return false;
     }*/
+
+
+    public ArrayList<ActivityTask> queryForActivityTaskByPriority(int priority) {
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+        ArrayList<ActivityTask> activityTasks = new ArrayList<>();
+        String[] columnsFromActTsk = new String[]// the columns we are looking for in the ActivityTask Table
+                {
+                        "ActivityTaskID",
+                        "DateAndTime",
+                        "Content",
+                        "Category",
+                        "Priority"
+                };
+        String[] columnsFromSubAct = new String[]// the columns we are looking for in the SubActivity Table
+                {
+                        "SubActivityID",
+                        "ActivityTaskID",
+                        "content"
+                };
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY/MM/DD HH:MM:SS");
+        if (db.isOpen()) {
+            Cursor retrivedActTsk = db.query("ActivityTasks", columnsFromActTsk, "Priority = " + priority, null, null, null, null);
+            //we retrived the data, now we create the ActTasks LOCALY(!!!) and retrived their individual SubActivities to complete the data set.
+            do {
+                activityTasks.add(new ActivityTask(
+                        retrivedActTsk.getInt(5),//priority
+                        MasloCategorys.valueOf(retrivedActTsk.getString(4)),//MasloCategory
+                        Repetition.valueOf(retrivedActTsk.getString(3)),//Repetition
+                        retrivedActTsk.getString(2),//Content
+                        null//SubActivities
+                ));
+            } while (retrivedActTsk.moveToFirst())
+            Cursor retrivedSubTsk = db.query("SubActivities", columnsFromSubAct, );
+//               "ActivityTaskID INTEGER PRIMARY KEY AUTOINCREMENT," + 0
+//                "DateAndTime TEXT," +
+//                "Content TEXT," +
+//                "Repetition TEXT," +
+//                "Category TEXT," +
+//                "Priority INTEGER" + 5
+        }/*
+        db.close();
+        return activityTasks;
+
+    }
 }
