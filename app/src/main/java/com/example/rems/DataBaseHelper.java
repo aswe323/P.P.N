@@ -83,7 +83,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     * in this section there are methods for the table @WordPriority will be int the order of C.R.U.D
     *
      */
-    //TODO: int the order of C.R.U.D ? what?
     public boolean insertPriorityWord(String word, int priority){
 
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
@@ -91,7 +90,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         //check if the database opened if not retuning false
         if(db.isOpen()) {
             ContentValues values = new ContentValues(); //will hold Strings of the values to insert into the table
-            values.put("Content", word);//insert the value to Content values
+            values.put("Word", word);//insert the value to Content values
             values.put("Priority", priority);//insert the value to values
             //check if the item was added successfully if not retuning false
             if (values.size() < 1)
@@ -126,6 +125,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put("priority", newPriority);
             db.update("WordPriority", values, "Word = " + word, null);//TODO: not sure if this is how the whereClause is used here.
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateWord(String oldWord,String newWord) {
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
+        if (db.isOpen()) {
+            ContentValues values = new ContentValues();
+            values.put("Word", newWord);
+            db.update("WordPriority", values, "Word = " + oldWord, null);//TODO: not sure if this is how the whereClause is used here.
             return true;
         }
         return false;
