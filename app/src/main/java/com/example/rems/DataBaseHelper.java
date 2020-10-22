@@ -187,16 +187,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();//open the database for read/write
 
         if(db.isOpen()){
-            //TODO: @LIOR ..."where ActivityTaskID = ActivityTaskID" <--- this is an error, you did not use the argument, this will essentially give you EVERY AT once.
-            Cursor cursor = db.rawQuery("select * from SubActivity where ActivityTaskID = ActivityTaskID",null); //selecting all the SubActivities of the ActivityTask
-            while (cursor.moveToNext()) {//TODO: @LIOR why the nested loop?
-                do {
-                    SubActivity subActivity = new SubActivity(cursor.getInt(0), cursor.getInt(1), cursor.getString(2)); //create the SubActivity object from the DB data
-                    subarray.add(subActivity); //add the SubActivity to the ArrayList
-                } while (cursor.moveToNext());//move to the next line,if there is no more lines then end the loop
-            }
+            Cursor cursor = db.rawQuery("select * from SubActivity where ActivityTaskID =" + ActivityTaskID,null); //selecting all the SubActivities of the ActivityTask
+            cursor.moveToFirst();
+            do {
+                SubActivity subActivity = new SubActivity(cursor.getInt(0), cursor.getInt(1), cursor.getString(2)); //create the SubActivity object from the DB data
+                subarray.add(subActivity); //add the SubActivity to the ArrayList
+            } while (cursor.moveToNext());//move to the next line,if there is no more lines then end the loop
+            cursor.close();
         }
-        //TODO: @LIOR notice that Cursors needs to be closed too. it raises a warning about it.
         db.close();
         return subarray;
     }
@@ -221,7 +219,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             if (db.delete("SubActivity", "SubActivityID = " + subActivity.getSubActivityID(), null) > 0)
                 return true; //db.delete returns the number of effected rows, if it is larger the 0, somthing was deleted.
             db.close();
-            return true;//note that Word is also the PK of the row, so there can only be 0/1 as a return value;//TODO: @LIOR the least you can do is fix the comments when copy pasting code...
+            return true;//note that SubActivityID is also the PK of the row, so there can only be 0/1 as a return value;
         }
         return false;
     }
