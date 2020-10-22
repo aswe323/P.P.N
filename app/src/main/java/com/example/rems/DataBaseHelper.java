@@ -113,7 +113,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             Cursor data = db.rawQuery("select * from WordPriority", null);//we don't need Args because we wan't ALL of the data.
             data.moveToFirst();//required because the cursor is set on the 0th element, which hold is nothing.
             do {
-                returned.put(data.getString(0), data.getInt(0));//WordPriority only got 2 columns, the Word(String), and the Priority(Int).
+                returned.put(data.getString(0), data.getInt(1));//WordPriority only got 2 columns, the Word(String), and the Priority(Int).
             } while (data.moveToNext());
             data.close();
         }
@@ -156,7 +156,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             db.close();
             return true;//note that Word is also the PK of the row, so there can only be 0/1 as a return value;
         }
-        db.close();
         return false;
     }
 
@@ -165,7 +164,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * in this section there are methods for the table @SubActivity will be int the order of C.R.U.D
      *
      */
-    public boolean insertSubActivity(SubActivity subActivity, int ActivityTaskID){
+    public boolean insertSubActivity(SubActivity subActivity, int ActivityTaskID){//inserting the SubActivity to the database
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
         //check if the database opened if not retuning false
         if(db.isOpen()) {
@@ -182,9 +181,50 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             return true;
         }
         return false;
+    }
+    
+    public ArrayList<SubActivity> queryForSubActivity(int ActivityTaskID){//returning ArrayList of all the SubActivities of an ActivityTask (by the ActivityTaskID)
+        ArrayList<SubActivity> subarray=new ArrayList<SubActivity>(); //creating an ArrayList that will store all SubActivities
+        SQLiteDatabase db = this.getWritableDatabase();//open the database for read/write
 
+        if(db.isOpen()){
+            Cursor cursor = db.rawQuery("select * from SubActivity where ActivityTaskID = ActivityTaskID",null); //selecting all the SubActivities of the ActivityTask
+            while(cursor.moveToNext()) {
+                do {
+                    SubActivity subActivity=new SubActivity(cursor.getInt(0),cursor.getInt(1),cursor.getString(2)); //create the SubActivity object from the DB data
+                    subarray.add(subActivity); //add the SubActivity to the ArrayList
+                }while(cursor.moveToNext());//move to the next line,if there is no more lines then end the loop
+            }
+        }
+        db.close();
+        return subarray;
     }
 
+    public boolean updateSubActivity(SubActivity subActivity,String content){//updates the SubActivities
+        SQLiteDatabase db = this.getWritableDatabase();//open the database for read/write
+
+        if(db.isOpen()){
+            ContentValues values = new ContentValues(); //will store the new value for the database
+            values.put("Content", content);//inset the new value for column @Content
+            db.update("SubActivity", values, "SubActivityID = " + subActivity.getSubActivityID(), null);//TODO: not sure if this is how the whereClause is used here.
+            db.close();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteSubActivity(SubActivity subActivity){//delete the SubActivity
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
+        if (db.isOpen()) {
+            if (db.delete("SubActivity", "SubActivityID = " + subActivity.getSubActivityID(), null) > 0)
+                return true; //db.delete returns the number of effected rows, if it is larger the 0, somthing was deleted.
+            db.close();
+            return true;//note that Word is also the PK of the row, so there can only be 0/1 as a return value;
+        }
+        return false;
+    }
+    
     /*
      *
      * in this section there are methods for the table @ActivityTask will be int the order of C.R.U.D
