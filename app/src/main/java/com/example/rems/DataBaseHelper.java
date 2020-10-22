@@ -19,14 +19,14 @@ import module.SubActivity;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static SQLiteDatabase sysDB;
-    private static Context context;
-    private static String  DATABASE_NAME = "remsDB.db";
+    private static Context context;//TODO: @LIOR! do not do this, THIS IS A MEMORY LEAK!  REALLY REALLY BAD!
+    private static String DATABASE_NAME = "remsDB.db";
     private static int DATABASE_VERSION = 1;
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
-        sysDB=getWritableDatabase();
+        sysDB = getWritableDatabase();
     }
 
 
@@ -115,7 +115,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             do {
                 returned.put(data.getString(0), data.getInt(0));//WordPriority only got 2 columns, the Word(String), and the Priority(Int).
             } while (data.moveToNext());
+            data.close();
         }
+
         return returned;
     }
 
@@ -214,44 +216,42 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<ActivityTask> queryForActivityTaskByPriority(int priority) {
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
         ArrayList<ActivityTask> activityTasks = new ArrayList<>();
-        String[] columnsFromActTsk = new String[]// the columns we are looking for in the ActivityTask Table
-                {
-                        "ActivityTaskID",
-                        "DateAndTime",
-                        "Content",
-                        "Category",
-                        "Priority"
-                };
-        String[] columnsFromSubAct = new String[]// the columns we are looking for in the SubActivity Table
-                {
-                        "SubActivityID",
-                        "ActivityTaskID",
-                        "content"
-                };
-        SimpleDateFormat formatter = new SimpleDateFormat("YYYY/MM/DD HH:MM:SS");
+        String[] columnsFromActTsk = new String[]{"ActivityTaskID", "DateAndTime", "Content", "Category", "Priority"};// the columns we are looking for in the ActivityTask Table
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");// for Date in ActivityTask
+
         if (db.isOpen()) {
+
             Cursor retrivedActTsk = db.query("ActivityTasks", columnsFromActTsk, "Priority = " + priority, null, null, null, null);
-            //we retrived the data, now we create the ActTasks LOCALY(!!!) and retrived their individual SubActivities to complete the data set.
-            do {
-                activityTasks.add(new ActivityTask(
+            //we retrieved the data, now we create the ActTasks LOCALLY(!!!) and retrieve their individual SubActivities to complete the data.
+            retrivedActTsk.moveToFirst();//required to get to the first record!
+
+            do
+            {//for each record in the retrivedActTsk. preferred "do while" to illustrate the 0th element issue.
+
+                //getting subActivities to attach to ActivityTask
+                //TODO: this is inefficient, requiring a query for each record in the retrived retrivedActTsk.
+                Cursor retrivedSubAct = db.rawQuery("SELECT SubActivityID,ActivityTaskID,Content FROM SubActivity WHERE ActivityTaskID = " + retrivedActTsk.getInt(0), null);
+
+                ArrayList<SubActivity> relatedSubActivities = new ArrayList<>();//now we create the SubActivities
+                retrivedSubAct.moveToFirst();
+                do {
+                    relatedSubActivities.add(new SubActivity(retrivedSubAct.getInt(0), retrivedSubAct.getInt(1), retrivedSubAct.getString(2)));
+                } while (retrivedSubAct.moveToNext());
+                retrivedSubAct.close();
+                activityTasks.add(new ActivityTask(//FOREACH record in the retrivedActTsk Cursor, we create a task.
                         retrivedActTsk.getInt(5),//priority
                         MasloCategorys.valueOf(retrivedActTsk.getString(4)),//MasloCategory
                         Repetition.valueOf(retrivedActTsk.getString(3)),//Repetition
                         retrivedActTsk.getString(2),//Content
-                        null//SubActivities
+                        relatedSubActivities//SubActivities
                 ));
-            } while (retrivedActTsk.moveToFirst())
-            Cursor retrivedSubTsk = db.query("SubActivities", columnsFromSubAct, );
-//               "ActivityTaskID INTEGER PRIMARY KEY AUTOINCREMENT," + 0
-//                "DateAndTime TEXT," +
-//                "Content TEXT," +
-//                "Repetition TEXT," +
-//                "Category TEXT," +
-//                "Priority INTEGER" + 5
-        }/*
+            } while (retrivedActTsk.moveToNext());
+            retrivedActTsk.close();
+
+        }
         db.close();
         return activityTasks;
-
     }
 }
