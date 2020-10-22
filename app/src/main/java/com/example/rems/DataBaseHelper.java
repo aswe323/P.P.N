@@ -125,6 +125,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put("priority", newPriority);
             db.update("WordPriority", values, "Word = " + word, null);//TODO: not sure if this is how the whereClause is used here.
+            db.close();
             return true;
         }
         return false;
@@ -137,10 +138,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put("Word", newWord);
             db.update("WordPriority", values, "Word = " + oldWord, null);//TODO: not sure if this is how the whereClause is used here.
+            db.close();
             return true;
         }
         return false;
     }
 
+    public boolean deletePrioritiyWord(String word) {
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
+        if (db.isOpen()) {
+            if (db.delete("WordPriority", "Word = " + word, null) > 0)
+                return true; //db.delete returns the number of effected rows, if it is larger the 0, somthign was deleted.
+            db.close();
+            return true;//note that Word is also the PK of the row, so there can only be 0/1 as a return value;
+        }
+        db.close();
+        return false;
+    }
 }
