@@ -16,6 +16,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
 
+import module.SubActivity;
+
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static SQLiteDatabase sysDB;
@@ -156,4 +158,57 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
         return false;
     }
+
+    /*
+     *
+     * in this section there are methods for the table @SubActivity will be int the order of C.R.U.D
+     *
+     */
+    public boolean insertSubActivity(SubActivity subActivity, int ActivityTaskID){
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+        //check if the database opened if not retuning false
+        if(db.isOpen()) {
+            ContentValues values = new ContentValues(); //will hold Strings of the values to insert into the table
+            values.put("Content", subActivity.getContent());//insert the value to Content values
+            values.put("ActivityTaskID", ActivityTaskID);//insert the id of the ActivityTask to values
+            //check if the item was added successfully if not retuning false
+            if (values.size() < 1)
+                return false;
+            else
+                db.insert("SubActivity", null, values);//insert into table WordPriority the new word
+
+            db.close();
+            return true;
+        }
+        return false;
+
+    }
+
+    /*
+     *
+     * in this section there are methods for the table @ActivityTask will be int the order of C.R.U.D
+     *
+     */
+    /*public boolean insertActivityTask(MasloCategorys category, Repetition repetition, String content, Date timeOfActivity, ArrayList<SubActivity> subActivity, int priority){
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
+        //check if the database opened if not retuning false
+        if(db.isOpen()) {
+            ContentValues values = new ContentValues(); //will hold Strings of the values to insert into the table
+            values.put("DateAndTime", timeOfActivity);//insert the value to Content values
+            values.put("Content", content);//insert the value to values
+            values.put("Category", category);//insert the value to values
+            values.put("Priority", repetition);//insert the value to values
+            values.put("Priority", priority);//insert the value to values
+            //check if the item was added successfully if not retuning false
+            if (values.size() < 1)
+                return false;
+            else
+                db.insert("WordPriority", null, values);//insert into table WordPriority the new word
+
+            db.close();
+            return true;
+        }
+        return false;
+    }*/
 }
