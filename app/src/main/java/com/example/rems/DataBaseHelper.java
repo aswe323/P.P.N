@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
@@ -18,8 +20,8 @@ import module.SubActivity;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-    private static SQLiteDatabase sysDB;
-    private static Context context;//TODO: @LIOR! do not do this, THIS IS A MEMORY LEAK!  REALLY REALLY BAD!
+    private SQLiteDatabase sysDB;
+    private Context context;//TODO: @LIOR! do not do this, THIS IS A MEMORY LEAK!  REALLY REALLY BAD!
     private static String DATABASE_NAME = "remsDB.db";
     private static int DATABASE_VERSION = 1;
 
@@ -78,10 +80,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         onCreate(db);// Create tables again
     }
 
+    public int getMaxIdOfActivityTask(){ //getting the latest id that added of the latest ActivityTask that was added to the database
+        SQLiteDatabase db=this.getReadableDatabase();//open the database for read\write
+        Cursor cursor = db.rawQuery("SELECT MAX(ActivityTaskID) FROM ActivityTasks", null);//to browse the max id of the table ActivityTasks
+        int maxId = (cursor.moveToFirst() ? cursor.getInt(0) : 0);//go to the start of the cursor and check the ID column and return the int value,if the column is empty return 0 to the int
+        cursor.close();
+        return maxId;
+    }
+
     /*
-    *
-    * in this section there are methods for the table @WordPriority will be int the order of C.R.U.D
-    *
+    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    *                                                                                                 *
+    * in this section there are methods for the table @WordPriority will be int the order of C.R.U.D  *
+    *                                                                                                 *
+    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      */
     public boolean insertPriorityWord(String word, int priority){
 
@@ -96,8 +108,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             if (values.size() < 1)
                 return false;
             else
-                db.insert("WordPriority", null, values);//insert into table WordPriority the new word
-
+                if(db.insert("WordPriority", null, values)==-1) {//insert into table WordPriority the new word, if returned -1 insert failed
+                    db.close();
+                    return false;
+                }
+            db.close();
             return true;
         }
         return false;
@@ -158,10 +173,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
+
     /*
-     *
-     * in this section there are methods for the table @SubActivity will be in the order of C.R.U.D
-     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *                                                                                               *
+     * in this section there are methods for the table @SubActivity will be in the order of C.R.U.D  *
+     *                                                                                               *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      */
     public boolean insertSubActivity(SubActivity subActivity, int ActivityTaskID){//inserting the SubActivity to the database
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
@@ -174,7 +192,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             if (values.size() < 1)
                 return false;
             else
-                db.insert("SubActivity", null, values);//insert into table WordPriority the new word
+                if(db.insert("SubActivity", null, values)==-1) {//insert into table WordPriority the new word, if returned -1 insert failed
+                    db.close();
+                    return false;
+                }
 
             db.close();
             return true;
@@ -225,39 +246,47 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
     
     /*
-     *
-     * in this section there are methods for the table @ActivityTask will be int the order of C.R.U.D
-     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *                                                                                                 *
+     * in this section there are methods for the table @ActivityTask will be int the order of C.R.U.D  *
+     *                                                                                                 *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      */
-    /*public boolean insertActivityTask(MasloCategorys category, Repetition repetition, String content, Date timeOfActivity, ArrayList<SubActivity> subActivity, int priority){
+    public boolean insertActivityTask(MasloCategorys category, Repetition repetition, String content, Date timeOfActivity, ArrayList<SubActivity> subActivity, int priority){
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");// for Date in ActivityTask
+        String DateInFormat=formatter.format(timeOfActivity);//create a string with the date that was sent in the format we want
 
-        //check if the database opened if not retuning false
-        if(db.isOpen()) {
+        if(db.isOpen()) {//check if the database opened if not retuning false
             ContentValues values = new ContentValues(); //will hold Strings of the values to insert into the table
-            values.put("DateAndTime", timeOfActivity);//insert the value to Content values
-            values.put("Content", content);//insert the value to values
-            values.put("Category", category);//insert the value to values
-            values.put("Priority", repetition);//insert the value to values
-            values.put("Priority", priority);//insert the value to values
-            //check if the item was added successfully if not retuning false
-            if (values.size() < 1)
+            values.put("DateAndTime", DateInFormat);//insert the value of the date to Content values
+            values.put("Content", content);//insert the value of content to values
+            values.put("Category", category.toString());//insert the value of category to values
+            values.put("Repetition", repetition.toString());//insert the value of Repetition to values
+            values.put("Priority", priority);//insert the value of priority to values
+
+            if (values.size() < 1) //check if the item was added successfully if not retuning false
                 return false;
-            else
-                db.insert("WordPriority", null, values);//insert into table WordPriority the new word
+            else {
+                if(db.insert("WordPriority", null, values)==-1) {//insert into table ActivityTasks the new ActivityTask, if returned -1 insert failed
+                    db.close();
+                    return false;
+                }
+                for (SubActivity subactivityIterator :subActivity) //adding all of the SubActivities with iterator
+                    insertSubActivity(subactivityIterator,subactivityIterator.getActivityTaskID()); //sending the SubActivities to be added to the database
+            }
 
             db.close();
             return true;
         }
         return false;
-    }*/
+    }
 
-
-    public ArrayList<ActivityTask> queryForActivityTaskByPriority(int priority) {
+    public ArrayList<ActivityTask> queryForActivityTaskByPriority(int priority) throws ParseException { //this method will return all the ActivityTasks with the @priority that was sent.
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
         ArrayList<ActivityTask> activityTasks = new ArrayList<>();
-        String[] columnsFromActTsk = new String[]{"ActivityTaskID", "DateAndTime", "Content", "Category", "Priority"};// the columns we are looking for in the ActivityTask Table
+        String[] columnsFromActTsk = new String[]{"ActivityTaskID", "DateAndTime", "Content", "Repetition", "Category", "Priority"};// the columns we are looking for in the ActivityTask Table
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");// for Date in ActivityTask
 
         if (db.isOpen()) {
@@ -279,18 +308,230 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                     relatedSubActivities.add(new SubActivity(retrivedSubAct.getInt(0), retrivedSubAct.getInt(1), retrivedSubAct.getString(2)));
                 } while (retrivedSubAct.moveToNext());
                 retrivedSubAct.close();
+
+                //get the data from the database and construct the ActivityTask
+                Date TextToDate= (Date) formatter.parse(retrivedActTsk.getString(1)); //we need to parse the date that is a String in the database to Date
                 activityTasks.add(new ActivityTask(//FOREACH record in the retrivedActTsk Cursor, we create a task.
                         retrivedActTsk.getInt(5),//priority
                         MasloCategorys.valueOf(retrivedActTsk.getString(4)),//MasloCategory
                         Repetition.valueOf(retrivedActTsk.getString(3)),//Repetition
                         retrivedActTsk.getString(2),//Content
+                        TextToDate,//DateTime
                         relatedSubActivities//SubActivities
                 ));
             } while (retrivedActTsk.moveToNext());
             retrivedActTsk.close();
-
         }
         db.close();
         return activityTasks;
     }
+
+    public ArrayList<ActivityTask> queryForActivityTaskByTime(Date time) throws ParseException { //returns all the ActivityTasks with the save date and time
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+        ArrayList<ActivityTask> activityTasks = new ArrayList<>();
+        String[] columnsFromActTsk = new String[]{"ActivityTaskID", "DateAndTime", "Content", "Repetition", "Category", "Priority"};// the columns we are looking for in the ActivityTask Table
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");// for Date in ActivityTask
+        String DateInFormat=formatter.format(time);//making a String out of the @Date that was sent to use in the query
+
+        if (db.isOpen()) {
+
+            Cursor retrivedActTsk = db.query("ActivityTasks", columnsFromActTsk, "DateAndTime = " + DateInFormat, null, null, null, null);
+            //we retrieved the data, now we create the ActTasks LOCALLY(!!!) and retrieve their individual SubActivities to complete the data.
+            retrivedActTsk.moveToFirst();//required to get to the first record!
+
+            do
+            {//for each record in the retrivedActTsk. preferred "do while" to illustrate the 0th element issue.
+
+                //getting subActivities to attach to ActivityTask
+                //TODO: this is inefficient, requiring a query for each record in the retrived retrivedActTsk.
+                Cursor retrivedSubAct = db.rawQuery("SELECT SubActivityID,ActivityTaskID,Content FROM SubActivity WHERE ActivityTaskID = " + retrivedActTsk.getInt(0), null);
+
+                ArrayList<SubActivity> relatedSubActivities = new ArrayList<>();//now we create the SubActivities
+                retrivedSubAct.moveToFirst();
+                do {
+                    relatedSubActivities.add(new SubActivity(retrivedSubAct.getInt(0), retrivedSubAct.getInt(1), retrivedSubAct.getString(2)));
+                } while (retrivedSubAct.moveToNext());
+                retrivedSubAct.close();
+
+                //get the data from the database and construct the ActivityTask
+                Date TextToDate= (Date) formatter.parse(retrivedActTsk.getString(1)); //we need to parse the date that is a String in the database to Date
+                activityTasks.add(new ActivityTask(//FOREACH record in the retrivedActTsk Cursor, we create a task.
+                        retrivedActTsk.getInt(5),//priority
+                        MasloCategorys.valueOf(retrivedActTsk.getString(4)),//MasloCategory
+                        Repetition.valueOf(retrivedActTsk.getString(3)),//Repetition
+                        retrivedActTsk.getString(2),//Content
+                        TextToDate,//DateTime
+                        relatedSubActivities//SubActivities
+                ));
+            } while (retrivedActTsk.moveToNext());
+            retrivedActTsk.close();
+        }
+        db.close();
+        return activityTasks;
+    }
+
+    public ArrayList<ActivityTask> queryForActivityTaskByRepetition(Repetition repetition) throws ParseException { //this method will return all the ActivityTasks with the @repetition that was sent.
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
+        ArrayList<ActivityTask> activityTasks = new ArrayList<>();
+        String[] columnsFromActTsk = new String[]{"ActivityTaskID", "DateAndTime", "Content", "Repetition", "Category", "Priority"};// the columns we are looking for in the ActivityTask Table
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");// for Date in ActivityTask
+
+        if (db.isOpen()) {
+
+            Cursor retrivedActTsk = db.query("ActivityTasks", columnsFromActTsk, "Repetition = " + repetition.toString(), null, null, null, null);
+            //we retrieved the data, now we create the ActTasks LOCALLY(!!!) and retrieve their individual SubActivities to complete the data.
+            retrivedActTsk.moveToFirst();//required to get to the first record!
+
+            do
+            {//for each record in the retrivedActTsk. preferred "do while" to illustrate the 0th element issue.
+
+                //getting subActivities to attach to ActivityTask
+                //TODO: this is inefficient, requiring a query for each record in the retrived retrivedActTsk.
+                Cursor retrivedSubAct = db.rawQuery("SELECT SubActivityID,ActivityTaskID,Content FROM SubActivity WHERE ActivityTaskID = " + retrivedActTsk.getInt(0), null);
+
+                ArrayList<SubActivity> relatedSubActivities = new ArrayList<>();//now we create the SubActivities
+                retrivedSubAct.moveToFirst();
+                do {
+                    relatedSubActivities.add(new SubActivity(retrivedSubAct.getInt(0), retrivedSubAct.getInt(1), retrivedSubAct.getString(2)));
+                } while (retrivedSubAct.moveToNext());
+                retrivedSubAct.close();
+
+                //get the data from the database and construct the ActivityTask
+                Date TextToDate= (Date) formatter.parse(retrivedActTsk.getString(1)); //we need to parse the date that is a String in the database to Date
+                activityTasks.add(new ActivityTask(//FOREACH record in the retrivedActTsk Cursor, we create a task.
+                        retrivedActTsk.getInt(5),//priority
+                        MasloCategorys.valueOf(retrivedActTsk.getString(4)),//MasloCategory
+                        Repetition.valueOf(retrivedActTsk.getString(3)),//Repetition
+                        retrivedActTsk.getString(2),//Content
+                        TextToDate,//DateTime
+                        relatedSubActivities//SubActivities
+                ));
+            } while (retrivedActTsk.moveToNext());
+            retrivedActTsk.close();
+        }
+        db.close();
+        return activityTasks;
+    }
+
+    public ArrayList<ActivityTask> queryForActivityTaskByCategory(MasloCategorys category) throws ParseException { //this method will return all the ActivityTasks with the @category that was sent.
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
+        ArrayList<ActivityTask> activityTasks = new ArrayList<>();
+        String[] columnsFromActTsk = new String[]{"ActivityTaskID", "DateAndTime", "Content", "Repetition", "Category", "Priority"};// the columns we are looking for in the ActivityTask Table
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");// for Date in ActivityTask
+
+        if (db.isOpen()) {
+
+            Cursor retrivedActTsk = db.query("ActivityTasks", columnsFromActTsk, "Category = " + category.toString(), null, null, null, null);
+            //we retrieved the data, now we create the ActTasks LOCALLY(!!!) and retrieve their individual SubActivities to complete the data.
+            retrivedActTsk.moveToFirst();//required to get to the first record!
+
+            do
+            {//for each record in the retrivedActTsk. preferred "do while" to illustrate the 0th element issue.
+
+                //getting subActivities to attach to ActivityTask
+                //TODO: this is inefficient, requiring a query for each record in the retrived retrivedActTsk.
+                Cursor retrivedSubAct = db.rawQuery("SELECT SubActivityID,ActivityTaskID,Content FROM SubActivity WHERE ActivityTaskID = " + retrivedActTsk.getInt(0), null);
+
+                ArrayList<SubActivity> relatedSubActivities = new ArrayList<>();//now we create the SubActivities
+                retrivedSubAct.moveToFirst();
+                do {
+                    relatedSubActivities.add(new SubActivity(retrivedSubAct.getInt(0), retrivedSubAct.getInt(1), retrivedSubAct.getString(2)));
+                } while (retrivedSubAct.moveToNext());
+                retrivedSubAct.close();
+
+                //get the data from the database and construct the ActivityTask
+                Date TextToDate= (Date) formatter.parse(retrivedActTsk.getString(1)); //we need to parse the date that is a String in the database to Date
+                activityTasks.add(new ActivityTask(//FOREACH record in the retrivedActTsk Cursor, we create a task.
+                        retrivedActTsk.getInt(5),//priority
+                        MasloCategorys.valueOf(retrivedActTsk.getString(4)),//MasloCategory
+                        Repetition.valueOf(retrivedActTsk.getString(3)),//Repetition
+                        retrivedActTsk.getString(2),//Content
+                        TextToDate,//DateTime
+                        relatedSubActivities//SubActivities
+                ));
+            } while (retrivedActTsk.moveToNext());
+            retrivedActTsk.close();
+        }
+        db.close();
+        return activityTasks;
+    }
+
+    public ArrayList<ActivityTask> queryForActivityTaskByString(String string) throws ParseException { //this method will return all the ActivityTasks with the @category that was sent.
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
+        ArrayList<ActivityTask> activityTasks = new ArrayList<>();
+        String[] columnsFromActTsk = new String[]{"ActivityTaskID", "DateAndTime", "Content", "Repetition", "Category", "Priority"};// the columns we are looking for in the ActivityTask Table
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");// for Date in ActivityTask
+
+        if (db.isOpen()) {
+
+            Cursor retrivedActTsk = db.query("ActivityTasks", columnsFromActTsk, "Content LIKE ?", new String[]{string+"%"}, null, null, null); //TODO: check if the like statement works
+            //we retrieved the data, now we create the ActTasks LOCALLY(!!!) and retrieve their individual SubActivities to complete the data.
+            retrivedActTsk.moveToFirst();//required to get to the first record!
+
+            do
+            {//for each record in the retrivedActTsk. preferred "do while" to illustrate the 0th element issue.
+
+                //getting subActivities to attach to ActivityTask
+                //TODO: this is inefficient, requiring a query for each record in the retrived retrivedActTsk.
+                Cursor retrivedSubAct = db.rawQuery("SELECT SubActivityID,ActivityTaskID,Content FROM SubActivity WHERE ActivityTaskID = " + retrivedActTsk.getInt(0), null);
+
+                ArrayList<SubActivity> relatedSubActivities = new ArrayList<>();//now we create the SubActivities
+                retrivedSubAct.moveToFirst();
+                do {
+                    relatedSubActivities.add(new SubActivity(retrivedSubAct.getInt(0), retrivedSubAct.getInt(1), retrivedSubAct.getString(2)));
+                } while (retrivedSubAct.moveToNext());
+                retrivedSubAct.close();
+
+                //get the data from the database and construct the ActivityTask
+                Date TextToDate= (Date) formatter.parse(retrivedActTsk.getString(1)); //we need to parse the date that is a String in the database to Date
+                activityTasks.add(new ActivityTask(//FOREACH record in the retrivedActTsk Cursor, we create a task.
+                        retrivedActTsk.getInt(5),//priority
+                        MasloCategorys.valueOf(retrivedActTsk.getString(4)),//MasloCategory
+                        Repetition.valueOf(retrivedActTsk.getString(3)),//Repetition
+                        retrivedActTsk.getString(2),//Content
+                        TextToDate,//DateTime
+                        relatedSubActivities//SubActivities
+                ));
+            } while (retrivedActTsk.moveToNext());
+            retrivedActTsk.close();
+        }
+        db.close();
+        return activityTasks;
+    }
+
+    public boolean updateActivityTask(ActivityTask activityTask){//update the ActivityTask that was passed (using the exciting id)
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
+        if(db.isOpen()){
+            ContentValues values = new ContentValues(); //will store the new value for the database
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");// for Date in ActivityTask
+            String DateInFormat=formatter.format(activityTask.getTimeOfActivity());//create a string with the date that was sent in the format we want
+
+            values.put("DateAndTime", DateInFormat);//inset the new date for column @DateAndTime
+            values.put("Content", activityTask.getContent());//inset the new content for column @Content
+            values.put("Repetition", activityTask.getRepetition().toString());//inset the new repetition for column @Repetition
+            values.put("Category", activityTask.getCategory().toString());//inset the new category for column @Category
+            values.put("Priority", activityTask.getPriority());//inset the new priority for column @Priority
+            db.update("ActivityTasks ", values, "ActivityTaskID = " + activityTask.getActivityTaskID(), null);//TODO: not sure if this is how the whereClause is used here.
+            db.close();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteActivityTask(ActivityTask activityTask){ // delete the ActivityTask that was passed
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write/read
+
+        if (db.isOpen()) {
+            if (db.delete("ActivityTasks", "ActivityTaskID = " + activityTask.getActivityTaskID(), null) > 0)
+                return true; //db.delete returns the number of effected rows, if it is larger the 0, something was deleted.
+            db.close();
+            return true;//note that ActivityTaskID is also the PK of the row, so there can only be 0/1 as a return value;
+        }
+        return false;
+    }
+
 }
