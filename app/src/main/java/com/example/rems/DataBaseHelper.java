@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.ImageSwitcher;
 import android.widget.Toast;
 
 import java.sql.Date;
@@ -17,6 +18,8 @@ import module.ActivityTask;
 import module.MasloCategorys;
 import module.Repetition;
 import module.SubActivity;
+
+import static java.sql.Types.NULL;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -272,8 +275,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                     db.close();
                     return false;
                 }
-                for (SubActivity subactivityIterator :subActivity) //adding all of the SubActivities with iterator
-                    insertSubActivity(subactivityIterator,subactivityIterator.getActivityTaskID()); //sending the SubActivities to be added to the database
+                for (SubActivity subactivityIterator : subActivity) //adding all of the SubActivities with iterator
+                    insertSubActivity(subactivityIterator, subactivityIterator.getActivityTaskID()); //sending the SubActivities to be added to the database
             }
 
             db.close();
@@ -282,6 +285,75 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    /**
+     * @param activityTaskID
+     * @param priority
+     * @param dateAndTime
+     * @param content
+     * @param repetition
+     * @param masloCategory
+     * @return
+     * @throws ParseException
+     */
+    public ArrayList<ActivityTask> queryForExactActivityTask(int activityTaskID, int priority, Date dateAndTime, String content, Repetition repetition, MasloCategorys masloCategory) throws ParseException {
+
+        if (activityTaskID < 0 && priority < 0 && dateAndTime == null && content == null && repetition == null && masloCategory == null)
+            return null;
+        ArrayList<ActivityTask> activityTasks = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+        if (db.isOpen()) {
+            String[] columnsFromActTsk = new String[]{"ActivityTaskID", "DateAndTime", "Content", "Repetition", "Category", "Priority"};// the columns we are looking for in the ActivityTask Table
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");// for Date in ActivityTask
+
+            //region TODO: the idea is that the query whereClauseArgs parameter already takes care of sqlinjections, so i wanted to use that, the complicatoin comes from deciding where to put the AND operator in the where clause.
+            ContentValues values = new ContentValues();
+            values.put("ActivityTask ", activityTaskID >= 0 ? String.valueOf(activityTaskID) : "ActivityTask");
+            values.put("DateAndTime ", dateAndTime != null ? String.valueOf(dateAndTime) : "DateAndTime");
+            values.put("Content ", content != null ? content : "Content");
+            values.put("Repetition ", repetition != null ? String.valueOf(repetition) : "Repetition");
+            values.put("Category ", masloCategory != null ? String.valueOf(masloCategory) : "MasloCategory");
+            values.put("Priority ", priority >= 0 ? String.valueOf(priority) : "Priority");
+            ContentValues whereClauseArgs = new ContentValues();
+            for (String key : values.keySet()) {
+                String value = (String) values.get(key);
+                if (!String.valueOf(values.get(key)).equals(key)) {//if the key is the same as the value, we got an empty argument, and it should not be included in the where clause.
+                    whereClauseArgs.put(String.valueOf(key), whereClauseArgs.keySet().size() > 0 ? " AND " + key + " = " + value : key + " = " + value);//voodoo magic.
+                }
+            }
+            String[] whereArgsArray = new String[5];
+            int i = 0;
+            for (String key : whereClauseArgs.keySet()) {
+                whereArgsArray[i++] = String.valueOf(whereClauseArgs.get(key));
+            }
+            //endregion
+
+            if (db.isOpen()) {
+                Cursor cursor = db.query("ActivityTasks", columnsFromActTsk, "?  ?  ?  ?  ?  ?", whereArgsArray, null, null, null);
+                cursor.moveToFirst();
+                do {
+                    ArrayList<SubActivity> relatedSubAct = queryForSubActivity(cursor.getInt(0));//the related subAct to the ActTsk
+                    Date TextToDate = (Date) formatter.parse(cursor.getString(1)); //we need to parse the date that is a String in the database to Date
+                    activityTasks.add(new ActivityTask(//FOREACH record in the retrivedActTsk Cursor, we create a task.
+                            cursor.getInt(5),//priority
+                            MasloCategorys.valueOf(cursor.getString(4)),//MasloCategory
+                            Repetition.valueOf(cursor.getString(3)),//Repetition
+                            cursor.getString(2),//Content
+                            TextToDate,//DateTime
+                            relatedSubAct//SubActivities
+                    ));
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }
+
+        db.close();
+        return activityTasks;
+
+    }
+
+    //TODO: matan is an idiot, this is repeated code and is the devils work... all hail satan. :'(
     public ArrayList<ActivityTask> queryForActivityTaskByPriority(int priority) throws ParseException { //this method will return all the ActivityTasks with the @priority that was sent.
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
@@ -295,8 +367,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             //we retrieved the data, now we create the ActTasks LOCALLY(!!!) and retrieve their individual SubActivities to complete the data.
             retrivedActTsk.moveToFirst();//required to get to the first record!
 
-            do
-            {//for each record in the retrivedActTsk. preferred "do while" to illustrate the 0th element issue.
+            do {//for each record in the retrivedActTsk. preferred "do while" to illustrate the 0th element issue.
 
                 //getting subActivities to attach to ActivityTask
                 //TODO: this is inefficient, requiring a query for each record in the retrived retrivedActTsk.
