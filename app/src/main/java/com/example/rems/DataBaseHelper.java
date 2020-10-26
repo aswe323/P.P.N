@@ -27,17 +27,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private Context context;//TODO: @LIOR! do not do this, THIS IS A MEMORY LEAK!  REALLY REALLY BAD!
     private static String DATABASE_NAME = "remsDB.db";
     private static int DATABASE_VERSION = 1;
+    private static DataBaseHelper DataBaseHelper_Instance;
 
-    public DataBaseHelper(Context context) {
+    public static DataBaseHelper getInstance(Context context) {
+        if (DataBaseHelper_Instance == null) DataBaseHelper_Instance = new DataBaseHelper(context);
+        return DataBaseHelper_Instance;
+    }
+
+    private DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         sysDB = getWritableDatabase();
     }
 
-
     /*
-    *
-    * when app is installed this method will be called and build the database
-    *
+     *
+     * when app is installed this method will be called and build the database
+     *
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -83,8 +88,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         onCreate(db);// Create tables again
     }
 
-    public int getMaxIdOfActivityTask(){ //getting the latest id that added of the latest ActivityTask that was added to the database
-        SQLiteDatabase db=this.getReadableDatabase();//open the database for read\write
+//region methods
+
+    public int getMaxIdOfActivityTask() { //getting the latest id that added of the latest ActivityTask that was added to the database
+        SQLiteDatabase db = this.getReadableDatabase();//open the database for read\write
         Cursor cursor = db.rawQuery("SELECT MAX(ActivityTaskID) FROM ActivityTasks", null);//to browse the max id of the table ActivityTasks
         int maxId = (cursor.moveToFirst() ? cursor.getInt(0) : 0);//go to the start of the cursor and check the ID column and return the int value,if the column is empty return 0 to the int
         cursor.close();
@@ -205,7 +212,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return false;
     }
-    
+
     public ArrayList<SubActivity> queryForSubActivity(int ActivityTaskID){//returning ArrayList of all the SubActivities of an ActivityTask (by the ActivityTaskID)
         ArrayList<SubActivity> subarray=new ArrayList<SubActivity>(); //creating an ArrayList that will store all SubActivities
         SQLiteDatabase db = this.getWritableDatabase();//open the database for read/write
@@ -604,5 +611,5 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return false;
     }
-
+//endregion methods
 }
