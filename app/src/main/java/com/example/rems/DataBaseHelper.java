@@ -5,13 +5,20 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
+import android.util.Log;
 import android.widget.ImageSwitcher;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import module.ActivityTask;
@@ -36,6 +43,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context=context;
         sysDB = getWritableDatabase();
     }
 
@@ -46,7 +54,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Toast.makeText(context, "database was created", Toast.LENGTH_SHORT).show();
         //execSQL used to send SQL statement that isn't returning data (such as select)
 
         //creating table "ActivityTasks" with columns ActivityTaskID,DateAndTime,Content,Category,Priority
@@ -75,16 +82,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    //used when you want to update the database,when called need to increment the version
+
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {//used when you want to update the database,when called need to increment the version
         //delete the old database by dropping the tables
         db.execSQL("DROP TABLE IF EXISTS " + "ActivityTasks");
         db.execSQL("DROP TABLE IF EXISTS " + "SubActivity");
         db.execSQL("DROP TABLE IF EXISTS " + "WordPriority");//TODO: what about the data? you created the database again with the tables, but lost ALL of the data you had there.
         // you didn't UPDATE anything.. you resetted the DB.
         //pls fix.
-
+        //Toast.makeText(context, "database was created", Toast.LENGTH_SHORT).show();
         onCreate(db);// Create tables again
     }
 
@@ -92,8 +99,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public int getMaxIdOfActivityTask() { //getting the latest id that added of the latest ActivityTask that was added to the database
         SQLiteDatabase db = this.getReadableDatabase();//open the database for read\write
+        int maxId=0;
         Cursor cursor = db.rawQuery("SELECT MAX(ActivityTaskID) FROM ActivityTasks", null);//to browse the max id of the table ActivityTasks
-        int maxId = (cursor.moveToFirst() ? cursor.getInt(0) : 0);//go to the start of the cursor and check the ID column and return the int value,if the column is empty return 0 to the int
+        if(cursor!=null && cursor.getCount()>0)
+            maxId = (cursor.moveToFirst() ? cursor.getInt(0) : 0);//go to the start of the cursor and check the ID column and return the int value,if the column is empty return 0 to the int
         cursor.close();
         return maxId;
     }
@@ -123,11 +132,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                     return false;
                 }
             db.close();
+
+            //test toast
+            Toast.makeText(context, "inserted word: "+word+" with priority: "+priority, Toast.LENGTH_SHORT).show();
+
             return true;
         }
         return false;
     }
 
+    //
+    //bug fix: was needed to install the map with "new HashMap<>()"
+    //
     public Map<String, Integer> queryForPriorityWords() {// get ALL of the priority words from the table. and return them as a Map.
         Map<String, Integer> returned = null;//the Map that will be returned
 
@@ -135,47 +151,65 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         if (db.isOpen()) {
             Cursor data = db.rawQuery("select * from WordPriority", null);//we don't need Args because we wan't ALL of the data.
+            if(!(data!=null && data.getCount()>0)) //check if there is data that was taken from the database,if not return the nulled map;
+                return returned;
+            returned = new HashMap<>();
             data.moveToFirst();//required because the cursor is set on the 0th element, which hold is nothing.
             do {
                 returned.put(data.getString(0), data.getInt(1));//WordPriority only got 2 columns, the Word(String), and the Priority(Int).
             } while (data.moveToNext());
             data.close();
+
+            //test toast
+            Toast.makeText(context, "sented a map of words", Toast.LENGTH_SHORT).show();
         }
 
         return returned;
     }
 
+    //
+    //args bug was fixed,needed to change the whereClause to "Word = ?",and create new String array with @word in whereArgs
+    //TODO:Update the map of ActivityTaskUsed after every update
+    //
     public boolean updatePrioritiyOfWord(String word, Integer newPriority) {
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
         if (db.isOpen()) {
             ContentValues values = new ContentValues();
             values.put("priority", newPriority);
-            db.update("WordPriority", values, "Word = " + word, null);//TODO: not sure if this is how the whereClause is used here.
+            db.update("WordPriority", values, "Word = ?", new String[]{word});
             db.close();
             return true;
         }
         return false;
     }
 
+    //
+    //args bug was fixed,needed to change the whereClause to "Word = ?",and create new String array with @word in whereArgs
+    //TODO:Update the map of ActivityTaskUsed after every update
+    //
     public boolean updateWord(String oldWord,String newWord) {
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
         if (db.isOpen()) {
             ContentValues values = new ContentValues();
             values.put("Word", newWord);
-            db.update("WordPriority", values, "Word = " + oldWord, null);//TODO: not sure if this is how the whereClause is used here.
+            db.update("WordPriority", values, "Word = ?" , new String[]{oldWord});
             db.close();
             return true;
         }
         return false;
     }
 
+    //
+    //args bug was fixed,needed to change the whereClause to "Word = ?",and create new String array with @word in whereArgs
+    //TODO:Update the map of ActivityTaskUsed after every update
+    //
     public boolean deletePrioritiyWord(String word) {
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
         if (db.isOpen()) {
-            if (db.delete("WordPriority", "Word = " + word, null) > 0)
+            if (db.delete("WordPriority", "Word = ?", new String[]{word}) > 0)
                 return true; //db.delete returns the number of effected rows, if it is larger the 0, somthign was deleted.
             db.close();
             return true;//note that Word is also the PK of the row, so there can only be 0/1 as a return value;
@@ -219,17 +253,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         if(db.isOpen()){
             Cursor cursor = db.rawQuery("select * from SubActivity where ActivityTaskID =" + ActivityTaskID,null); //selecting all the SubActivities of the ActivityTask
+            if(cursor!=null && cursor.getCount()>0){
             cursor.moveToFirst();
-            do {
-                SubActivity subActivity = new SubActivity(cursor.getInt(0), cursor.getInt(1), cursor.getString(2)); //create the SubActivity object from the DB data
-                subarray.add(subActivity); //add the SubActivity to the ArrayList
-            } while (cursor.moveToNext());//move to the next line,if there is no more lines then end the loop
+                do {
+                    SubActivity subActivity = new SubActivity(cursor.getInt(0), cursor.getInt(1), cursor.getString(2)); //create the SubActivity object from the DB data
+                    subarray.add(subActivity); //add the SubActivity to the ArrayList
+                } while (cursor.moveToNext());//move to the next line,if there is no more lines then end the loop
+            }
             cursor.close();
         }
         db.close();
         return subarray;
     }
 
+    //
+    //TODO:after update for the database we need to update the object in the program too
+    //
     public boolean updateSubActivity(SubActivity subActivity,String content){//updates the SubActivities
         SQLiteDatabase db = this.getWritableDatabase();//open the database for read/write
 
@@ -262,9 +301,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      *                                                                                                 *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      */
-    public boolean insertActivityTask(MasloCategorys category, Repetition repetition, String content, Date timeOfActivity, ArrayList<SubActivity> subActivity, int priority){
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean insertActivityTask(MasloCategorys category, Repetition repetition, String content, LocalDateTime timeOfActivity, ArrayList<SubActivity> subActivity, int priority){
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");// for Date in ActivityTask
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");// for Date in ActivityTask
         String DateInFormat=formatter.format(timeOfActivity);//create a string with the date that was sent in the format we want
 
         if(db.isOpen()) {//check if the database opened if not retuning false
@@ -278,14 +318,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             if (values.size() < 1) //check if the item was added successfully if not retuning false
                 return false;
             else {
-                if(db.insert("WordPriority", null, values)==-1) {//insert into table ActivityTasks the new ActivityTask, if returned -1 insert failed
+                if(db.insert("ActivityTasks", null, values)==-1) {//insert into table ActivityTasks the new ActivityTask, if returned -1 insert failed
                     db.close();
                     return false;
                 }
                 for (SubActivity subactivityIterator : subActivity) //adding all of the SubActivities with iterator
                     insertSubActivity(subactivityIterator, subactivityIterator.getActivityTaskID()); //sending the SubActivities to be added to the database
             }
-
             db.close();
             return true;
         }
@@ -302,7 +341,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * @return
      * @throws ParseException
      */
-    public ArrayList<ActivityTask> queryForExactActivityTask(int activityTaskID, int priority, Date dateAndTime, String content, Repetition repetition, MasloCategorys masloCategory) throws ParseException {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public ArrayList<ActivityTask> queryForExactActivityTask(int activityTaskID, int priority, Date dateAndTime, String content, Repetition repetition, MasloCategorys masloCategory){
 
         if (activityTaskID < 0 && priority < 0 && dateAndTime == null && content == null && repetition == null && masloCategory == null)
             return null;
@@ -311,56 +351,75 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
         if (db.isOpen()) {
             String[] columnsFromActTsk = new String[]{"ActivityTaskID", "DateAndTime", "Content", "Repetition", "Category", "Priority"};// the columns we are looking for in the ActivityTask Table
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");// for Date in ActivityTask
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");// for Date in ActivityTask
 
             //region TODO: the idea is that the query whereClauseArgs parameter already takes care of sqlinjections, so i wanted to use that, the complicatoin comes from deciding where to put the AND operator in the where clause.
             ContentValues values = new ContentValues();
-            values.put("ActivityTask ", activityTaskID >= 0 ? String.valueOf(activityTaskID) : "ActivityTask");
+            values.put("activityTaskID ", activityTaskID > 0 ? String.valueOf(activityTaskID) : "activityTaskID");//!!!bug here unt cant be null by default so java install it to 0,needed to change from >= to >
             values.put("DateAndTime ", dateAndTime != null ? String.valueOf(dateAndTime) : "DateAndTime");
             values.put("Content ", content != null ? content : "Content");
             values.put("Repetition ", repetition != null ? String.valueOf(repetition) : "Repetition");
-            values.put("Category ", masloCategory != null ? String.valueOf(masloCategory) : "MasloCategory");
-            values.put("Priority ", priority >= 0 ? String.valueOf(priority) : "Priority");
-            ContentValues whereClauseArgs = new ContentValues();
+            values.put("Category ", masloCategory != null ? String.valueOf(masloCategory) : "Category");
+            values.put("Priority ", priority > 0 ? String.valueOf(priority) : "Priority");//!!!bug here unt cant be null by default so java install it to 0,needed to change from >= to >
+            String[] whereArgsArray;
+            String whereString="";
+            String selectionArgs="";
             for (String key : values.keySet()) {
-                String value = (String) values.get(key);
-                if (!String.valueOf(values.get(key)).equals(key)) {//if the key is the same as the value, we got an empty argument, and it should not be included in the where clause.
-                    whereClauseArgs.put(String.valueOf(key), whereClauseArgs.keySet().size() > 0 ? " AND " + key + " = " + value : key + " = " + value);//voodoo magic.
+                //!!!!!!!bug was here that the key string was with an extra space and the value wasn't so even is the word was the same the string wasn't equal
+                if (!(values.get(key) + " ").equals(key)) {//if the key is the same as the value, we got an empty argument, and it should not be included in the where clause.
+                    if(selectionArgs.equals(""))//added the search by word with like
+                        if(!key.equals("Content ")) //if the condition is content then we need to you the LIKE statement in the else
+                            selectionArgs = selectionArgs + key +" = ? ";
+                        else {
+                                selectionArgs = selectionArgs + " Content LIKE ?" ;
+                                whereString=whereString + "%" + (String) values.get(key)+"%";
+                            continue;
+                            }
+                    else{
+                            if(!key.equals("Content "))//if the condition is content then we need to you the LIKE statement in the else
+                                selectionArgs = selectionArgs + " and " + key +" = ? ";
+                            else{
+                                selectionArgs = selectionArgs + " and Content LIKE ?";
+                                whereString=whereString + "%" + (String) values.get(key)+"%";
+                                continue;
+                            }
+                        }
+                    whereString=whereString + (String) values.get(key)+" ";
                 }
             }
-            String[] whereArgsArray = new String[5];
-            int i = 0;
-            for (String key : whereClauseArgs.keySet()) {
-                whereArgsArray[i++] = String.valueOf(whereClauseArgs.get(key));
-            }
+            whereArgsArray=whereString.split(" ");//create the String Array for the where values for the query
             //endregion
-
             if (db.isOpen()) {
-                Cursor cursor = db.query("ActivityTasks", columnsFromActTsk, "?  ?  ?  ?  ?  ?", whereArgsArray, null, null, null);
-                cursor.moveToFirst();
-                do {
-                    ArrayList<SubActivity> relatedSubAct = queryForSubActivity(cursor.getInt(0));//the related subAct to the ActTsk
-                    Date TextToDate = (Date) formatter.parse(cursor.getString(1)); //we need to parse the date that is a String in the database to Date
-                    activityTasks.add(new ActivityTask(//FOREACH record in the retrivedActTsk Cursor, we create a task.
-                            cursor.getInt(5),//priority
-                            MasloCategorys.valueOf(cursor.getString(4)),//MasloCategory
-                            Repetition.valueOf(cursor.getString(3)),//Repetition
-                            cursor.getString(2),//Content
-                            TextToDate,//DateTime
-                            relatedSubAct//SubActivities
-                    ));
-                } while (cursor.moveToNext());
+                Cursor cursor = db.query("ActivityTasks", columnsFromActTsk, selectionArgs, whereArgsArray, null, null, null); //!!!!!bug was in args,could not read the empty spaces,needed to split a string to the exact size
+                if(cursor!=null && cursor.getCount()>0){ //if the cursor isn't empty enter
+                    cursor.moveToFirst();
+                    do {
+                        //!!!bug here,if there is no subactivities with the fucking ID number of ActivityTask then it's crashes
+                        ArrayList<SubActivity> relatedSubAct = queryForSubActivity(cursor.getInt(0));//the related subAct to the ActTsk
+                        //!!!bug here if cursor is 0 app crash
+                        LocalDateTime TextToDate = LocalDateTime.parse(cursor.getString(1), formatter);; //we need to parse the date that is a String in the database to Date
+                        activityTasks.add(new ActivityTask(//FOREACH record in the retrivedActTsk Cursor, we create a task.
+                                cursor.getInt(5),//priority
+                                MasloCategorys.valueOf(cursor.getString(4)),//MasloCategory
+                                Repetition.valueOf(cursor.getString(3)),//Repetition
+                                cursor.getString(2),//Content
+                                TextToDate,//DateTime
+                                relatedSubAct//SubActivities
+                        ));
+                    } while (cursor.moveToNext());
+                }
                 cursor.close();
+
             }
 
         }
-
         db.close();
         return activityTasks;
 
     }
 
     //TODO: matan is an idiot, this is repeated code and is the devils work... all hail satan. :'(
+    /*
     public ArrayList<ActivityTask> queryForActivityTaskByPriority(int priority) throws ParseException { //this method will return all the ActivityTasks with the @priority that was sent.
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
@@ -394,7 +453,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                         MasloCategorys.valueOf(retrivedActTsk.getString(4)),//MasloCategory
                         Repetition.valueOf(retrivedActTsk.getString(3)),//Repetition
                         retrivedActTsk.getString(2),//Content
-                        TextToDate,//DateTime
+                        //TextToDate,//DateTime
                         relatedSubActivities//SubActivities
                 ));
             } while (retrivedActTsk.moveToNext());
@@ -438,7 +497,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                         MasloCategorys.valueOf(retrivedActTsk.getString(4)),//MasloCategory
                         Repetition.valueOf(retrivedActTsk.getString(3)),//Repetition
                         retrivedActTsk.getString(2),//Content
-                        TextToDate,//DateTime
+                        //TextToDate,//DateTime
                         relatedSubActivities//SubActivities
                 ));
             } while (retrivedActTsk.moveToNext());
@@ -482,7 +541,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                         MasloCategorys.valueOf(retrivedActTsk.getString(4)),//MasloCategory
                         Repetition.valueOf(retrivedActTsk.getString(3)),//Repetition
                         retrivedActTsk.getString(2),//Content
-                        TextToDate,//DateTime
+                        //TextToDate,//DateTime
                         relatedSubActivities//SubActivities
                 ));
             } while (retrivedActTsk.moveToNext());
@@ -526,7 +585,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                         MasloCategorys.valueOf(retrivedActTsk.getString(4)),//MasloCategory
                         Repetition.valueOf(retrivedActTsk.getString(3)),//Repetition
                         retrivedActTsk.getString(2),//Content
-                        TextToDate,//DateTime
+                        //TextToDate,//DateTime
                         relatedSubActivities//SubActivities
                 ));
             } while (retrivedActTsk.moveToNext());
@@ -570,7 +629,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                         MasloCategorys.valueOf(retrivedActTsk.getString(4)),//MasloCategory
                         Repetition.valueOf(retrivedActTsk.getString(3)),//Repetition
                         retrivedActTsk.getString(2),//Content
-                        TextToDate,//DateTime
+                        //TextToDate,//DateTime
                         relatedSubActivities//SubActivities
                 ));
             } while (retrivedActTsk.moveToNext());
@@ -579,32 +638,35 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
         return activityTasks;
     }
+    */
 
-    public boolean updateActivityTask(ActivityTask activityTask){//update the ActivityTask that was passed (using the exciting id)
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean updateActivityTask(ActivityTask activityTask, int ActivityTaskID){//update the ActivityTask that was passed (using the exciting id)
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
         if(db.isOpen()){
             ContentValues values = new ContentValues(); //will store the new value for the database
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");// for Date in ActivityTask
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");// for Date in ActivityTask
             String DateInFormat=formatter.format(activityTask.getTimeOfActivity());//create a string with the date that was sent in the format we want
-
+            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");// for Date in ActivityTask
+            //String DateInFormat=formatter.format(timeOfActivity);//create a string with the date that was sent in the format we want
             values.put("DateAndTime", DateInFormat);//inset the new date for column @DateAndTime
             values.put("Content", activityTask.getContent());//inset the new content for column @Content
             values.put("Repetition", activityTask.getRepetition().toString());//inset the new repetition for column @Repetition
             values.put("Category", activityTask.getCategory().toString());//inset the new category for column @Category
             values.put("Priority", activityTask.getPriority());//inset the new priority for column @Priority
-            db.update("ActivityTasks ", values, "ActivityTaskID = " + activityTask.getActivityTaskID(), null);//TODO: not sure if this is how the whereClause is used here.
+            db.update("ActivityTasks ", values, "ActivityTaskID = " + ActivityTaskID, null);//TODO: need to make the ID getter when taken from DB if we want to replace the int @ActivityTaskID
             db.close();
             return true;
         }
         return false;
     }
 
-    public boolean deleteActivityTask(ActivityTask activityTask){ // delete the ActivityTask that was passed
+    public boolean deleteActivityTask(int ActivityTaskID){ // delete the ActivityTask that was passed
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write/read
 
         if (db.isOpen()) {
-            if (db.delete("ActivityTasks", "ActivityTaskID = " + activityTask.getActivityTaskID(), null) > 0)
+            if (db.delete("ActivityTasks", "ActivityTaskID = " + ActivityTaskID, null) > 0)
                 return true; //db.delete returns the number of effected rows, if it is larger the 0, something was deleted.
             db.close();
             return true;//note that ActivityTaskID is also the PK of the row, so there can only be 0/1 as a return value;

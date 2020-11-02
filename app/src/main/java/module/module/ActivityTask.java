@@ -2,8 +2,8 @@ package module;
 
 import android.net.IpSecManager;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ActivityTask {
 
@@ -13,7 +13,7 @@ public class ActivityTask {
     private MasloCategorys category;
     private Repetition repetition;
     private String content;
-    private Date timeOfActivity;
+    private LocalDateTime timeOfActivity;
     private ArrayList<SubActivity> subActivities;
 
 
@@ -28,7 +28,7 @@ public class ActivityTask {
      * @param timeOfActivity
      * @param subActivities
      */
-    public ActivityTask(int priority, MasloCategorys category, Repetition repetition, String content, Date timeOfActivity, ArrayList<SubActivity> subActivities) {
+    public ActivityTask(int priority, MasloCategorys category, Repetition repetition, String content, LocalDateTime timeOfActivity, ArrayList<SubActivity> subActivities) {
         this.priority = priority;
         this.category = category;
         this.repetition = repetition;
@@ -70,6 +70,7 @@ public class ActivityTask {
      * @param subActivity
      * @return
      */
+    //TODO:add to the book
     public boolean addSubActivity(SubActivity subActivity) {//if the subActivity already exist in the array, do not add it to the array.
         for (SubActivity subActivityCurrent : subActivities
         ) {
@@ -86,6 +87,7 @@ public class ActivityTask {
      * @param content
      * @return
      */
+    //TODO:add to the book
     public boolean removeSubActivity(String content) {//if subActivity exists, remove it from the array, otherwise return false;
         for (SubActivity subActivityCurrent : subActivities
         ) {
@@ -105,7 +107,8 @@ public class ActivityTask {
      * @param newRepetition
      * @return
      */
-    public boolean editReminder(String newContent, Date newTime, MasloCategorys newCategory, Repetition newRepetition) {
+    //TODO:add to the book
+    public boolean editReminder(String newContent, LocalDateTime newTime, MasloCategorys newCategory, Repetition newRepetition) {
         if (newContent != null) this.setContent(newContent);
         if (newTime != null) this.setTimeOfActivity(newTime);
         if (newCategory != null) this.setCategory(newCategory);
@@ -116,6 +119,10 @@ public class ActivityTask {
 
     public int getActivityTaskID() {
         return activityTaskID;
+    }
+
+    public void setActivityTaskID(int activityTaskID) {
+        this.activityTaskID = activityTaskID;
     }
 
     public void setPriority(int priority) {
@@ -134,7 +141,7 @@ public class ActivityTask {
         this.content = content;
     }
 
-    public void setTimeOfActivity(Date timeOfActivity) {
+    public void setTimeOfActivity(LocalDateTime timeOfActivity) {
         this.timeOfActivity = timeOfActivity;
     }
 
@@ -158,7 +165,7 @@ public class ActivityTask {
         return content;
     }
 
-    public Date getTimeOfActivity() {
+    public LocalDateTime getTimeOfActivity() {
         return timeOfActivity;
     }
 
