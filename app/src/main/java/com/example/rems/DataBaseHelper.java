@@ -6,15 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
-import android.util.Log;
-import android.widget.ImageSwitcher;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
 import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -141,9 +138,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    //
-    //bug fix: was needed to install the map with "new HashMap<>()"
-    //
     public Map<String, Integer> queryForPriorityWords() {// get ALL of the priority words from the table. and return them as a Map.
         Map<String, Integer> returned = null;//the Map that will be returned
 
@@ -184,10 +178,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    //
-    //args bug was fixed,needed to change the whereClause to "Word = ?",and create new String array with @word in whereArgs
-    //TODO:Update the map of ActivityTaskUsed after every update
-    //
     public boolean updateWord(String oldWord,String newWord) {
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
@@ -201,10 +191,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    //
-    //args bug was fixed,needed to change the whereClause to "Word = ?",and create new String array with @word in whereArgs
-    //TODO:Update the map of ActivityTaskUsed after every update
-    //
     public boolean deletePrioritiyWord(String word) {
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
@@ -275,13 +261,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if(db.isOpen()){
             ContentValues values = new ContentValues(); //will store the new value for the database
             values.put("Content", content);//inset the new value for column @Content
-            db.update("SubActivity", values, "SubActivityID = " + subActivity.getSubActivityID(), null);//TODO: not sure if this is how the whereClause is used here.
+            db.update("SubActivity", values, "SubActivityID = " + subActivity.getSubActivityID(), null);
             db.close();
             return true;
         }
         return false;
     }
-
+    //
+    //TODO:after update for the database we need to update the object in the program too
+    //
     public boolean deleteSubActivity(SubActivity subActivity){//delete the SubActivity
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
@@ -342,7 +330,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * @throws ParseException
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public ArrayList<ActivityTask> queryForExactActivityTask(int activityTaskID, int priority, Date dateAndTime, String content, Repetition repetition, MasloCategorys masloCategory){
+    public ArrayList<ActivityTask> queryForExactActivityTask(int activityTaskID, int priority, LocalDateTime dateAndTime, String content, Repetition repetition, MasloCategorys masloCategory){
 
         if (activityTaskID < 0 && priority < 0 && dateAndTime == null && content == null && repetition == null && masloCategory == null)
             return null;
@@ -355,19 +343,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
             //region TODO: the idea is that the query whereClauseArgs parameter already takes care of sqlinjections, so i wanted to use that, the complicatoin comes from deciding where to put the AND operator in the where clause.
             ContentValues values = new ContentValues();
-            values.put("activityTaskID ", activityTaskID > 0 ? String.valueOf(activityTaskID) : "activityTaskID");//!!!bug here unt cant be null by default so java install it to 0,needed to change from >= to >
+            values.put("activityTaskID ", activityTaskID > 0 ? String.valueOf(activityTaskID) : "activityTaskID");
             values.put("DateAndTime ", dateAndTime != null ? String.valueOf(dateAndTime) : "DateAndTime");
             values.put("Content ", content != null ? content : "Content");
             values.put("Repetition ", repetition != null ? String.valueOf(repetition) : "Repetition");
             values.put("Category ", masloCategory != null ? String.valueOf(masloCategory) : "Category");
-            values.put("Priority ", priority > 0 ? String.valueOf(priority) : "Priority");//!!!bug here unt cant be null by default so java install it to 0,needed to change from >= to >
+            values.put("Priority ", priority > 0 ? String.valueOf(priority) : "Priority");
             String[] whereArgsArray;
             String whereString="";
             String selectionArgs="";
             for (String key : values.keySet()) {
-                //!!!!!!!bug was here that the key string was with an extra space and the value wasn't so even is the word was the same the string wasn't equal
                 if (!(values.get(key) + " ").equals(key)) {//if the key is the same as the value, we got an empty argument, and it should not be included in the where clause.
-                    if(selectionArgs.equals(""))//added the search by word with like
+                    if(selectionArgs.equals(""))//if the selectionArgs is empty enter
                         if(!key.equals("Content ")) //if the condition is content then we need to you the LIKE statement in the else
                             selectionArgs = selectionArgs + key +" = ? ";
                         else {
@@ -375,7 +362,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                                 whereString=whereString + "%" + (String) values.get(key)+"%";
                             continue;
                             }
-                    else{
+                    else{//if the selectionArgs wasn't empty enter here
                             if(!key.equals("Content "))//if the condition is content then we need to you the LIKE statement in the else
                                 selectionArgs = selectionArgs + " and " + key +" = ? ";
                             else{
@@ -394,9 +381,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 if(cursor!=null && cursor.getCount()>0){ //if the cursor isn't empty enter
                     cursor.moveToFirst();
                     do {
-                        //!!!bug here,if there is no subactivities with the fucking ID number of ActivityTask then it's crashes
                         ArrayList<SubActivity> relatedSubAct = queryForSubActivity(cursor.getInt(0));//the related subAct to the ActTsk
-                        //!!!bug here if cursor is 0 app crash
                         LocalDateTime TextToDate = LocalDateTime.parse(cursor.getString(1), formatter);; //we need to parse the date that is a String in the database to Date
                         activityTasks.add(new ActivityTask(//FOREACH record in the retrivedActTsk Cursor, we create a task.
                                 cursor.getInt(5),//priority
@@ -648,8 +633,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues(); //will store the new value for the database
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");// for Date in ActivityTask
             String DateInFormat=formatter.format(activityTask.getTimeOfActivity());//create a string with the date that was sent in the format we want
-            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");// for Date in ActivityTask
-            //String DateInFormat=formatter.format(timeOfActivity);//create a string with the date that was sent in the format we want
             values.put("DateAndTime", DateInFormat);//inset the new date for column @DateAndTime
             values.put("Content", activityTask.getContent());//inset the new content for column @Content
             values.put("Repetition", activityTask.getRepetition().toString());//inset the new repetition for column @Repetition
