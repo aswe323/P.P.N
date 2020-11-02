@@ -28,7 +28,7 @@ import static java.sql.Types.NULL;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     private SQLiteDatabase sysDB;
-    private Context context;//TODO: @LIOR! do not do this, THIS IS A MEMORY LEAK!  REALLY REALLY BAD!
+    private Context context;
     private static String DATABASE_NAME = "remsDB.db";
     private static int DATABASE_VERSION = 1;
     private static DataBaseHelper DataBaseHelper_Instance;
@@ -37,10 +37,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if (DataBaseHelper_Instance == null) DataBaseHelper_Instance = new DataBaseHelper(context);
         return DataBaseHelper_Instance;
     }
+//DataBaseHelper db = DataBaseHelper.getInstance(this);
+
 
     private DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context=context;
+        this.context = context;
         sysDB = getWritableDatabase();
     }
 
@@ -111,6 +113,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     *                                                                                                 *
     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      */
+    //region WordPriority
     public boolean insertPriorityWord(String word, int priority){
 
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
@@ -202,7 +205,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return false;
     }
-
+    //endregion
 
     /*
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -211,6 +214,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      *                                                                                               *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      */
+    //region SubActivity
     public boolean insertSubActivity(SubActivity subActivity, int ActivityTaskID){//inserting the SubActivity to the database
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
         //check if the database opened if not retuning false
@@ -281,7 +285,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return false;
     }
-    
+    //endregion
+
+
     /*
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *                                                                                                 *
@@ -289,6 +295,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      *                                                                                                 *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      */
+    //region ActivityTask
     @RequiresApi(api = Build.VERSION_CODES.O)
     public boolean insertActivityTask(MasloCategorys category, Repetition repetition, String content, LocalDateTime timeOfActivity, ArrayList<SubActivity> subActivity, int priority){
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
@@ -341,7 +348,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             String[] columnsFromActTsk = new String[]{"ActivityTaskID", "DateAndTime", "Content", "Repetition", "Category", "Priority"};// the columns we are looking for in the ActivityTask Table
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");// for Date in ActivityTask
 
-            //region TODO: the idea is that the query whereClauseArgs parameter already takes care of sqlinjections, so i wanted to use that, the complicatoin comes from deciding where to put the AND operator in the where clause.
             ContentValues values = new ContentValues();
             values.put("activityTaskID ", activityTaskID > 0 ? String.valueOf(activityTaskID) : "activityTaskID");
             values.put("DateAndTime ", dateAndTime != null ? String.valueOf(dateAndTime) : "DateAndTime");
@@ -375,7 +381,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 }
             }
             whereArgsArray=whereString.split(" ");//create the String Array for the where values for the query
-            //endregion
             if (db.isOpen()) {
                 Cursor cursor = db.query("ActivityTasks", columnsFromActTsk, selectionArgs, whereArgsArray, null, null, null); //!!!!!bug was in args,could not read the empty spaces,needed to split a string to the exact size
                 if(cursor!=null && cursor.getCount()>0){ //if the cursor isn't empty enter
@@ -384,6 +389,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                         ArrayList<SubActivity> relatedSubAct = queryForSubActivity(cursor.getInt(0));//the related subAct to the ActTsk
                         LocalDateTime TextToDate = LocalDateTime.parse(cursor.getString(1), formatter);; //we need to parse the date that is a String in the database to Date
                         activityTasks.add(new ActivityTask(//FOREACH record in the retrivedActTsk Cursor, we create a task.
+                                cursor.getInt(0),//activityTaskID
                                 cursor.getInt(5),//priority
                                 MasloCategorys.valueOf(cursor.getString(4)),//MasloCategory
                                 Repetition.valueOf(cursor.getString(3)),//Repetition
@@ -402,6 +408,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return activityTasks;
 
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)//for ease of use.
+    public ArrayList<ActivityTask> queryForExactActivityTask(ActivityTask activityTask) {
+        ArrayList<ActivityTask> activityTasks = queryForExactActivityTask(activityTask.getActivityTaskID(), activityTask.getPriority(), activityTask.getTimeOfActivity(), activityTask.getContent(), activityTask.getRepetition(), activityTask.getCategory());
+        return activityTasks;
+    }
+
 
     //TODO: matan is an idiot, this is repeated code and is the devils work... all hail satan. :'(
     /*
@@ -656,5 +669,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return false;
     }
+    //endregion
 //endregion methods
 }

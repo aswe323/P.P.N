@@ -1,13 +1,20 @@
 package module;
 
+import android.content.Context;
 import android.net.IpSecManager;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import com.example.rems.DataBaseHelper;
+import com.example.rems.MainActivity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class ActivityTask {
 
-    //TODO: make sure the ID is assigned correctly!
+    //TODO: make sure the ID is assigned correctly! <-- CURRENT; pre-optimazation is the devils curse.
     private int activityTaskID;
     private int priority;
     private MasloCategorys category;
@@ -16,11 +23,10 @@ public class ActivityTask {
     private LocalDateTime timeOfActivity;
     private ArrayList<SubActivity> subActivities;
 
-
-    //this constructor is used when creating an ActivityTask manuelly.
-
-    /***
+    /**
+     * for quering
      *
+     * @param activityTaskID
      * @param priority
      * @param category
      * @param repetition
@@ -28,17 +34,14 @@ public class ActivityTask {
      * @param timeOfActivity
      * @param subActivities
      */
-    public ActivityTask(int priority, MasloCategorys category, Repetition repetition, String content, LocalDateTime timeOfActivity, ArrayList<SubActivity> subActivities) {
+    public ActivityTask(int activityTaskID, int priority, MasloCategorys category, Repetition repetition, String content, LocalDateTime timeOfActivity, ArrayList<SubActivity> subActivities) {
         this.priority = priority;
         this.category = category;
         this.repetition = repetition;
         this.content = content;
         this.timeOfActivity = timeOfActivity;
         this.subActivities = subActivities;
-
-
-        //TODO: handle pulling tasks from the databse, making sure you can create a new ActivityTask object with the correct ID.
-        //this.activityTaskID = DataBaseHelper.getMaxIdOfActivityTask() + 1;// unimplamented yet
+        this.setActivityTaskID(activityTaskID);
     }
 
     //this constructor is used when the system creates an ActivityTask by itself. notice the lack of Date. this ActivityTask should  be passed to AI_Assignment.assignDate method.
@@ -51,6 +54,7 @@ public class ActivityTask {
      * @param content
      * @param subActivities
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public ActivityTask(int priority, MasloCategorys category, Repetition repetition, String content, ArrayList<SubActivity> subActivities) {
         this.priority = priority;// the priority is
         this.category = category;
@@ -59,8 +63,9 @@ public class ActivityTask {
         //timeOfActivity will be assigned in a AI_Assignment method.
         this.subActivities = subActivities;
 
+        this.setActivityTaskID(DataBaseHelper.getInstance(null).getMaxIdOfActivityTask() + 1);
 
-        //this.activityTaskID = DataBaseHelper.getMaxIdOfActivityTask() + 1;// unimplamented yet
+
     }
 
     //TODO: implament remove() method, using the databasehelper and ActivityTasksUsed classes.
