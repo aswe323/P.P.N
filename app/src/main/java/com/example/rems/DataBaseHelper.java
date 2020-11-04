@@ -39,7 +39,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 //DataBaseHelper db = DataBaseHelper.getInstance(this);
 
-
     private DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
@@ -143,7 +142,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     public Map<String, Integer> queryForPriorityWords() {// get ALL of the priority words from the table. and return them as a Map.
-        Map<String, Integer> returned = null;//the Map that will be returned
+        Map<String, Integer> returned = new HashMap<>();//the Map that will be returned
 
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
@@ -151,7 +150,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             Cursor data = db.rawQuery("select * from WordPriority", null);//we don't need Args because we wan't ALL of the data.
             if(!(data!=null && data.getCount()>0)) //check if there is data that was taken from the database,if not return the nulled map;
                 return returned;
-            returned = new HashMap<>();
             data.moveToFirst();//required because the cursor is set on the 0th element, which hold is nothing.
             do {
                 returned.put(data.getString(0), data.getInt(1));//WordPriority only got 2 columns, the Word(String), and the Priority(Int).

@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/textReminderDiscription"
         android:layout_width="380dp"
         android:layout_height="90dp"
         android:layout_marginTop="10dp"
@@ -46,7 +46,7 @@
         android:textColor="#ffffff"
         android:theme="@style/Switch_color_change"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintTop_toBottomOf="@+id/textReminderDiscription" />
 
     <!--fdsfsdfdsfsd-->
     <Spinner
@@ -113,7 +113,7 @@
         app:layout_constraintTop_toBottomOf="@+id/SetDateTextView" />
 
     <Button
-        android:id="@+id/button13"
+        android:id="@+id/buttonSaveReminder"
         android:textAllCaps="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="Cancel"
-        app:layout_constraintStart_toEndOf="@+id/button13"
+        app:layout_constraintStart_toEndOf="@+id/buttonSaveReminder"
         app:layout_constraintTop_toBottomOf="@+id/button12" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

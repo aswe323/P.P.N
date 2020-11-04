@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                     db.insertPriorityWord("test3", 50);
                 }*/
 
-                Toast.makeText(MainActivity.this, ""+tableLayout.getSelectedTabPosition(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, ""+tableLayout.getSelectedTabPosition(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
