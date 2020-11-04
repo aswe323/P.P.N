@@ -12,13 +12,13 @@ import java.util.ArrayList;
 public class ActivityTasksUsed {
     static private ArrayList<ActivityTask> usedTasks = new ArrayList<>();
 
-    static private DataBaseHelper db = DataBaseHelper.getInstance(null);
+    static private DataBaseHelper db = DataBaseHelper.getInstance(null);//TODO:cannot be null
 
 
     //region methods
     @RequiresApi(api = Build.VERSION_CODES.O)
     static public Boolean addActivityTask(ActivityTask activityTask) {
-        if (!db.queryForExactActivityTask(activityTask).isEmpty()
+        if (db.queryForExactActivityTask(0, activityTask.getPriority(), activityTask.getTimeOfActivity(), activityTask.getContent(), activityTask.getRepetition(), activityTask.getCategory()).isEmpty() //the check if already exsist if wrong becouse the ID is always diffrent
                 && db.insertActivityTask(activityTask.getCategory(), activityTask.getRepetition(), activityTask.getContent(),
                 activityTask.getTimeOfActivity(), activityTask.getSubActivities(), activityTask.getPriority())) {
             usedTasks.add(activityTask);
