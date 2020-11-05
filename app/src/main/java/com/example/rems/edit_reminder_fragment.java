@@ -1,7 +1,9 @@
 package com.example.rems;
 
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import module.ActivityTask;
@@ -55,19 +58,44 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onClick(View view)//TODO: make a utility method for switching fragments on the main_activity_fragment(see note).
     {
-        switch (view.getId()) {
-            EditText textBox = view.findViewById(R.id.textReminderDiscription);
-            String discription = textBox.getText().toString();
-            Spinner timeSpinner = view.findViewById(R.id.spinner);
-            String frequenceySelected = timeSpinner.getSelectedItem().toString();
+  /*          Switch automaticAssignment = view.findViewById(R.id.switchForAi);
+            switch(view.getId()) {
+                case(R.id.ButtonSaveReminder):
+                    Spinner masloCategory = view.findViewById(R.id.spinnerForCategory);
+                    Spinner repetition = view.findViewById(R.id.spinnerForRepeat);
+                    EditText textBox = view.findViewById((R.id.editTextForReminder));
+                    if (automaticAssignment.isChecked()) {
+                        ActivityTasksUsed.addActivityTask(new ActivityTask(0,
+                                MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
+                                Repetition.valueOf(repetition.getSelectedItem().toString()),
+                                textBox.getText().toString(),
+                                null));
+                    }else{
 
-            ActivityTasksUsed.addActivityTask(new ActivityTask(0, MasloCategorys.none, frequenceySelected,
+                        ActivityTasksUsed.addActivityTask(new ActivityTask(
+                                0,
+                                0,
+                                MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
+                                Repetition.valueOf(repetition.getSelectedItem().toString()),
+                                textBox.getText().toString(),
+
+                                ));
 
 
-                    ))
-        }
+                                0,
+                                MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
+                                Repetition.valueOf(repetition.getSelectedItem().toString()),
+                                textBox.getText().toString(),
+                                null));
+                    }
+
+
+
+
+            }*/
 
     }
 
