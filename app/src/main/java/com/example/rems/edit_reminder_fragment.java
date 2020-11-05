@@ -44,7 +44,8 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
     private Context context;
     TextView settimetext;
     TextView setdatetext;
-    Calendar calendar=Calendar.getInstance();
+    Button buttonIdentifier;
+    Calendar calendar = Calendar.getInstance();
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
     public edit_reminder_fragment() {
@@ -79,7 +80,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         switch (view.getId()) {//recognizing what button was pushed
 
             case R.id.SetTimeTextView:
-
+                //region
                 final int hour=calendar.get(calendar.HOUR_OF_DAY);
                 final int minute=calendar.get(Calendar.MINUTE);
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
@@ -92,8 +93,9 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
 
                 Toast.makeText(getActivity(), "time set", Toast.LENGTH_SHORT).show();//notifying the event was called
                 break;
-
+            //endregion
             case R.id.SetDateTextView:
+                //region
                 final int year = calendar.get(Calendar.YEAR);
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -105,10 +107,9 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
 
                 Toast.makeText(getActivity(), "time set", Toast.LENGTH_SHORT).show();//notifying the event was called
                 break;
-
+            //endregion
             case R.id.ButtonSaveReminder:
-                Toast.makeText(getActivity(), "started save", Toast.LENGTH_SHORT).show();//notifying the event was called
-
+                //region
                 Switch automaticAssignment = view.findViewById(R.id.switchForAi);
                 Boolean stupid = automaticAssignment.isChecked();
                 Spinner masloCategory = view.findViewById(R.id.spinnerForCategory);
@@ -140,9 +141,8 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                     ));
                     Toast.makeText(getActivity(), "manualy assigned", Toast.LENGTH_SHORT).show();//notifying the event was called
                 }
-                Toast.makeText(getActivity(), "saved", Toast.LENGTH_SHORT).show();//notifying the event was called
                 break;
-
+            //endregion
         }
 
     }
@@ -153,15 +153,17 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_edit_reminder_fragment, container, false);
         View view = inflater.inflate(R.layout.fragment_edit_reminder_fragment, container, false);
-        settimetext=view.findViewById(R.id.SetTimeTextView);
+        settimetext = view.findViewById(R.id.SetTimeTextView);
         settimetext.setOnClickListener(this);
+        buttonIdentifier = view.findViewById(R.id.ButtonSaveReminder);
+        buttonIdentifier.setOnClickListener(this);
 
-        setdatetext=view.findViewById(R.id.SetDateTextView);
+        setdatetext = view.findViewById(R.id.SetDateTextView);
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month+=1;
-                String date = dayOfMonth+"/"+month+"/"+year;
+                month += 1;
+                String date = dayOfMonth + "/" + month + "/" + year;
                 setdatetext.setText(date);
             }
         };
