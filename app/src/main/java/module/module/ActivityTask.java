@@ -127,7 +127,8 @@ public class ActivityTask {
     }
 
     public void setActivityTaskID(int activityTaskID) {
-        this.activityTaskID = activityTaskID;
+        if (!(activityTaskID <= 0)) this.activityTaskID = activityTaskID;
+        this.activityTaskID = DataBaseHelper.getInstance(null).getMaxIdOfActivityTask() + 1;
     }
 
     public void setPriority(int priority) {

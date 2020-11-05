@@ -22,8 +22,6 @@ import android.widget.Toast;
  */
 public class Main_Activity_fragment extends Fragment implements View.OnClickListener {
 
-    private Button[] buttons = null;
-
     public Main_Activity_fragment() {
         // Required empty public constructor
     }
@@ -59,7 +57,6 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
     }
 
     public void onClick(View view)//TODO: make a utility method for switching fragments on the main_activity_fragment(see note).
-    //note: will probably need to make a static variable to track the current fragment displayed to be replaced
     {
         FragmentTransaction ft = getFragmentManager().beginTransaction();// built in to android studio
         switch (view.getId()) {//recognizing what button was pushed
