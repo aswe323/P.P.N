@@ -48,11 +48,13 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
     private Spinner masloCategory;
     private Spinner repetition;
     private EditText discription;
-
-    TextView settimetext;
-    TextView setdatetext;
-    Button buttonIdentifier;
-    Calendar calendar = Calendar.getInstance();
+    private DateTimeFormatter formatter;
+    private LocalDateTime TextToDate;
+    private String date="";
+    private TextView settimetext;
+    private TextView setdatetext;
+    private Button buttonIdentifier;
+    private Calendar calendar = Calendar.getInstance();
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
     public edit_reminder_fragment() {
@@ -135,14 +137,15 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                         return;
                     }
 
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    TextToDate=LocalDateTime.parse("2020-05-06 20:43:00", formatter);
                     ActivityTasksUsed.addActivityTask(new ActivityTask(
                             0,
                             0,
                             MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),//MasloCategory
                             Repetition.valueOf(repetition.getSelectedItem().toString()),//Repetition
                             discription.getText().toString(),
-                            LocalDateTime.parse(setdatetext.getText().toString() + " " + settimetext.getText().toString() + ":00"),
+                            TextToDate,
                             new ArrayList<SubActivity>()
                             //yyyy-MM-dd HH:mm:ss
                     ));
@@ -175,7 +178,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month += 1;
-                String date = year + "-" + month + "-" + dayOfMonth;
+                date = year + "-" + month + "-" + dayOfMonth;
                 setdatetext.setText(date);
             }
         };

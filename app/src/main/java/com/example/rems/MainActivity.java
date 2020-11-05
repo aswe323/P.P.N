@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         final ViewPager viewPager = findViewById(R.id.ViewPager);
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tableLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
-
+        DataBaseHelper db=DataBaseHelper.getInstance(getApplicationContext());
         /***********************!!!!!!!!!!!!!!!!**********************/
         //SubActivity subActivity=new SubActivity(DataBaseHelper.getMaxIdOfActivityTask())
         /***********************!!!!!!!!!!!!!!!!**********************/
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+
 /*
                 //check 1 insert
                 if(tableLayout.getSelectedTabPosition()==1){
