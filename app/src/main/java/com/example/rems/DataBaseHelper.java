@@ -78,7 +78,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "Priority INTEGER NOT NULL" +
                 ")");
 
-
+        Toast.makeText(context, "DataBase was created", Toast.LENGTH_SHORT).show();
     }
 
 
