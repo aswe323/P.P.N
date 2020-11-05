@@ -2,6 +2,7 @@ package com.example.rems;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -16,11 +17,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+
+import module.ActivityTask;
+import module.ActivityTasksUsed;
+import module.MasloCategorys;
+import module.Repetition;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +41,7 @@ import java.util.Calendar;
 public class edit_reminder_fragment extends Fragment implements View.OnClickListener {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private Context context;
     TextView settimetext;
     TextView setdatetext;
     Calendar calendar=Calendar.getInstance();
@@ -61,10 +73,9 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onClick(View view)//TODO: make a utility method for switching fragments on the main_activity_fragment(see note).
-    //note: will probably need to make a static variable to track the current fragment displayed to be replaced
     {
-        //FragmentTransaction ft = getFragmentManager().beginTransaction();// built in to android studio
         switch (view.getId()) {//recognizing what button was pushed
 
             case R.id.SetTimeTextView:
@@ -94,43 +105,46 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
 
                 Toast.makeText(getActivity(), "time set", Toast.LENGTH_SHORT).show();//notifying the event was called
                 break;
+
+            case R.id.ButtonSaveReminder:
+                Toast.makeText(getActivity(), "started save", Toast.LENGTH_SHORT).show();//notifying the event was called
+
+                Switch automaticAssignment = view.findViewById(R.id.switchForAi);
+                Boolean stupid = automaticAssignment.isChecked();
+                Spinner masloCategory = view.findViewById(R.id.spinnerForCategory);
+                Spinner repetition = view.findViewById(R.id.spinnerForRepeat);
+                EditText discription = view.findViewById(R.id.editTextForReminder);
+
+                if (stupid) {
+                    //if the automantic assignment option is checked.
+                    ActivityTasksUsed.addActivityTask(new ActivityTask(0,
+                            MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
+                            Repetition.valueOf(repetition.getSelectedItem().toString()),
+                            discription.getText().toString(),
+                            null));
+                    Toast.makeText(getActivity(), "auto assigned", Toast.LENGTH_SHORT).show();//notifying the event was called
+                } else {
+                    //if the user choose to select time and date by himself.
+                    EditText selectedTime = view.findViewById(R.id.SetTimeTextView);
+                    EditText selectedDate = view.findViewById(R.id.SetDateTextView);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    ActivityTasksUsed.addActivityTask(new ActivityTask(
+                            0,
+                            0,
+                            MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),//MasloCategory
+                            Repetition.valueOf(repetition.getSelectedItem().toString()),//Repetition
+                            discription.getText().toString(),
+                            (LocalDateTime) formatter.parse("" + selectedDate.getText().toString() + " " + selectedTime.getText().toString()),
+                            null
+                            //yyyy-MM-dd HH:mm:ss
+                    ));
+                    Toast.makeText(getActivity(), "manualy assigned", Toast.LENGTH_SHORT).show();//notifying the event was called
+                }
+                Toast.makeText(getActivity(), "saved", Toast.LENGTH_SHORT).show();//notifying the event was called
+                break;
+
         }
 
-          /*          Switch automaticAssignment = view.findViewById(R.id.switchForAi);
-            switch(view.getId()) {
-                case(R.id.ButtonSaveReminder):
-                    Spinner masloCategory = view.findViewById(R.id.spinnerForCategory);
-                    Spinner repetition = view.findViewById(R.id.spinnerForRepeat);
-                    EditText textBox = view.findViewById((R.id.editTextForReminder));
-                    if (automaticAssignment.isChecked()) {
-                        ActivityTasksUsed.addActivityTask(new ActivityTask(0,
-                                MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
-                                Repetition.valueOf(repetition.getSelectedItem().toString()),
-                                textBox.getText().toString(),
-                                null));
-                    }else{
-
-                        ActivityTasksUsed.addActivityTask(new ActivityTask(
-                                0,
-                                0,
-                                MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
-                                Repetition.valueOf(repetition.getSelectedItem().toString()),
-                                textBox.getText().toString(),
-
-                                ));
-
-
-                                0,
-                                MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
-                                Repetition.valueOf(repetition.getSelectedItem().toString()),
-                                textBox.getText().toString(),
-                                null));
-                    }
-
-
-
-
-            }*/
     }
 
     @Override
