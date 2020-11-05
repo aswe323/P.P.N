@@ -12,6 +12,15 @@
         <item>every friday</item>
         <item>every saturday</item>
     </string-array>
+
+    <string-array name="Spinner_Edit_category">
+        <item>none</item>
+        <item>Physiological needs</item>
+        <item>Safety Needs</item>
+        <item>Love And Belonging</item>
+        <item>Esteem</item>
+        <item>Self Actualization</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

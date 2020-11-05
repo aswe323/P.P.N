@@ -41,7 +41,11 @@ public class MainActivity extends AppCompatActivity {
     /***********************!!!!!!!!!!!!!!!!**********************/
     private SubActivity subActivity;
     private SubActivity subUpdateTester;
-    private ActivityTask activityTask;
+    private ActivityTask activityTask1;
+    private ActivityTask activityTask2;
+    private ActivityTask activityTask3;
+    private ActivityTask activityTask4;
+    private ActivityTask activityTask5;
     private ArrayList<SubActivity> ArrayListOfSubActivities=null;
     private ArrayList<ActivityTask> ActivityTask_ArrayList=null;
     /***********************!!!!!!!!!!!!!!!!**********************/
@@ -59,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(pagerAdapter);
 
         /***********************!!!!!!!!!!!!!!!!**********************/
-        //ActivityTasksUsed activityTasksUsed=new ActivityTasksUsed();
         //SubActivity subActivity=new SubActivity(DataBaseHelper.getMaxIdOfActivityTask())
         /***********************!!!!!!!!!!!!!!!!**********************/
 
@@ -72,9 +75,25 @@ public class MainActivity extends AppCompatActivity {
                 //check 1 insert
                 if(tableLayout.getSelectedTabPosition()==1){
                     DataBaseHelper db=DataBaseHelper.getInstance(getApplicationContext());
-                    activityTask=new ActivityTask(db.getMaxIdOfActivityTask()+1,20,MasloCategorys.Esteem,Repetition.no_repeating,"testing 1234",LocalDateTime.of(2020,6,14,12,25),null);
-                    if(ActivityTasksUsed.addActivityTask(activityTask))
-                        Toast.makeText(MainActivity.this, "inserted this shit", Toast.LENGTH_SHORT).show();
+                    //everybody will have id 1 when using getMaxIdOfActivityTask() because we didn't added the activitytask yet into the database
+                    activityTask1=new ActivityTask(1,20,MasloCategorys.Esteem,Repetition.no_repeating,"testing 1234",LocalDateTime.of(2020,6,14,12,25),null);
+                    /*activityTask2=new ActivityTask(2,69,MasloCategorys.none,Repetition.every_24_hours,"1234 test",LocalDateTime.of(2020,10,10,22,8),null);
+                    activityTask3=new ActivityTask(3,420,MasloCategorys.Physiological_needs,Repetition.every_month,"help to paint the wall",LocalDateTime.of(2020,4,20,0,10),null);
+                    activityTask4=new ActivityTask(4,37,MasloCategorys.none,Repetition.no_repeating,"testing 1234",LocalDateTime.of(2021,3,22,9,45),null);
+                    activityTask5=new ActivityTask(5,20,MasloCategorys.Love_And_Belonging,Repetition.no_repeating,"i need to eat the icecreame",LocalDateTime.of(2020,12,25,16,0),null);
+                    ActivityTask_ArrayList=new ArrayList<>();
+                    ActivityTask_ArrayList.add(activityTask1);
+                    ActivityTask_ArrayList.add(activityTask2);
+                    ActivityTask_ArrayList.add(activityTask3);
+                    ActivityTask_ArrayList.add(activityTask4);
+                    ActivityTask_ArrayList.add(activityTask5);
+                    for (ActivityTask activitytaskiterator:ActivityTask_ArrayList)
+                        if(ActivityTasksUsed.addActivityTask(activitytaskiterator))
+                            Toast.makeText(MainActivity.this, "inserted Activity with ID: "+activitytaskiterator.getActivityTaskID(), Toast.LENGTH_SHORT).show();*/
+                    if(ActivityTasksUsed.addActivityTask(activityTask1))
+                        Toast.makeText(MainActivity.this, "inserted Activity with ID: "+activityTask1.getActivityTaskID(), Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(MainActivity.this, "the Activity with ID: "+activityTask1.getActivityTaskID()+" is already existing in the fricking db", Toast.LENGTH_SHORT).show();
                 }
                 //check 2,query to get the map
                 if(tableLayout.getSelectedTabPosition()==2){
@@ -97,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     db.insertPriorityWord("test3", 50);
                 }*/
 
-                Toast.makeText(MainActivity.this, ""+tableLayout.getSelectedTabPosition(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, ""+tableLayout.getSelectedTabPosition(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
