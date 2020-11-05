@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:layoutDirection="ltr"
-    tools:context=".GroupsAndPoints"
+    tools:context=".groups_and_points_fragment"
     tools:layout_editor_absoluteY="25dp">
-
+    <!--section to show users points info-->
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayoutOfUserPointsInfo"
         android:layout_width="205dp"
         android:layout_height="90dp"
         android:layout_marginTop="15dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/textViewMyPointsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="45dp"
@@ -31,9 +31,9 @@
             android:textColor="#000000"
             android:textSize="25sp"
             android:textStyle="bold" />
-
+        <!--present a string of the user points-->
         <TextView
-            android:id="@+id/textView24"
+            android:id="@+id/textViewUserPoints"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
@@ -43,9 +43,9 @@
             android:textSize="25sp"
             android:textStyle="bold" />
     </LinearLayout>
-
+    <!--section to show group points info-->
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayoutOfGroupData"
         android:layout_width="320dp"
         android:layout_height="270dp"
         android:layout_marginTop="40dp"
@@ -54,10 +54,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutOfUserPointsInfo">
 
         <TextView
-            android:id="@+id/textView22"
+            android:id="@+id/textViewGroupNameTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="85dp"
@@ -66,9 +66,9 @@
             android:textColor="#000000"
             android:textSize="25sp"
             android:textStyle="bold" />
-
+        <!--present a string of the group name-->
         <TextView
-            android:id="@+id/textView25"
+            android:id="@+id/textViewGroupName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="125dp"
@@ -78,7 +78,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/textViewGroupIDTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="105dp"
@@ -87,9 +87,9 @@
             android:textColor="#000000"
             android:textSize="25sp"
             android:textStyle="bold" />
-
+        <!--present a string of the group ID-->
         <TextView
-            android:id="@+id/textView26"
+            android:id="@+id/textViewGroupID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="145dp"
@@ -99,7 +99,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView27"
+            android:id="@+id/textViewGroupPointsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="80dp"
@@ -108,9 +108,9 @@
             android:textColor="#000000"
             android:textSize="25sp"
             android:textStyle="bold" />
-
+        <!--present a string of the group total points-->
         <TextView
-            android:id="@+id/textView21"
+            android:id="@+id/textViewGroupPoints"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="115dp"
@@ -119,9 +119,9 @@
             android:textSize="25sp"
             android:textStyle="bold" />
     </LinearLayout>
-
+    <!--when clicked opening a window for the user to enter name of the group, visible only is user is not in a group-->
     <Button
-        android:id="@+id/button30"
+        android:id="@+id/ButtonJoinGroup"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="96dp"
@@ -129,23 +129,23 @@
         android:text="Join group"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button32" />
-
+        app:layout_constraintTop_toTopOf="@+id/ButtonCreateNewGroup" />
+    <!--when clicked exiting the group user is in, visible only if user is in a group-->
     <Button
-        android:id="@+id/button29"
+        android:id="@+id/ButtonExitGroup"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/groupsandpoints_buttons"
         android:text="Exit group"
         android:textAllCaps="false"
-        app:layout_constraintEnd_toStartOf="@+id/button30"
+        app:layout_constraintEnd_toStartOf="@+id/ButtonJoinGroup"
         app:layout_constraintHorizontal_bias="0.55"
-        app:layout_constraintStart_toEndOf="@+id/button32"
-        app:layout_constraintTop_toBottomOf="@+id/button30" />
-
+        app:layout_constraintStart_toEndOf="@+id/ButtonCreateNewGroup"
+        app:layout_constraintTop_toBottomOf="@+id/ButtonJoinGroup" />
+    <!--when clicked opening a window for the user to enter name for new group, visible only is user is not in a group-->
     <Button
-        android:id="@+id/button32"
+        android:id="@+id/ButtonCreateNewGroup"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="84dp"
@@ -154,6 +154,6 @@
         android:text="Create a group"
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutOfGroupData" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

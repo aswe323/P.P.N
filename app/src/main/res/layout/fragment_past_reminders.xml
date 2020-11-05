@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layoutDirection="ltr"
     android:background="@color/background"
-    tools:context=".FutureReminders">
+    tools:context=".Fragment_Past_Reminders">
 
     <ScrollView
         android:layout_width="409dp"
@@ -25,9 +25,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-
+                <!--present a string of the past reminder-->
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/textViewPastReminder1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -44,9 +44,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-
+                <!--present a string of the past reminder-->
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/textViewPastReminder2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -63,9 +63,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-
+                <!--present a string of the past reminder-->
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/textViewPastReminder3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -82,9 +82,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-
+                <!--present a string of the past reminder-->
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/textViewPastReminder4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -102,9 +102,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-
+                <!--present a string of the past reminder-->
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/textViewPastReminder5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -121,9 +121,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-
+                <!--present a string of the past reminder-->
                 <TextView
-                    android:id="@+id/textView8"
+                    android:id="@+id/textViewPastReminder6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

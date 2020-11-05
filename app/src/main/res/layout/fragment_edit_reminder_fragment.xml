@@ -7,10 +7,10 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:layoutDirection="ltr"
-    tools:context=".Edit_Reminder">
+    tools:context=".edit_reminder_fragment">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewTitleForReminderText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -21,21 +21,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
+    <!--here the user will write his reminder-->
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/editTextForReminder"
         android:layout_width="380dp"
         android:layout_height="120dp"
         android:layout_marginTop="20dp"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitleForReminderText" />
+    <!--when clicked a the "select to choose time", "select to choose date" disappear, calling the AI to choose time and date-->
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/switchForAi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -46,11 +47,11 @@
         android:textStyle="bold"
         android:theme="@style/Switch_color_change"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextForReminder" />
 
-    <!--fdsfsdfdsfsd-->
+    <!--when clicked a drop bar opening for the user to choose repartition, default: no repartition-->
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinnerForRepeat"
         android:layout_width="190dp"
         android:layout_height="30dp"
         android:layout_marginStart="20dp"
@@ -58,11 +59,11 @@
         android:entries="@array/Spinner_Edit_frequency"
         android:popupBackground="#56379F"
         android:theme="@style/edit_reminder_Spinner"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/switch1" />
-
+        app:layout_constraintStart_toEndOf="@+id/textViewRepeat"
+        app:layout_constraintTop_toBottomOf="@+id/switchForAi" />
+    <!--when clicked a drop bar opening for the user to choose Maslo category, default: none-->
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/spinnerForCategory"
         android:layout_width="200dp"
         android:layout_height="30dp"
         android:layout_marginStart="20dp"
@@ -70,11 +71,11 @@
         android:entries="@array/Spinner_Edit_category"
         android:popupBackground="#56379F"
         android:theme="@style/edit_reminder_Spinner"
-        app:layout_constraintStart_toEndOf="@+id/textView29"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintStart_toEndOf="@+id/textViewForCategory"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerForRepeat" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textViewRepeat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -84,10 +85,10 @@
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+        app:layout_constraintTop_toBottomOf="@+id/switchForAi" />
 
     <TextView
-        android:id="@+id/textView29"
+        android:id="@+id/textViewForCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -97,8 +98,8 @@
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
+        app:layout_constraintTop_toBottomOf="@+id/textViewRepeat" />
+    <!--when clicked a floating window opening for the user to choose time-->
     <TextView
         android:id="@+id/SetTimeTextView"
         android:layout_width="wrap_content"
@@ -110,8 +111,8 @@
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView29" />
-
+        app:layout_constraintTop_toBottomOf="@+id/textViewForCategory" />
+    <!--when clicked a floating window opening for the user to choose a date-->
     <TextView
         android:id="@+id/SetDateTextView"
         android:layout_width="wrap_content"
@@ -126,7 +127,7 @@
         app:layout_constraintTop_toBottomOf="@+id/SetTimeTextView" />
 
     <Button
-        android:id="@+id/button12"
+        android:id="@+id/ButtonAddSubActivity"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -136,9 +137,9 @@
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SetDateTextView" />
-
+    <!--when clicked a new ActivityTask is creates and sent to the addActivityTask in ActivityTaskUsed-->
     <Button
-        android:id="@+id/button13"
+        android:id="@+id/ButtonSaveReminder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -147,10 +148,10 @@
         android:text="Save"
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button12" />
-
+        app:layout_constraintTop_toBottomOf="@+id/ButtonAddSubActivity" />
+    <!--when clicked all the data installed is deleted and going back to the Home Page-->
     <Button
-        android:id="@+id/button14"
+        android:id="@+id/ButtonCancelReminder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -158,7 +159,7 @@
         android:background="@drawable/groupsandpoints_buttons"
         android:text="Cancel"
         android:textAllCaps="false"
-        app:layout_constraintStart_toEndOf="@+id/button13"
-        app:layout_constraintTop_toBottomOf="@+id/button12" />
+        app:layout_constraintStart_toEndOf="@+id/ButtonSaveReminder"
+        app:layout_constraintTop_toBottomOf="@+id/ButtonAddSubActivity" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>

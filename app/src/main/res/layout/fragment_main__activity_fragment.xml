@@ -10,7 +10,7 @@
     tools:context=".MainActivity">
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/scrollViewMain"
         android:layout_width="match_parent"
         android:layout_height="480dp"
         android:background="@drawable/mini_window_style"
@@ -29,7 +29,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:layout_marginBottom="15dp">
-
+                <!--present a string from the reminder-->
                 <TextView
                     android:id="@+id/TextReminder1"
                     android:layout_width="wrap_content"
@@ -41,8 +41,7 @@
                     android:textColor="#000000"
                     android:textSize="30dp"
                     android:textStyle="bold" />
-
-
+                <!--when clicked opening the edit reminder fragment,set the save button in the fragment to editActivityTask method from ActivityTaskUsed-->
                 <ImageButton
                     android:id="@+id/ButtonEditPreRem1"
                     android:layout_width="60dp"
@@ -51,9 +50,9 @@
                     android:background="@drawable/main_edit_button_raunding"
                     android:src="@drawable/ic_action_edit"
                     android:visibility="visible" />
-
+                <!--when clicked call the removeActivityTask method from ActivityTaskUsed and delete the reminder from the database-->
                 <ImageButton
-                    android:id="@+id/buttonDeleteRem1"
+                    android:id="@+id/ButtonDeleteRem1"
                     android:layout_width="60dp"
                     android:layout_marginRight="5dp"
                     android:layout_height="40dp"
@@ -66,7 +65,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_marginBottom="15dp">
-
+                <!--present a string from the reminder-->
                 <TextView
                     android:id="@+id/TextReminder2"
                     android:layout_width="wrap_content"
@@ -78,7 +77,7 @@
                     android:textColor="#000000"
                     android:textSize="30dp"
                     android:textStyle="bold" />
-
+                <!--when clicked opening the edit reminder fragment,set the save button in the fragment to editActivityTask method from ActivityTaskUsed-->
                 <ImageButton
                     android:id="@+id/ButtonEditPreRem2"
                     android:layout_width="60dp"
@@ -86,9 +85,9 @@
                     android:layout_marginRight="5dp"
                     android:background="@drawable/main_edit_button_raunding"
                     android:src="@drawable/ic_action_edit" />
-
+                <!--when clicked call the removeActivityTask method from ActivityTaskUsed and delete the reminder from the database-->
                 <ImageButton
-                    android:id="@+id/buttonDeleteRem2"
+                    android:id="@+id/ButtonDeleteRem2"
                     android:layout_width="60dp"
                     android:layout_marginRight="5dp"
                     android:layout_height="40dp"
@@ -101,7 +100,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_marginBottom="15dp">
-
+                <!--present a string from the reminder-->
                 <TextView
                     android:id="@+id/TextReminder3"
                     android:layout_width="wrap_content"
@@ -113,7 +112,7 @@
                     android:textColor="#000000"
                     android:textSize="30dp"
                     android:textStyle="bold" />
-
+                <!--when clicked opening the edit reminder fragment,set the save button in the fragment to editActivityTask method from ActivityTaskUsed-->
                 <ImageButton
                     android:id="@+id/ButtonEditPreRem3"
                     android:layout_width="60dp"
@@ -121,9 +120,9 @@
                     android:layout_marginRight="5dp"
                     android:background="@drawable/main_edit_button_raunding"
                     android:src="@drawable/ic_action_edit" />
-
+                <!--when clicked call the removeActivityTask method from ActivityTaskUsed and delete the reminder from the database-->
                 <ImageButton
-                    android:id="@+id/buttonDeleteRem3"
+                    android:id="@+id/ButtonDeleteRem3"
                     android:layout_width="60dp"
                     android:layout_marginRight="5dp"
                     android:layout_height="40dp"
@@ -138,7 +137,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_marginBottom="15dp">
-
+                <!--present a string from the reminder-->
                 <TextView
                     android:id="@+id/TextReminder4"
                     android:layout_width="wrap_content"
@@ -150,7 +149,7 @@
                     android:textColor="#000000"
                     android:textSize="30dp"
                     android:textStyle="bold" />
-
+                <!--when clicked opening the edit reminder fragment,set the save button in the fragment to editActivityTask method from ActivityTaskUsed-->
                 <ImageButton
                     android:id="@+id/ButtonEditPreRem4"
                     android:layout_width="60dp"
@@ -158,9 +157,9 @@
                     android:layout_marginRight="5dp"
                     android:background="@drawable/main_edit_button_raunding"
                     android:src="@drawable/ic_action_edit" />
-
+                <!--when clicked call the removeActivityTask method from ActivityTaskUsed and delete the reminder from the database-->
                 <ImageButton
-                    android:id="@+id/buttonDeleteRem4"
+                    android:id="@+id/ButtonDeleteRem4"
                     android:layout_width="60dp"
                     android:layout_marginRight="5dp"
                     android:layout_height="40dp"
@@ -174,7 +173,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_marginBottom="15dp">
-
+                <!--present a string from the reminder-->
                 <TextView
                     android:id="@+id/TextReminder5"
                     android:layout_width="wrap_content"
@@ -186,7 +185,7 @@
                     android:textColor="#000000"
                     android:textSize="30dp"
                     android:textStyle="bold" />
-
+                <!--when clicked opening the edit reminder fragment,set the save button in the fragment to editActivityTask method from ActivityTaskUsed-->
                 <ImageButton
                     android:id="@+id/ButtonEditPreRem5"
                     android:layout_width="60dp"
@@ -194,9 +193,9 @@
                     android:layout_marginRight="5dp"
                     android:background="@drawable/main_edit_button_raunding"
                     android:src="@drawable/ic_action_edit" />
-
+                <!--when clicked call the removeActivityTask method from ActivityTaskUsed and delete the reminder from the database-->
                 <ImageButton
-                    android:id="@+id/buttonDeleteRem5"
+                    android:id="@+id/ButtonDeleteRem5"
                     android:layout_width="60dp"
                     android:layout_marginRight="5dp"
                     android:layout_height="40dp"
@@ -210,7 +209,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_marginBottom="15dp">
-
+                <!--present a string from the reminder-->
                 <TextView
                     android:id="@+id/TextReminder6"
                     android:layout_width="wrap_content"
@@ -222,7 +221,7 @@
                     android:textColor="#000000"
                     android:textSize="30dp"
                     android:textStyle="bold" />
-
+                <!--when clicked opening the edit reminder fragment,set the save button in the fragment to editActivityTask method from ActivityTaskUsed-->
                 <ImageButton
                     android:id="@+id/ButtonEditPreRem6"
                     android:layout_width="60dp"
@@ -230,9 +229,9 @@
                     android:layout_marginRight="5dp"
                     android:background="@drawable/main_edit_button_raunding"
                     android:src="@drawable/ic_action_edit" />
-
+                <!--when clicked call the removeActivityTask method from ActivityTaskUsed and delete the reminder from the database-->
                 <ImageButton
-                    android:id="@+id/buttonDeleteRem6"
+                    android:id="@+id/ButtonDeleteRem6"
                     android:layout_width="60dp"
                     android:layout_marginRight="5dp"
                     android:layout_height="40dp"
@@ -246,7 +245,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_marginBottom="15dp">
-
+                <!--present a string from the reminder-->
                 <TextView
                     android:id="@+id/TextReminder7"
                     android:layout_width="wrap_content"
@@ -258,7 +257,7 @@
                     android:textColor="#000000"
                     android:textSize="30dp"
                     android:textStyle="bold" />
-
+                <!--when clicked opening the edit reminder fragment,set the save button in the fragment to editActivityTask method from ActivityTaskUsed-->
                 <ImageButton
                     android:id="@+id/ButtonEditPreRem7"
                     android:layout_width="60dp"
@@ -266,9 +265,9 @@
                     android:layout_marginRight="5dp"
                     android:background="@drawable/main_edit_button_raunding"
                     android:src="@drawable/ic_action_edit" />
-
+                <!--when clicked call the removeActivityTask method from ActivityTaskUsed and delete the reminder from the database-->
                 <ImageButton
-                    android:id="@+id/buttonDeleteRem7"
+                    android:id="@+id/ButtonDeleteRem7"
                     android:layout_width="60dp"
                     android:layout_marginRight="5dp"
                     android:layout_height="40dp"
@@ -282,7 +281,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_marginBottom="15dp">
-
+                <!--present a string from the reminder-->
                 <TextView
                     android:id="@+id/TextReminder8"
                     android:layout_width="wrap_content"
@@ -294,7 +293,7 @@
                     android:textColor="#000000"
                     android:textSize="30dp"
                     android:textStyle="bold" />
-
+                <!--when clicked opening the edit reminder fragment,set the save button in the fragment to editActivityTask method from ActivityTaskUsed-->
                 <ImageButton
                     android:id="@+id/ButtonEditPreRem8"
                     android:layout_width="60dp"
@@ -302,9 +301,9 @@
                     android:layout_marginRight="5dp"
                     android:background="@drawable/main_edit_button_raunding"
                     android:src="@drawable/ic_action_edit" />
-
+                <!--when clicked call the removeActivityTask method from ActivityTaskUsed and delete the reminder from the database-->
                 <ImageButton
-                    android:id="@+id/buttonDeleteRem8"
+                    android:id="@+id/ButtonDeleteRem8"
                     android:layout_width="60dp"
                     android:layout_marginRight="5dp"
                     android:layout_height="40dp"
@@ -320,9 +319,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <!--when clicked opening the edit reminder fragment,used to add reminder too-->
         <Button
-
             android:id="@+id/buttonAddNewReminder"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
@@ -332,7 +330,7 @@
             android:text="add new reminder"
             android:textColor="#FFFFFF"
             android:textStyle="bold"></Button>
-
+        <!--present user's points-->
         <TextView
             android:id="@+id/PointTextMain"
             android:layout_width="wrap_content"

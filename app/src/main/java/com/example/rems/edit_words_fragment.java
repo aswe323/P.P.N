@@ -56,7 +56,7 @@ public class edit_words_fragment extends Fragment {
 
         //accessing seekBar and the Text of Seekbar by ID and setting progress to 0
         thisSeekBar = view.findViewById(R.id.seekBar);
-        thisSeekBarTextView = view.findViewById(R.id.textView19);
+        thisSeekBarTextView = view.findViewById(R.id.textViewPriorityChoosen);
         thisSeekBar.setProgress(0);
 
 
