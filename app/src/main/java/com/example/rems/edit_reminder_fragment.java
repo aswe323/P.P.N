@@ -24,14 +24,17 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import module.ActivityTask;
 import module.ActivityTasksUsed;
 import module.MasloCategorys;
 import module.Repetition;
+import module.SubActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,7 +44,11 @@ import module.Repetition;
 public class edit_reminder_fragment extends Fragment implements View.OnClickListener {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private Context context;
+    private Switch automaticAssignment;
+    private Spinner masloCategory;
+    private Spinner repetition;
+    private EditText discription;
+
     TextView settimetext;
     TextView setdatetext;
     Button buttonIdentifier;
@@ -110,24 +117,24 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
             //endregion
             case R.id.ButtonSaveReminder:
                 //region
-                Switch automaticAssignment = view.findViewById(R.id.switchForAi);
-                Boolean stupid = automaticAssignment.isChecked();
-                Spinner masloCategory = view.findViewById(R.id.spinnerForCategory);
-                Spinner repetition = view.findViewById(R.id.spinnerForRepeat);
-                EditText discription = view.findViewById(R.id.editTextForReminder);
 
-                if (stupid) {
+
+                if (automaticAssignment.isChecked()) {
                     //if the automantic assignment option is checked.
                     ActivityTasksUsed.addActivityTask(new ActivityTask(0,
                             MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
                             Repetition.valueOf(repetition.getSelectedItem().toString()),
                             discription.getText().toString(),
-                            null));
+                            new ArrayList<SubActivity>()));
                     Toast.makeText(getActivity(), "auto assigned", Toast.LENGTH_SHORT).show();//notifying the event was called
                 } else {
                     //if the user choose to select time and date by himself.
-                    EditText selectedTime = view.findViewById(R.id.SetTimeTextView);
-                    EditText selectedDate = view.findViewById(R.id.SetDateTextView);
+
+                    if (settimetext.getText().toString().equals("select to choose time") || setdatetext.getText().toString().equals("select to choose date")) {
+                        Toast.makeText(getActivity(), "select date and time", Toast.LENGTH_SHORT).show();//notifying the event was called
+                        return;
+                    }
+
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                     ActivityTasksUsed.addActivityTask(new ActivityTask(
                             0,
@@ -135,8 +142,8 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                             MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),//MasloCategory
                             Repetition.valueOf(repetition.getSelectedItem().toString()),//Repetition
                             discription.getText().toString(),
-                            (LocalDateTime) formatter.parse("" + selectedDate.getText().toString() + " " + selectedTime.getText().toString()),
-                            null
+                            LocalDateTime.parse(setdatetext.getText().toString() + " " + settimetext.getText().toString() + ":00"),
+                            new ArrayList<SubActivity>()
                             //yyyy-MM-dd HH:mm:ss
                     ));
                     Toast.makeText(getActivity(), "manualy assigned", Toast.LENGTH_SHORT).show();//notifying the event was called
@@ -153,6 +160,11 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_edit_reminder_fragment, container, false);
         View view = inflater.inflate(R.layout.fragment_edit_reminder_fragment, container, false);
+        automaticAssignment = view.findViewById(R.id.switchForAi);
+        masloCategory = view.findViewById(R.id.spinnerForCategory);
+        repetition = view.findViewById(R.id.spinnerForRepeat);
+        discription = view.findViewById(R.id.editTextForReminder);
+
         settimetext = view.findViewById(R.id.SetTimeTextView);
         settimetext.setOnClickListener(this);
         buttonIdentifier = view.findViewById(R.id.ButtonSaveReminder);
@@ -163,7 +175,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month += 1;
-                String date = dayOfMonth + "/" + month + "/" + year;
+                String date = year + "-" + month + "-" + dayOfMonth;
                 setdatetext.setText(date);
             }
         };

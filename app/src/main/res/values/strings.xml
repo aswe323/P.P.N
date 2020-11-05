@@ -1,25 +1,25 @@
 <resources>
     <string name="app_name">rems</string>
     <string-array name="Spinner_Edit_frequency">
-        <item>no repeating</item>
-        <item>every 24 hours</item>
-        <item>every week</item>
-        <item>every sunday</item>
-        <item>every monday</item>
-        <item>every tuesday</item>
-        <item>every wednesday</item>
-        <item>every thursday</item>
-        <item>every friday</item>
-        <item>every saturday</item>
+        <item>no_repeating</item>
+        <item>every_24_hours</item>
+        <item>every_week</item>
+        <item>every_sunday</item>
+        <item>every_monday</item>
+        <item>every_tuesday</item>
+        <item>every_wednesday</item>
+        <item>every_thursday</item>
+        <item>every_friday</item>
+        <item>every_saturday</item>
     </string-array>
 
     <string-array name="Spinner_Edit_category">
         <item>none</item>
-        <item>Physiological needs</item>
-        <item>Safety Needs</item>
-        <item>Love And Belonging</item>
+        <item>Physiological_needs</item>
+        <item>Safety_Needs</item>
+        <item>Love_And_Belonging</item>
         <item>Esteem</item>
-        <item>Self Actualization</item>
+        <item>Self_Actualization</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
