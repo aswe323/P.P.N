@@ -1,5 +1,7 @@
 package module;
 
+import com.example.rems.DataBaseHelper;
+
 public class SubActivity {
     private Integer subActivityID;
     private Integer ActivityTaskID;
@@ -21,6 +23,7 @@ public class SubActivity {
     }
 
     public Integer getActivityTaskID() {
+        this.ActivityTaskID = DataBaseHelper.getInstance(null).getMaxIdOfActivityTask();
         return ActivityTaskID;
     }
 }

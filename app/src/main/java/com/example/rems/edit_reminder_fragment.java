@@ -1,8 +1,10 @@
 package com.example.rems;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -54,8 +56,13 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
     private TextView settimetext;
     private TextView setdatetext;
     private Button buttonIdentifier;
+    private Button buttonAddSubActivity;
+    private EditText inputForSubActivityDialog;
+    private String subactivitytext="";
     private Calendar calendar = Calendar.getInstance();
     private DatePickerDialog.OnDateSetListener dateSetListener;
+    private AlertDialog.Builder subActivityDialogBox;
+    private ArrayList<SubActivity> subActivitiesArrayList;
 
     public edit_reminder_fragment() {
         // Required empty public constructor
@@ -146,11 +153,37 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                             Repetition.valueOf(repetition.getSelectedItem().toString()),//Repetition
                             discription.getText().toString(),
                             TextToDate,
-                            new ArrayList<SubActivity>()
+                            subActivitiesArrayList
                             //yyyy-MM-dd HH:mm:ss
                     ));
-                    Toast.makeText(getActivity(), "manualy assigned", Toast.LENGTH_SHORT).show();//notifying the event was called
+                    Toast.makeText(getActivity(), "manually assigned", Toast.LENGTH_SHORT).show();//notifying the event was called
                 }
+                break;
+            //endregion
+            case R.id.ButtonAddSubActivity:
+                //region
+                subActivityDialogBox = new AlertDialog.Builder(getContext());
+                subActivityDialogBox.setTitle("sub reminder:");
+                subActivityDialogBox.setMessage("enter the sub reminder here: ");
+                inputForSubActivityDialog = new EditText(getContext());
+                subActivityDialogBox.setView(inputForSubActivityDialog);
+
+                subActivityDialogBox.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        subactivitytext = inputForSubActivityDialog.getText().toString();
+                        subActivitiesArrayList.add(new SubActivity(0,0,subactivitytext));
+                        Toast.makeText(getActivity(), "sub reminder was added: "+subactivitytext, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                });
+                subActivityDialogBox.setNegativeButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            inputForSubActivityDialog.setText("");
+                            return;
+                        }
+                    });
+                subActivityDialogBox.show();
                 break;
             //endregion
         }
@@ -167,11 +200,16 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         masloCategory = view.findViewById(R.id.spinnerForCategory);
         repetition = view.findViewById(R.id.spinnerForRepeat);
         discription = view.findViewById(R.id.editTextForReminder);
+        subActivitiesArrayList=new ArrayList<>();
 
         settimetext = view.findViewById(R.id.SetTimeTextView);
         settimetext.setOnClickListener(this);
+
         buttonIdentifier = view.findViewById(R.id.ButtonSaveReminder);
         buttonIdentifier.setOnClickListener(this);
+
+        buttonAddSubActivity = view.findViewById(R.id.ButtonAddSubActivity);
+        buttonAddSubActivity.setOnClickListener(this);
 
         setdatetext = view.findViewById(R.id.SetDateTextView);
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -183,6 +221,8 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
             }
         };
         setdatetext.setOnClickListener(this);
+
+
         return view;
     }
 }
