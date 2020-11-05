@@ -95,6 +95,42 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                 Toast.makeText(getActivity(), "time set", Toast.LENGTH_SHORT).show();//notifying the event was called
                 break;
         }
+
+          /*          Switch automaticAssignment = view.findViewById(R.id.switchForAi);
+            switch(view.getId()) {
+                case(R.id.ButtonSaveReminder):
+                    Spinner masloCategory = view.findViewById(R.id.spinnerForCategory);
+                    Spinner repetition = view.findViewById(R.id.spinnerForRepeat);
+                    EditText textBox = view.findViewById((R.id.editTextForReminder));
+                    if (automaticAssignment.isChecked()) {
+                        ActivityTasksUsed.addActivityTask(new ActivityTask(0,
+                                MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
+                                Repetition.valueOf(repetition.getSelectedItem().toString()),
+                                textBox.getText().toString(),
+                                null));
+                    }else{
+
+                        ActivityTasksUsed.addActivityTask(new ActivityTask(
+                                0,
+                                0,
+                                MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
+                                Repetition.valueOf(repetition.getSelectedItem().toString()),
+                                textBox.getText().toString(),
+
+                                ));
+
+
+                                0,
+                                MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
+                                Repetition.valueOf(repetition.getSelectedItem().toString()),
+                                textBox.getText().toString(),
+                                null));
+                    }
+
+
+
+
+            }*/
     }
 
     @Override
