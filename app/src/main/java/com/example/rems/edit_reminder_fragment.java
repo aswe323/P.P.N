@@ -57,6 +57,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
     private TextView setdatetext;
     private Button buttonIdentifier;
     private Button buttonAddSubActivity;
+    private Button cancelButton;
     private EditText inputForSubActivityDialog;
     private String subactivitytext="";
     private Calendar calendar = Calendar.getInstance();
@@ -126,8 +127,6 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
             //endregion
             case R.id.ButtonSaveReminder:
                 //region
-
-
                 if (automaticAssignment.isChecked()) {
                     //if the automantic assignment option is checked.
                     ActivityTasksUsed.addActivityTask(new ActivityTask(0,
@@ -145,7 +144,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                     }
 
                     formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    TextToDate=LocalDateTime.parse("2020-05-06 20:43:00", formatter);
+                    TextToDate = LocalDateTime.parse("2020-05-06 20:43:00", formatter);
                     ActivityTasksUsed.addActivityTask(new ActivityTask(
                             0,
                             0,
@@ -177,13 +176,27 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                     }
                 });
                 subActivityDialogBox.setNegativeButton("Cancel",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            inputForSubActivityDialog.setText("");
-                            return;
-                        }
-                    });
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                inputForSubActivityDialog.setText("");
+                                return;
+                            }
+                        });
                 subActivityDialogBox.show();
+                break;
+            //endregion
+            case R.id.switchForAi://neccesery for prototype.
+                //region
+                automaticAssignment.setChecked(false);
+                Toast.makeText(getActivity(), "feature not ready yet", Toast.LENGTH_SHORT).show();
+                break;
+            //endregion
+            case R.id.ButtonCancelReminder:
+                //region
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                Main_Activity_fragment maf = new Main_Activity_fragment();
+                ft.replace(R.id.fragment_edit_reminder, maf).commit();
+
                 break;
             //endregion
         }
@@ -196,11 +209,16 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_edit_reminder_fragment, container, false);
         View view = inflater.inflate(R.layout.fragment_edit_reminder_fragment, container, false);
+
         automaticAssignment = view.findViewById(R.id.switchForAi);
         masloCategory = view.findViewById(R.id.spinnerForCategory);
         repetition = view.findViewById(R.id.spinnerForRepeat);
         discription = view.findViewById(R.id.editTextForReminder);
-        subActivitiesArrayList=new ArrayList<>();
+        subActivitiesArrayList = new ArrayList<>();
+        automaticAssignment.setOnClickListener(this);
+
+        cancelButton = view.findViewById(R.id.ButtonCancelReminder);
+        cancelButton.setOnClickListener(this);
 
         settimetext = view.findViewById(R.id.SetTimeTextView);
         settimetext.setOnClickListener(this);

@@ -18,9 +18,19 @@ public class ActivityTasksUsed {
     //region methods
     @RequiresApi(api = Build.VERSION_CODES.O)
     static public Boolean addActivityTask(ActivityTask activityTask) {//adding the new ActivityTask to the dataBase if: a same ActivityTask data doesn't match existing ActivityTask, if added successfully adding the ArrayList used to control and manipulate the data in the system
-        if (db.queryForExactActivityTask(0, activityTask.getPriority(), activityTask.getTimeOfActivity(), activityTask.getContent(), activityTask.getRepetition(), activityTask.getCategory()).isEmpty() //check if data match something that is already in thr DataBase,
-                && db.insertActivityTask(activityTask.getCategory(), activityTask.getRepetition(), activityTask.getContent(),
-                activityTask.getTimeOfActivity(), activityTask.getSubActivities(), activityTask.getPriority())) {
+        if (db.queryForExactActivityTask(
+                0,
+                activityTask.getPriority(),
+                activityTask.getTimeOfActivity(),
+                activityTask.getContent(),
+                activityTask.getRepetition(),
+                activityTask.getCategory()).isEmpty() //check if data match something that is already in thr DataBase,
+                && db.insertActivityTask(activityTask.getCategory(),
+                activityTask.getRepetition(),
+                activityTask.getContent(),
+                activityTask.getTimeOfActivity(),
+                activityTask.getSubActivities(),
+                activityTask.getPriority())) {
             usedTasks.add(activityTask);
             return true;
         }
