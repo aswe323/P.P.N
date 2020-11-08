@@ -32,6 +32,7 @@ import module.ActivityTasksUsed;
 import module.MasloCategorys;
 import module.Repetition;
 import module.SubActivity;
+import module.WordPriority;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private TabItem tabItem1=findViewById(R.id.Tabitem1);
     private TabItem tabItem2=findViewById(R.id.Tabitem2);
     private TabItem tabItem3=findViewById(R.id.Tabitem3);*/
+    private WordPriority wordPriority;
     /***********************!!!!!!!!!!!!!!!!**********************/
     private SubActivity subActivity;
     private SubActivity subUpdateTester;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        wordPriority=new WordPriority();
         final TabLayout tableLayout = findViewById(R.id.Tablayouting);
         TabItem tabItem1 = findViewById(R.id.Tabitem1);
         TabItem tabItem2 = findViewById(R.id.Tabitem2);

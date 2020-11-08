@@ -15,7 +15,7 @@ public class ActivityTasksUsed {
     static private DataBaseHelper db = DataBaseHelper.getInstance(null);//TODO:cannot be null
 
 
-    //region methods
+    //region methods ActivityTask
     @RequiresApi(api = Build.VERSION_CODES.O)
     static public Boolean addActivityTask(ActivityTask activityTask) {//adding the new ActivityTask to the dataBase if: a same ActivityTask data doesn't match existing ActivityTask, if added successfully adding the ArrayList used to control and manipulate the data in the system
         if (db.queryForExactActivityTask(
@@ -79,7 +79,10 @@ public class ActivityTasksUsed {
     }
 
 
-    //endregion
+    //endregion ActivityTask
 
+    //region methods WordPriority
+
+    //endregion WordPriority
 
 }

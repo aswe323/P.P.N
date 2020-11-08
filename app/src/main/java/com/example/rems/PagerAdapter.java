@@ -5,14 +5,19 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PagerAdapter extends FragmentPagerAdapter {
     //https://www.youtube.com/watch?v=HHd-Fa3DCng&ab_channel=MasterCoding
+
     private int numOfTabs;
 
     public PagerAdapter(FragmentManager fm, int numOfTabs) {
         super(fm);
         this.numOfTabs = numOfTabs;
     }
+
 
     @Override
     public Fragment getItem(int position) {

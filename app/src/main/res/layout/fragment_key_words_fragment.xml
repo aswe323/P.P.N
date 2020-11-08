@@ -9,271 +9,278 @@
     tools:context=".key_words_fragment"
     android:id="@+id/fragment_key_words_fragment">
 
-    <ScrollView
-        android:id="@+id/scrollView4"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:background="@drawable/keyword_window_style"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ScrollView
+            android:id="@+id/scrollView4"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:background="@drawable/keyword_window_style"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+                    <!--present a string of the priority word-->
+                    <TextView
+                        android:id="@+id/textViewWord1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:text="Word1"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+                    <!--present a string of the value of the priority word-->
+                    <TextView
+                        android:id="@+id/textViewPriority1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:text="number"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+                    <!--when clicked call delete the priority word from the database-->
+                    <ImageButton
+                        android:id="@+id/buttonEditWord1"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/main_edit_button_raunding"
+                        android:src="@drawable/ic_action_edit" />
+                    <!--when clicked opening the the edit_word_fragment,change the Add button in the fragment to edit-->
+                    <ImageButton
+                        android:id="@+id/buttonDeleteWord1"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/main_edit_button_raunding"
+                        android:src="@drawable/ic_action_delete" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+                    <!--present a string of the priority word-->
+                    <TextView
+                        android:id="@+id/textViewWord2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:text="Word 2"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+                    <!--present a string of the value of the priority word-->
+                    <TextView
+                        android:id="@+id/textViewPriority2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:text="number"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+                    <!--when clicked call delete the priority word from the database-->
+                    <ImageButton
+                        android:id="@+id/buttonEditWord2"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/main_edit_button_raunding"
+                        android:src="@drawable/ic_action_edit" />
+                    <!--when clicked opening the the edit_word_fragment,change the Add button in the fragment to edit-->
+                    <ImageButton
+                        android:id="@+id/buttonDeleteWord2"
+                        android:textAllCaps="false"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/main_edit_button_raunding"
+                        android:src="@drawable/ic_action_delete" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+                    <!--present a string of the priority word-->
+                    <TextView
+                        android:id="@+id/textViewWord3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:text="Word 3"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+                    <!--present a string of the value of the priority word-->
+                    <TextView
+                        android:id="@+id/textViewPriority3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:text="number"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+                    <!--when clicked call delete the priority word from the database-->
+                    <ImageButton
+                        android:id="@+id/buttonEditWord3"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/main_edit_button_raunding"
+                        android:src="@drawable/ic_action_edit" />
+                    <!--when clicked opening the the edit_word_fragment,change the Add button in the fragment to edit-->
+                    <ImageButton
+                        android:id="@+id/buttonDeleteWord3"
+                        android:textAllCaps="false"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/main_edit_button_raunding"
+                        android:src="@drawable/ic_action_delete" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+                    <!--present a string of the priority word-->
+                    <TextView
+                        android:id="@+id/textViewWord4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:text="Word 4"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+                    <!--present a string of the value of the priority word-->
+                    <TextView
+                        android:id="@+id/textViewPriority4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:text="number"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+                    <!--when clicked call delete the priority word from the database-->
+                    <ImageButton
+                        android:id="@+id/buttonEditWord4"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/main_edit_button_raunding"
+                        android:src="@drawable/ic_action_edit" />
+                    <!--when clicked opening the the edit_word_fragment,change the Add button in the fragment to edit-->
+                    <ImageButton
+                        android:id="@+id/buttonDeleteWord4"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/main_edit_button_raunding"
+                        android:src="@drawable/ic_action_delete" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+                    <!--present a string of the priority word-->
+                    <TextView
+                        android:id="@+id/textViewWord5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:text="Word 5"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+                    <!--present a string of the value of the priority word-->
+                    <TextView
+                        android:id="@+id/textViewPriority5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:text="number"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+                    <!--when clicked call delete the priority word from the database-->
+                    <ImageButton
+                        android:id="@+id/buttonEditWord5"
+                        android:textAllCaps="false"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/main_edit_button_raunding"
+                        android:src="@drawable/ic_action_edit" />
+                    <!--when clicked opening the the edit_word_fragment,change the Add button in the fragment to edit-->
+                    <ImageButton
+                        android:id="@+id/buttonDeleteWord5"
+                        android:textAllCaps="false"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/main_edit_button_raunding"
+                        android:src="@drawable/ic_action_delete" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-                <!--present a string of the priority word-->
-                <TextView
-                    android:id="@+id/textViewWord1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Word1"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
-                <!--present a string of the value of the priority word-->
-                <TextView
-                    android:id="@+id/textViewPriority1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="number"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
-                <!--when clicked call delete the priority word from the database-->
-                <ImageButton
-                    android:id="@+id/buttonEditWord1"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/main_edit_button_raunding"
-                    android:src="@drawable/ic_action_edit" />
-                <!--when clicked opening the the edit_word_fragment,change the Add button in the fragment to edit-->
-                <ImageButton
-                    android:id="@+id/buttonDeleteWord1"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/main_edit_button_raunding"
-                    android:src="@drawable/ic_action_delete" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
-                <!--present a string of the priority word-->
-                <TextView
-                    android:id="@+id/textViewWord2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Word 2"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
-                <!--present a string of the value of the priority word-->
-                <TextView
-                    android:id="@+id/textViewPriority2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="number"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
-                <!--when clicked call delete the priority word from the database-->
-                <ImageButton
-                    android:id="@+id/buttonEditWord2"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/main_edit_button_raunding"
-                    android:src="@drawable/ic_action_edit" />
-                <!--when clicked opening the the edit_word_fragment,change the Add button in the fragment to edit-->
-                <ImageButton
-                    android:id="@+id/buttonDeleteWord2"
-                    android:textAllCaps="false"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/main_edit_button_raunding"
-                    android:src="@drawable/ic_action_delete" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
-                <!--present a string of the priority word-->
-                <TextView
-                    android:id="@+id/textViewWord3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Word 3"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
-                <!--present a string of the value of the priority word-->
-                <TextView
-                    android:id="@+id/textViewPriority3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="number"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
-                <!--when clicked call delete the priority word from the database-->
-                <ImageButton
-                    android:id="@+id/buttonEditWord3"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/main_edit_button_raunding"
-                    android:src="@drawable/ic_action_edit" />
-                <!--when clicked opening the the edit_word_fragment,change the Add button in the fragment to edit-->
-                <ImageButton
-                    android:id="@+id/buttonDeleteWord3"
-                    android:textAllCaps="false"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/main_edit_button_raunding"
-                    android:src="@drawable/ic_action_delete" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
-                <!--present a string of the priority word-->
-                <TextView
-                    android:id="@+id/textViewWord4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Word 4"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
-                <!--present a string of the value of the priority word-->
-                <TextView
-                    android:id="@+id/textViewPriority4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="number"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
-                <!--when clicked call delete the priority word from the database-->
-                <ImageButton
-                    android:id="@+id/buttonEditWord4"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/main_edit_button_raunding"
-                    android:src="@drawable/ic_action_edit" />
-                <!--when clicked opening the the edit_word_fragment,change the Add button in the fragment to edit-->
-                <ImageButton
-                    android:id="@+id/buttonDeleteWord4"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/main_edit_button_raunding"
-                    android:src="@drawable/ic_action_delete" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
-                <!--present a string of the priority word-->
-                <TextView
-                    android:id="@+id/textViewWord5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Word 5"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
-                <!--present a string of the value of the priority word-->
-                <TextView
-                    android:id="@+id/textViewPriority5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="number"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
-                <!--when clicked call delete the priority word from the database-->
-                <ImageButton
-                    android:id="@+id/buttonEditWord5"
-                    android:textAllCaps="false"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/main_edit_button_raunding"
-                    android:src="@drawable/ic_action_edit" />
-                <!--when clicked opening the the edit_word_fragment,change the Add button in the fragment to edit-->
-                <ImageButton
-                    android:id="@+id/buttonDeleteWord5"
-                    android:textAllCaps="false"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/main_edit_button_raunding"
-                    android:src="@drawable/ic_action_delete" />
-
-            </LinearLayout>
+            <!--when clicked opening the the edit_word_fragment, used to add new priority word-->
+            <Button
+                android:id="@+id/buttonAddNewWord"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="40dp"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/main_roundbtn_keyword"
+                android:text="Add new word"
+                android:textAllCaps="false"
+                android:textSize="25sp" />
         </LinearLayout>
-    </ScrollView>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <!--when clicked opening the the edit_word_fragment, used to add new priority word-->
-        <Button
-            android:id="@+id/buttonAddNewWord"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="40dp"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
-            android:background="@drawable/main_roundbtn_keyword"
-            android:text="Add new word"
-            android:textAllCaps="false"
-            android:textSize="25sp" />
-    </LinearLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

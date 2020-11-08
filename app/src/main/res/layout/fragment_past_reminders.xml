@@ -8,133 +8,138 @@
     android:background="@color/background"
     tools:context=".Fragment_Past_Reminders">
 
-    <ScrollView
-        android:layout_width="409dp"
-        android:layout_height="600dp"
-        android:background="@drawable/keyword_window_style"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <!--present a string of the past reminder-->
-                <TextView
-                    android:id="@+id/textViewPastReminder1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:layout_weight="1"
-                    android:text="Info 1"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
-
-            </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="409dp"
+            android:layout_height="600dp"
+            android:background="@drawable/keyword_window_style"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <!--present a string of the past reminder-->
-                <TextView
-                    android:id="@+id/textViewPastReminder2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:layout_weight="1"
-                    android:text="Info 2"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <!--present a string of the past reminder-->
+                    <TextView
+                        android:id="@+id/textViewPastReminder1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:text="Info 1"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <!--present a string of the past reminder-->
+                    <TextView
+                        android:id="@+id/textViewPastReminder2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:text="Info 2"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <!--present a string of the past reminder-->
+                    <TextView
+                        android:id="@+id/textViewPastReminder3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:text="Info 3"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <!--present a string of the past reminder-->
+                    <TextView
+                        android:id="@+id/textViewPastReminder4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:text="Info 4"
+                        android:textSize="30dp"
+                        android:textColor="#000000"
+                        tools:ignore="DuplicateIds" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <!--present a string of the past reminder-->
+                    <TextView
+                        android:id="@+id/textViewPastReminder5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:text="Info 5"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <!--present a string of the past reminder-->
+                    <TextView
+                        android:id="@+id/textViewPastReminder6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:text="Info 6"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+
+                </LinearLayout>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <!--present a string of the past reminder-->
-                <TextView
-                    android:id="@+id/textViewPastReminder3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:layout_weight="1"
-                    android:text="Info 3"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <!--present a string of the past reminder-->
-                <TextView
-                    android:id="@+id/textViewPastReminder4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:layout_weight="1"
-                    android:text="Info 4"
-                    android:textSize="30dp"
-                    android:textColor="#000000"
-                    tools:ignore="DuplicateIds" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <!--present a string of the past reminder-->
-                <TextView
-                    android:id="@+id/textViewPastReminder5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:layout_weight="1"
-                    android:text="Info 5"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <!--present a string of the past reminder-->
-                <TextView
-                    android:id="@+id/textViewPastReminder6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:layout_weight="1"
-                    android:text="Info 6"
-                    android:textColor="#000000"
-                    android:textSize="30dp" />
-
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

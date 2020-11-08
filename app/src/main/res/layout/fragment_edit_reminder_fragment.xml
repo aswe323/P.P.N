@@ -9,157 +9,178 @@
     android:layoutDirection="ltr"
     tools:context=".edit_reminder_fragment">
 
-    <TextView
-        android:id="@+id/textViewTitleForReminderText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Describe the reminder:"
-        android:textColor="#FFFFFF"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <!--here the user will write his reminder-->
-    <EditText
-        android:id="@+id/editTextForReminder"
-        android:layout_width="380dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitleForReminderText" />
-    <!--when clicked a the "select to choose time", "select to choose date" disappear, calling the AI to choose time and date-->
-    <Switch
-        android:id="@+id/switchForAi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="Automatic assignment:   "
-        android:textColor="#ffffff"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:theme="@style/Switch_color_change"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextForReminder" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <!--when clicked a drop bar opening for the user to choose repartition, default: no repartition-->
-    <Spinner
-        android:id="@+id/spinnerForRepeat"
-        android:layout_width="190dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:entries="@array/Spinner_Edit_frequency"
-        android:popupBackground="#56379F"
-        android:theme="@style/edit_reminder_Spinner"
-        app:layout_constraintStart_toEndOf="@+id/textViewRepeat"
-        app:layout_constraintTop_toBottomOf="@+id/switchForAi" />
-    <!--when clicked a drop bar opening for the user to choose Maslo category, default: none-->
-    <Spinner
-        android:id="@+id/spinnerForCategory"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:entries="@array/Spinner_Edit_category"
-        android:popupBackground="#56379F"
-        android:theme="@style/edit_reminder_Spinner"
-        app:layout_constraintStart_toEndOf="@+id/textViewForCategory"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerForRepeat" />
+        <TextView
+            android:id="@+id/textViewTitleForReminderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Describe the reminder:"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <!--here the user will write his reminder-->
+        <EditText
+            android:id="@+id/editTextForReminder"
+            android:layout_width="380dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitleForReminderText" />
+        <!--when clicked a the "select to choose time", "select to choose date" disappear, calling the AI to choose time and date-->
+        <Switch
+            android:id="@+id/switchForAi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Automatic assignment:   "
+            android:textColor="#ffffff"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:theme="@style/Switch_color_change"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextForReminder" />
 
-    <TextView
-        android:id="@+id/textViewRepeat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="repeat:"
-        android:textColor="#FFFFFF"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switchForAi" />
+        <!--when clicked a drop bar opening for the user to choose repartition, default: no repartition-->
+        <Spinner
+            android:id="@+id/spinnerForRepeat"
+            android:layout_width="190dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:entries="@array/Spinner_Edit_frequency"
+            android:popupBackground="#56379F"
+            android:theme="@style/edit_reminder_Spinner"
+            app:layout_constraintStart_toEndOf="@+id/textViewRepeat"
+            app:layout_constraintTop_toBottomOf="@+id/switchForAi" />
+        <!--when clicked a drop bar opening for the user to choose Maslo category, default: none-->
+        <Spinner
+            android:id="@+id/spinnerForCategory"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:entries="@array/Spinner_Edit_category"
+            android:popupBackground="#56379F"
+            android:theme="@style/edit_reminder_Spinner"
+            app:layout_constraintStart_toEndOf="@+id/textViewForCategory"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerForRepeat" />
 
-    <TextView
-        android:id="@+id/textViewForCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="Category:"
-        android:textColor="#FFFFFF"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRepeat" />
-    <!--when clicked a floating window opening for the user to choose time-->
-    <TextView
-        android:id="@+id/SetTimeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="select to choose time"
-        android:textColor="#FFFFFF"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewForCategory" />
-    <!--when clicked a floating window opening for the user to choose a date-->
-    <TextView
-        android:id="@+id/SetDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="select to choose date"
-        android:textColor="#FFFFFF"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SetTimeTextView" />
+        <TextView
+            android:id="@+id/textViewRepeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="repeat:"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switchForAi" />
 
-    <Button
-        android:id="@+id/ButtonAddSubActivity"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/groupsandpoints_buttons"
-        android:text="Add a sub reminder"
-        android:textAllCaps="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SetDateTextView" />
-    <!--when clicked a new ActivityTask is creates and sent to the addActivityTask in ActivityTaskUsed-->
-    <Button
-        android:id="@+id/ButtonSaveReminder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/groupsandpoints_buttons"
-        android:text="Save"
-        android:textAllCaps="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ButtonAddSubActivity" />
-    <!--when clicked all the data installed is deleted and going back to the Home Page-->
-    <Button
-        android:id="@+id/ButtonCancelReminder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/groupsandpoints_buttons"
-        android:text="Cancel"
-        android:textAllCaps="false"
-        app:layout_constraintStart_toEndOf="@+id/ButtonSaveReminder"
-        app:layout_constraintTop_toBottomOf="@+id/ButtonAddSubActivity" />
+        <TextView
+            android:id="@+id/textViewForCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Category:"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRepeat" />
+        <!--when clicked a floating window opening for the user to choose time-->
+        <TextView
+            android:id="@+id/SetTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="select to choose time"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewForCategory" />
+        <!--when clicked a floating window opening for the user to choose a date-->
+        <TextView
+            android:id="@+id/SetDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="select to choose date"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/SetTimeTextView" />
+
+        <Button
+            android:id="@+id/ButtonAddSubActivity"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/groupsandpoints_buttons"
+            android:text="Add a sub reminder"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/SetDateTextView" />
+        <!--when clicked a new ActivityTask is creates and sent to the addActivityTask in ActivityTaskUsed-->
+        <Button
+            android:id="@+id/ButtonSaveReminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/groupsandpoints_buttons"
+            android:text="Save"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ButtonAddSubActivity" />
+        <!--when clicked all the data installed is deleted and going back to the Home Page-->
+        <Button
+            android:id="@+id/ButtonCancelReminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/groupsandpoints_buttons"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toEndOf="@+id/ButtonSaveReminder"
+            app:layout_constraintTop_toBottomOf="@+id/ButtonAddSubActivity" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--here the user will write his reminder-->
+    <!--when clicked a the "select to choose time", "select to choose date" disappear, calling the AI to choose time and date-->
+
+    <!--when clicked a drop bar opening for the user to choose repartition, default: no repartition-->
+    <!--when clicked a drop bar opening for the user to choose Maslo category, default: none-->
+
+    <!--when clicked a floating window opening for the user to choose time-->
+    <!--when clicked a floating window opening for the user to choose a date-->
+
+    <!--when clicked a new ActivityTask is creates and sent to the addActivityTask in ActivityTaskUsed-->
+    <!--when clicked all the data installed is deleted and going back to the Home Page-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

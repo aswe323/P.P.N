@@ -8,152 +8,161 @@
     android:layoutDirection="ltr"
     tools:context=".groups_and_points_fragment"
     tools:layout_editor_absoluteY="25dp">
-    <!--section to show users points info-->
-    <LinearLayout
-        android:id="@+id/linearLayoutOfUserPointsInfo"
-        android:layout_width="205dp"
-        android:layout_height="90dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/groupsnpints_windowlayout"
-        android:orientation="vertical"
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/textViewMyPointsTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="45dp"
-            android:layout_marginTop="10dp"
-            android:text="My points:"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-        <!--present a string of the user points-->
-        <TextView
-            android:id="@+id/textViewUserPoints"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:text="number"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-    <!--section to show group points info-->
-    <LinearLayout
-        android:id="@+id/linearLayoutOfGroupData"
-        android:layout_width="320dp"
-        android:layout_height="270dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/groupsnpints_windowlayout"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutOfUserPointsInfo">
-
-        <TextView
-            android:id="@+id/textViewGroupNameTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="85dp"
+        <!--section to show users points info-->
+        <LinearLayout
+            android:id="@+id/linearLayoutOfUserPointsInfo"
+            android:layout_width="205dp"
+            android:layout_height="90dp"
             android:layout_marginTop="15dp"
-            android:text="group name:"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-        <!--present a string of the group name-->
-        <TextView
-            android:id="@+id/textViewGroupName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="125dp"
-            android:text="name"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            android:background="@drawable/groupsnpints_windowlayout"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textViewGroupIDTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="105dp"
-            android:layout_marginTop="15dp"
-            android:text="group ID:"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-        <!--present a string of the group ID-->
-        <TextView
-            android:id="@+id/textViewGroupID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="145dp"
-            android:text="ID"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textViewMyPointsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="10dp"
+                android:text="My points:"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+            <!--present a string of the user points-->
+            <TextView
+                android:id="@+id/textViewUserPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:text="number"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <!--section to show group points info-->
+        <LinearLayout
+            android:id="@+id/linearLayoutOfGroupData"
+            android:layout_width="320dp"
+            android:layout_height="270dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/groupsnpints_windowlayout"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutOfUserPointsInfo">
 
-        <TextView
-            android:id="@+id/textViewGroupPointsTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:layout_marginTop="15dp"
-            android:text="Group points:"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-        <!--present a string of the group total points-->
-        <TextView
-            android:id="@+id/textViewGroupPoints"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="115dp"
-            android:text="number"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-    <!--when clicked opening a window for the user to enter name of the group, visible only is user is not in a group-->
-    <Button
-        android:id="@+id/ButtonJoinGroup"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="96dp"
-        android:background="@drawable/groupsandpoints_buttons"
-        android:text="Join group"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ButtonCreateNewGroup" />
-    <!--when clicked exiting the group user is in, visible only if user is in a group-->
-    <Button
-        android:id="@+id/ButtonExitGroup"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/groupsandpoints_buttons"
-        android:text="Exit group"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toStartOf="@+id/ButtonJoinGroup"
-        app:layout_constraintHorizontal_bias="0.55"
-        app:layout_constraintStart_toEndOf="@+id/ButtonCreateNewGroup"
-        app:layout_constraintTop_toBottomOf="@+id/ButtonJoinGroup" />
-    <!--when clicked opening a window for the user to enter name for new group, visible only is user is not in a group-->
-    <Button
-        android:id="@+id/ButtonCreateNewGroup"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="52dp"
-        android:background="@drawable/groupsandpoints_buttons"
-        android:text="Create a group"
-        android:textAllCaps="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutOfGroupData" />
+            <TextView
+                android:id="@+id/textViewGroupNameTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="85dp"
+                android:layout_marginTop="15dp"
+                android:text="group name:"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+            <!--present a string of the group name-->
+            <TextView
+                android:id="@+id/textViewGroupName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="125dp"
+                android:text="name"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/textViewGroupIDTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="105dp"
+                android:layout_marginTop="15dp"
+                android:text="group ID:"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+            <!--present a string of the group ID-->
+            <TextView
+                android:id="@+id/textViewGroupID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="145dp"
+                android:text="ID"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewGroupPointsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="15dp"
+                android:text="Group points:"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+            <!--present a string of the group total points-->
+            <TextView
+                android:id="@+id/textViewGroupPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="115dp"
+                android:text="number"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <!--when clicked opening a window for the user to enter name of the group, visible only is user is not in a group-->
+        <Button
+            android:id="@+id/ButtonJoinGroup"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="96dp"
+            android:background="@drawable/groupsandpoints_buttons"
+            android:text="Join group"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ButtonCreateNewGroup" />
+        <!--when clicked exiting the group user is in, visible only if user is in a group-->
+        <Button
+            android:id="@+id/ButtonExitGroup"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/groupsandpoints_buttons"
+            android:text="Exit group"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toStartOf="@+id/ButtonJoinGroup"
+            app:layout_constraintHorizontal_bias="0.55"
+            app:layout_constraintStart_toEndOf="@+id/ButtonCreateNewGroup"
+            app:layout_constraintTop_toBottomOf="@+id/ButtonJoinGroup" />
+        <!--when clicked opening a window for the user to enter name for new group, visible only is user is not in a group-->
+        <Button
+            android:id="@+id/ButtonCreateNewGroup"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="84dp"
+            android:layout_marginTop="52dp"
+            android:background="@drawable/groupsandpoints_buttons"
+            android:text="Create a group"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutOfGroupData" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

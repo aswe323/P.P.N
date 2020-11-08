@@ -157,6 +157,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                     ));
                     Toast.makeText(getActivity(), "manually assigned", Toast.LENGTH_SHORT).show();//notifying the event was called
                 }
+
                 break;
             //endregion
             case R.id.ButtonAddSubActivity:
