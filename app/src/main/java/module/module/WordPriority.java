@@ -1,13 +1,18 @@
 package module;
 
+import com.example.rems.DataBaseHelper;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class WordPriority {
+
     private static Map<String, Integer> priorityWords;
+    static private DataBaseHelper db = DataBaseHelper.getInstance(null);//TODO:make sure that the main call the method with the Context
 
     public WordPriority() {
         priorityWords = new HashMap<>();
+        priorityWords = db.queryForPriorityWords();
     }
 
     public static Map<String, Integer> getPriorityWords() {

@@ -29,6 +29,7 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
     private SeekBar thisSeekBar;
     private TextView thisSeekBarTextView;
     private Button addWordButton;
+    private Button cancelWordButton;
     private EditText wordText;
 
 
@@ -72,8 +73,15 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
                         Toast.makeText(getActivity(), "Error accrued, make sure to write a word and it not existing already", Toast.LENGTH_SHORT).show();
                 }
                 else
+
                     Toast.makeText(getActivity(), "enter a word please", Toast.LENGTH_SHORT).show();
-                break;
+            break;
+
+            case  R.id.buttonCancelWord:
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                key_words_fragment maf = new key_words_fragment();
+                ft.replace(R.id.fragment_key_words_fragment, maf).commit();
+            break;
         }
     }
 
@@ -104,8 +112,11 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
             }
         });
         addWordButton = view.findViewById(R.id.buttonAddWord);
-        addWordButton.setOnClickListener(this);
         wordText=view.findViewById(R.id.editTextForWord);
+        addWordButton.setOnClickListener(this);
+
+        cancelWordButton=view.findViewById(R.id.buttonCancelWord);
+        cancelWordButton.setOnClickListener(this);
 
         return view;
     }

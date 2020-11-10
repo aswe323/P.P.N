@@ -414,7 +414,38 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return activityTasks;
+    }
 
+    //TODO:add to book,change it to get the next 10 or so
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public ArrayList<ActivityTask> queryForAllActivityTasks(){
+        ArrayList<ActivityTask> activities=new ArrayList<>(); //creating an ArrayList that will store all SubActivities
+        SQLiteDatabase db = this.getWritableDatabase();//open the database for read/write
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");// for Date in ActivityTask
+        if(db.isOpen()){
+            Cursor cursor = db.rawQuery("select * from ActivityTasks",null); //selecting all the SubActivities of the ActivityTask
+            if(cursor!=null && cursor.getCount()>0){
+                cursor.moveToFirst();
+                do {
+                    LocalDateTime TextToDate = LocalDateTime.parse(cursor.getString(1), formatter);
+                    ArrayList<SubActivity> relatedSubAct = queryForSubActivity(cursor.getInt(0));
+                    ActivityTask activityTask = new ActivityTask(//FOREACH record in the retrivedActTsk Cursor, we create a task.
+                            cursor.getInt(0),//activityTaskID
+                            cursor.getInt(5),//priority
+                            MasloCategorys.valueOf(cursor.getString(4)),//MasloCategory
+                            Repetition.valueOf(cursor.getString(3)),//Repetition
+                            cursor.getString(2),//Content
+                            TextToDate,//DateTime
+                            relatedSubAct//SubActivities
+                    ); //create the SubActivity object from the DB data
+
+                    activities.add(activityTask);
+                } while (cursor.moveToNext());//move to the next line,if there is no more lines then end the loop
+            }
+            cursor.close();
+        }
+        db.close();
+        return activities;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)//for ease of use.

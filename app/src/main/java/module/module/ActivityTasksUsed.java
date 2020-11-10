@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class ActivityTasksUsed {
     static private ArrayList<ActivityTask> usedTasks = new ArrayList<>();
 
-    static private DataBaseHelper db = DataBaseHelper.getInstance(null);//TODO:cannot be null
+    static private DataBaseHelper db = DataBaseHelper.getInstance(null);//TODO:make sure that the main call the method with the Context
 
 
     //region methods ActivityTask
@@ -78,6 +78,11 @@ public class ActivityTasksUsed {
 
     }
 
+    //TODO:add to book,change it to get the next 10 or so
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static ArrayList<ActivityTask> getCloseActivities(){
+        return db.queryForAllActivityTasks();
+    }
 
     //endregion ActivityTask
 
