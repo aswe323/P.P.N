@@ -64,15 +64,13 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
     {
         switch (view.getId()) {
             case R.id.buttonAddWord:
-                if(!wordText.getText().toString().equals("")){
-                    if(WordPriority.addWord(wordText.getText().toString(),thisSeekBar.getProgress())) {
-                        if(db.insertPriorityWord(wordText.getText().toString(),thisSeekBar.getProgress()))
-                            Toast.makeText(getActivity(), "the word " + wordText.getText().toString() +" with priority " + thisSeekBar.getProgress() + " added successfully", Toast.LENGTH_SHORT).show();
-                    }
-                    else
+                if (!wordText.getText().toString().equals("") && !wordText.getText().toString().equals(" ") && wordText.getText().toString().matches("[a-zA-Z0-9]+")) {
+                    if (WordPriority.addWord(wordText.getText().toString(), thisSeekBar.getProgress())) {
+                        if (db.insertPriorityWord(wordText.getText().toString(), thisSeekBar.getProgress()))
+                            Toast.makeText(getActivity(), "the word " + wordText.getText().toString() + " with priority " + thisSeekBar.getProgress() + " added successfully", Toast.LENGTH_SHORT).show();
+                    } else
                         Toast.makeText(getActivity(), "Error accrued, make sure to write a word and it not existing already", Toast.LENGTH_SHORT).show();
-                }
-                else
+                } else
 
                     Toast.makeText(getActivity(), "enter a word please", Toast.LENGTH_SHORT).show();
             break;
