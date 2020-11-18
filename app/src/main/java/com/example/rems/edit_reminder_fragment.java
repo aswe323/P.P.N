@@ -99,7 +99,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
             case R.id.SetTimeTextView:
                 //region
                 final int hour=calendar.get(calendar.HOUR_OF_DAY);
-                final int minute=calendar.get(Calendar.MINUTE);
+                final int minute=calendar.get(calendar.MINUTE);
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
