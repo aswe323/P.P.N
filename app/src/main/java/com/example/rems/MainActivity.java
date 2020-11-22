@@ -1,10 +1,12 @@
 package com.example.rems;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -14,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -62,26 +66,80 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        db=DataBaseHelper.getInstance(getApplicationContext());
-        wordPriority=new WordPriority();
+        db = DataBaseHelper.getInstance(getApplicationContext());
+        wordPriority = new WordPriority();
         final TabLayout tableLayout = findViewById(R.id.Tablayouting);
         TabItem tabItem1 = findViewById(R.id.Tabitem1);
         TabItem tabItem2 = findViewById(R.id.Tabitem2);
         TabItem tabItem3 = findViewById(R.id.Tabitem3);
-        final ViewPager viewPager = findViewById(R.id.ViewPager);
-        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tableLayout.getTabCount());
-        viewPager.setAdapter(pagerAdapter);
+
+
+        final ViewPager2 viewPager = findViewById(R.id.ViewPager);
+
+        viewPager.setAdapter(new customAdapter(getSupportFragmentManager(), getLifecycle()));
+
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tableLayout, viewPager, true,
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                        switch (position) {
+                            case 0:
+                                tab.setText("Home");
+                                break;
+                            case 1:
+                                tab.setText("Word Management");
+                                break;
+                            case 2:
+                                tab.setText("Group And Points");
+                                break;
+                            case 3:
+                                tab.setText("past Reminders");
+                                break;
+                            case 4:
+                                tab.setText("Edit Reminders");
+                                break;
+                            default:
+                                return;
+                        }
+                    }
+                }
+        );
+        tabLayoutMediator.attach();
 
         /***********************!!!!!!!!!!!!!!!!**********************/
         //SubActivity subActivity=new SubActivity(DataBaseHelper.getMaxIdOfActivityTask())
         /***********************!!!!!!!!!!!!!!!!**********************/
+        //region legacy viewpager integration
+
+
+        //region ViewPager and PagerAdapter instantiation
+        /*final ViewPager viewPager = findViewById(R.id.ViewPager);
+        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tableLayout.getTabCount());
+        viewPager.setAdapter(pagerAdapter);*/
+        //endregion
+        //region event management (onTabSelected)
+        /*
         tableLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+            }
 
-/*
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        */
+        //endregion
+        //region general testing
+        /*
                 //check 1 insert
                 if(tableLayout.getSelectedTabPosition()==1){
                     DataBaseHelper db=DataBaseHelper.getInstance(getApplicationContext());
@@ -127,18 +185,10 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 //Toast.makeText(MainActivity.this, ""+tableLayout.getSelectedTabPosition(), Toast.LENGTH_SHORT).show();*/
-            }
+        //endregion
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
 
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        //endregion
     }
 
 
