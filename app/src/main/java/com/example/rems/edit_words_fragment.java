@@ -26,12 +26,14 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     private DataBaseHelper db;
-    private SeekBar thisSeekBar;
+    private static SeekBar thisSeekBar;
     private TextView thisSeekBarTextView;
-    private Button addWordButton;
+    private static Button addWordButton;
     private Button cancelWordButton;
-    private EditText wordText;
-
+    private static EditText wordText;
+    private static boolean isEditFlag=false; //if i opened a reminder from my "next reminders" list in the home button flag will be true and it's means we need to call Update query and not inset
+    private static String oldWord;
+    private static int oldScore;
 
     public edit_words_fragment() {
         // Required empty public constructor
@@ -64,16 +66,24 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
     {
         switch (view.getId()) {
             case R.id.buttonAddWord:
-                if (!wordText.getText().toString().equals("") && !wordText.getText().toString().equals(" ") && wordText.getText().toString().matches("[a-zA-Z0-9]+")) {
-                    if (WordPriority.addWord(wordText.getText().toString(), thisSeekBar.getProgress())) {
-                        if (db.insertPriorityWord(wordText.getText().toString(), thisSeekBar.getProgress()))
-                            Toast.makeText(getActivity(), "the word " + wordText.getText().toString() + " with priority " + thisSeekBar.getProgress() + " added successfully", Toast.LENGTH_SHORT).show();
+                if(!isEditFlag){
+                    if (!wordText.getText().toString().equals("") && !wordText.getText().toString().equals(" ") && wordText.getText().toString().matches("[a-zA-Z0-9]+")) {
+                        if (WordPriority.addWord(wordText.getText().toString(), thisSeekBar.getProgress())) {
+                            if (db.insertPriorityWord(wordText.getText().toString(), thisSeekBar.getProgress()))
+                                Toast.makeText(getActivity(), "the word " + wordText.getText().toString() + " with priority " + thisSeekBar.getProgress() + " added successfully", Toast.LENGTH_SHORT).show();
+                        } else
+                            Toast.makeText(getActivity(), "Error accrued, make sure to write a word and it not existing already", Toast.LENGTH_SHORT).show();
                     } else
-                        Toast.makeText(getActivity(), "Error accrued, make sure to write a word and it not existing already", Toast.LENGTH_SHORT).show();
-                } else
 
-                    Toast.makeText(getActivity(), "enter a word please", Toast.LENGTH_SHORT).show();
-            break;
+                        Toast.makeText(getActivity(), "enter a word please", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    if(WordPriority.editWord(oldWord,wordText.getText().toString(),oldScore,thisSeekBar.getProgress())) {
+
+                        Toast.makeText(getActivity(), "updated the word " + oldWord + " to " + wordText.getText().toString() + " with priority " + thisSeekBar.getProgress(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            //break;
 
             case  R.id.buttonCancelWord:
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -87,7 +97,7 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_words_fragment, container, false);// the hell is this even?
-
+        isEditFlag=false;
         db = DataBaseHelper.getInstance(null);
         //accessing seekBar and the Text of Seekbar by ID and setting progress to 0
         thisSeekBar = view.findViewById(R.id.seekBar);
@@ -118,4 +128,15 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
 
         return view;
     }
+
+    public static void editingword(String word,int priority){//this function is called before the fragment is presented,it's inserting the data of the needed WordPriority to the elements TODO:add to the book
+        isEditFlag=true; //turn edit flag to true so we update instead of insert to Database
+        oldWord=word;
+        oldScore=priority;
+
+        addWordButton.setText("save");
+        thisSeekBar.setProgress(priority);
+        wordText.setText(word);
+    }
+
 }

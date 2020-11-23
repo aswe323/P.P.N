@@ -44,10 +44,7 @@ import module.WordPriority;
 
 public class MainActivity extends AppCompatActivity {
 
-    /*private TabLayout tableLayout= findViewById(R.id.Tablayouting);
-    private TabItem tabItem1=findViewById(R.id.Tabitem1);
-    private TabItem tabItem2=findViewById(R.id.Tabitem2);
-    private TabItem tabItem3=findViewById(R.id.Tabitem3);*/
+
     DataBaseHelper db;
     private WordPriority wordPriority;
     /***********************!!!!!!!!!!!!!!!!**********************/
@@ -69,15 +66,8 @@ public class MainActivity extends AppCompatActivity {
         db = DataBaseHelper.getInstance(getApplicationContext());
         wordPriority = new WordPriority();
         final TabLayout tableLayout = findViewById(R.id.Tablayouting);
-        TabItem tabItem1 = findViewById(R.id.Tabitem1);
-        TabItem tabItem2 = findViewById(R.id.Tabitem2);
-        TabItem tabItem3 = findViewById(R.id.Tabitem3);
-
-
         final ViewPager2 viewPager = findViewById(R.id.ViewPager);
-
         viewPager.setAdapter(new customAdapter(getSupportFragmentManager(), getLifecycle()));
-
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tableLayout, viewPager, true,
                 new TabLayoutMediator.TabConfigurationStrategy() {
                     @Override
@@ -118,12 +108,16 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(pagerAdapter);*/
         //endregion
         //region event management (onTabSelected)
-        /*
+
         tableLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                /*if(tableLayout.getSelectedTabPosition()==1){
+                    ActivityTask_ArrayList=db.queryForExactActivityTask(0,0,null,"tester",null,null);
+                }
+                if(tableLayout.getSelectedTabPosition()==2)
+                    Toast.makeText(MainActivity.this, ""+ActivityTask_ArrayList.get(0).getContent()+"\n"+ActivityTask_ArrayList.get(0).getRepetition(), Toast.LENGTH_SHORT).show();*/
             }
 
             @Override
@@ -136,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        */
+
         //endregion
         //region general testing
         /*

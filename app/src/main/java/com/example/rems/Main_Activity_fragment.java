@@ -1,15 +1,12 @@
 package com.example.rems;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,11 +58,6 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
         return fragment;
     }
 
-    public void buttonAddNewReminderClickHandeler(View v) {
-
-    }
-
-    ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,6 +81,9 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
 
                 Toast.makeText(getActivity(), "event launched", Toast.LENGTH_SHORT).show();//notifying the event was called
 
+                break;
+            default:
+                Toast.makeText(getActivity(), "event launched", Toast.LENGTH_SHORT).show();//notifying the event was called
                 break;
         }
     }
@@ -116,10 +111,50 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
 
         scrollView.addView(hoster);
 
+
+        for(ImageButton imageButton:editReminderButton){ //create the functionality to each edit button
+            final ImageButton Editbtn=imageButton;
+            Editbtn.setId(editReminderButton.indexOf(imageButton));
+
+            Editbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    caller(topActivities.get(Editbtn.getId()));
+                }
+            });
+        }
+
+        for(ImageButton imageButton:deleteReminderButton){ //create the functionality to each delete button
+            final ImageButton Editbtn=imageButton;
+            Editbtn.setId(deleteReminderButton.indexOf(imageButton));
+
+            Editbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String reminderText=topActivities.get(Editbtn.getId()).getContent();
+                    if(ActivityTasksUsed.removeActivityTask(topActivities.get(Editbtn.getId()))) {
+                        Toast.makeText(getActivity(), "deleted " + reminderText, Toast.LENGTH_SHORT).show();
+                        //reload the fragment to update the reminder list
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        Main_Activity_fragment erf = new Main_Activity_fragment();
+                        ft.replace(R.id.main_Activity_fragment, erf).commit();
+                    }
+                }
+            });
+        }
+
         return view;
 
 
         //return inflater.inflate(R.layout.fragment_main__activity_fragment, container, false);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void caller(ActivityTask activityTask){ //calls the editingReminder method from edit_reminder_fragment to open the edit fragment with the info of our reminder we want to edit TODO:add to the book
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        edit_reminder_fragment erf = new edit_reminder_fragment();//creating the fragment to put instead
+        ft.replace(R.id.main_Activity_fragment, erf).commit();//making the transaction
+        getFragmentManager().executePendingTransactions();//used to stop the onCreateView and allow the editingReminder() method to set the information
+        edit_reminder_fragment.editingReminder(activityTask);
     }
 
     /**
@@ -141,13 +176,14 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
     *    * * * * * * * * * * * * * * * * * * *
     *
      */
-    private void addWordToScrollViewFuture(ActivityTask activityTask){
+    private void addWordToScrollViewFuture(ActivityTask activityTask){ //this method dynamically creates the elements of the reminders on our home page,called in onCreateView
+        //hierarchy holder of our elements please look up for the schema
         LinearLayout outerLayout = new LinearLayout(getActivity());
         LinearLayout innerLayout =new LinearLayout(getActivity());
         ImageButton btnEdit = new ImageButton(getActivity());
         ImageButton btnDelete = new ImageButton(getActivity());
         TextView reminderText = new TextView(getActivity());
-        LinearLayout.LayoutParams btnSize = new LinearLayout.LayoutParams(180, 120);
+        LinearLayout.LayoutParams btnSize = new LinearLayout.LayoutParams(180, 120); //TODO:need to use some math and magic to make sure it fit any screen size and resolution
         btnSize.setMargins(0,5,15,5);
 
         outerLayout.setOrientation(LinearLayout.VERTICAL);

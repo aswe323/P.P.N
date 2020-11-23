@@ -45,8 +45,26 @@ public class WordPriority {
         else
             return false;
     }
+
+    public static boolean editWord(String oldword, String newWord, Integer oldScore, Integer newScore){ //TODO:add to book and see wahat to do with the other two
+        if(db.updateWord(oldword,newWord,newScore)){
+            priorityWords.put(newWord, priorityWords.remove(oldword));
+            priorityWords.put(newWord,newScore);
+            return true;
+        }
+        else {
+            //db.updateWord(oldword, newWord, oldScore);
+            //TODO:add toast edit fail or something its 3AM in dead can't think about it RN
+            return false;
+        }
+
+    }
+
     public static boolean removeWord(String word){
-        return priorityWords.remove(word)!=null ? true:false;
+        if(db.deletePrioritiyWord(word))
+            return priorityWords.remove(word)!=null ? true:false;
+        else
+            return false;
     }
     public static Integer getWordpriority(String word){
         return priorityWords.get(word);
@@ -54,6 +72,7 @@ public class WordPriority {
     public static boolean findWord(String word){
         return priorityWords.containsKey(word);
     }
+
 
     //TODO:implement timeWords and the method getTimeWords()
 

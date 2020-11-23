@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,14 +48,14 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private Switch automaticAssignment;
-    private Spinner masloCategory;
-    private Spinner repetition;
-    private EditText discription;
-    private DateTimeFormatter formatter;
+    private static Spinner masloCategory;
+    private static Spinner repetition;
+    private static EditText discription;
+    private static DateTimeFormatter formatter;
     private LocalDateTime TextToDate;
     private String date="";
-    private TextView settimetext;
-    private TextView setdatetext;
+    private static TextView settimetext;
+    private static TextView setdatetext;
     private Button buttonIdentifier;
     private Button buttonAddSubActivity;
     private Button cancelButton;
@@ -63,7 +64,10 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
     private Calendar calendar = Calendar.getInstance();
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private AlertDialog.Builder subActivityDialogBox;
-    private ArrayList<SubActivity> subActivitiesArrayList;
+    private static ArrayList<SubActivity> subActivitiesArrayList;
+    private static boolean isEditFlag=false; //if i opened a reminder from my "next reminders" list in the home button flag will be true and it's means we need to call Update query and not inset
+    private static ActivityTask EditedActivityTask;
+    private static Context deleteinProduction;
 
     public edit_reminder_fragment() {
         // Required empty public constructor
@@ -103,7 +107,10 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        settimetext.setText(hourOfDay+":"+minute);
+                        if(hourOfDay<10)
+                            settimetext.setText("0"+hourOfDay+":"+minute);
+                        else
+                            settimetext.setText(hourOfDay+":"+minute);
                     }
                 },hour,minute,android.text.format.DateFormat.is24HourFormat(getContext()));
                 timePickerDialog.show();
@@ -127,38 +134,62 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
             //endregion
             case R.id.ButtonSaveReminder:
                 //region
-                if (automaticAssignment.isChecked()) {
-                    //if the automantic assignment option is checked.
-                    ActivityTasksUsed.addActivityTask(new ActivityTask(0,
-                            MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
-                            Repetition.valueOf(repetition.getSelectedItem().toString()),
-                            discription.getText().toString(),
-                            new ArrayList<SubActivity>()));
-                    Toast.makeText(getActivity(), "auto assigned", Toast.LENGTH_SHORT).show();//notifying the event was called
-                } else {
-                    //if the user choose to select time and date by himself.
+                if(!isEditFlag){ //if i opened a reminder from my "next reminders" list in the home button flag will be true and it's means we need to call Update query and not inset
+                    if (automaticAssignment.isChecked()) {
+                        //if the automantic assignment option is checked.
+                        ActivityTasksUsed.addActivityTask(new ActivityTask(0,
+                                MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
+                                Repetition.valueOf(repetition.getSelectedItem().toString()),
+                                discription.getText().toString(),
+                                new ArrayList<SubActivity>()));
+                        Toast.makeText(getActivity(), "auto assigned", Toast.LENGTH_SHORT).show();//notifying the event was called
+                    } else {
+                        //if the user choose to select time and date by himself.
 
-                    if (settimetext.getText().toString().equals("select to choose time") || setdatetext.getText().toString().equals("select to choose date")) {
-                        Toast.makeText(getActivity(), "select date and time", Toast.LENGTH_SHORT).show();//notifying the event was called
-                        return;
+                        if (settimetext.getText().toString().equals("select to choose time") || setdatetext.getText().toString().equals("select to choose date")) {
+                            Toast.makeText(getActivity(), "select date and time", Toast.LENGTH_SHORT).show();//notifying the event was called
+                            return;
+                        }
+
+                        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                        String datemaker=""+setdatetext.getText()+" "+settimetext.getText();
+                        TextToDate = LocalDateTime.parse(datemaker, formatter);
+                        ActivityTasksUsed.addActivityTask(new ActivityTask(
+                                0,
+                                0,
+                                MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),//MasloCategory
+                                Repetition.valueOf(repetition.getSelectedItem().toString()),//Repetition
+                                discription.getText().toString(),
+                                TextToDate,
+                                subActivitiesArrayList
+                                //yyyy-MM-dd HH:mm:ss
+                        ));
+                        Toast.makeText(getActivity(), "manually assigned", Toast.LENGTH_SHORT).show();//notifying the event was called
                     }
-
-                    formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    TextToDate = LocalDateTime.parse("2020-05-06 20:43:00", formatter);
-                    ActivityTasksUsed.addActivityTask(new ActivityTask(
-                            0,
-                            0,
-                            MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),//MasloCategory
-                            Repetition.valueOf(repetition.getSelectedItem().toString()),//Repetition
-                            discription.getText().toString(),
-                            TextToDate,
-                            subActivitiesArrayList
-                            //yyyy-MM-dd HH:mm:ss
-                    ));
-                    Toast.makeText(getActivity(), "manually assigned", Toast.LENGTH_SHORT).show();//notifying the event was called
+                }
+                else{
+                    String reminderContent=EditedActivityTask.getContent();
+                    EditedActivityTask.setCategory(MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()));
+                    EditedActivityTask.setRepetition(Repetition.valueOf(repetition.getSelectedItem().toString()));
+                    EditedActivityTask.setContent(discription.getText().toString());
+                    formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                    String datemaker=""+setdatetext.getText()+" "+settimetext.getText();
+                    TextToDate = LocalDateTime.parse(datemaker, formatter);
+                    EditedActivityTask.setTimeOfActivity(TextToDate);
+                    EditedActivityTask.setSubActivities(subActivitiesArrayList);
+                    if(ActivityTasksUsed.editActivityTask(EditedActivityTask))
+                        Toast.makeText(getActivity(), "updated: "+reminderContent, Toast.LENGTH_SHORT).show();
                 }
 
+
+            case R.id.ButtonCancelReminder:
+                //region
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                Main_Activity_fragment maf = new Main_Activity_fragment();
+                ft.replace(R.id.fragment_edit_reminder, maf).commit();
+
                 break;
+
             //endregion
             case R.id.ButtonAddSubActivity:
                 //region
@@ -192,13 +223,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                 Toast.makeText(getActivity(), "feature not ready yet", Toast.LENGTH_SHORT).show();
                 break;
             //endregion
-            case R.id.ButtonCancelReminder:
-                //region
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                Main_Activity_fragment maf = new Main_Activity_fragment();
-                ft.replace(R.id.fragment_edit_reminder, maf).commit();
 
-                break;
             //endregion
         }
 
@@ -210,6 +235,8 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_edit_reminder_fragment, container, false);
         View view = inflater.inflate(R.layout.fragment_edit_reminder_fragment, container, false);
+        deleteinProduction=getActivity();
+        isEditFlag=false;
 
         automaticAssignment = view.findViewById(R.id.switchForAi);
         masloCategory = view.findViewById(R.id.spinnerForCategory);
@@ -235,7 +262,14 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month += 1;
-                date = year + "-" + month + "-" + dayOfMonth;
+                if(month<10)
+                    date = year + "-0" + month;
+                else
+                    date = year + "-" + month;
+                if(dayOfMonth<10)
+                    date+="-0" + dayOfMonth;
+                else
+                    date+="-" + dayOfMonth;
                 setdatetext.setText(date);
             }
         };
@@ -243,5 +277,25 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
 
 
         return view;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void editingReminder(ActivityTask activityTask){ //this function is called before the fragment is presented,it's inserting the data of the needed ActivityTask to the elements TODO:add to the book
+        isEditFlag=true; //turn edit flag to true so we update instead of insert to Database
+        EditedActivityTask=activityTask;//save the ActivityTask to sed for editing in ActivityTasksUsed.editActivityTask();
+        subActivitiesArrayList=activityTask.getSubActivities();
+
+        ///
+        int idCheck=activityTask.getActivityTaskID();
+        //setting all the data to the elements
+        discription.setText(activityTask.getContent());
+        masloCategory.setSelection(activityTask.getCategory().ordinal());
+        repetition.setSelection(activityTask.getRepetition().ordinal());
+        formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String DateInFormat=formatter.format(activityTask.getTimeOfActivity());
+        settimetext.setText(DateInFormat);
+        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateInFormat=formatter.format(activityTask.getTimeOfActivity());
+        setdatetext.setText(DateInFormat);
     }
 }

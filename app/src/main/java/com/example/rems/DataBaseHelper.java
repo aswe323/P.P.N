@@ -180,12 +180,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    public boolean updateWord(String oldWord,String newWord) {
+    public boolean updateWord(String oldWord,String newWord,int score) {
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
         if (db.isOpen()) {
             ContentValues values = new ContentValues();
             values.put("Word", newWord);
+            values.put("Priority", score);
             db.update("WordPriority", values, "Word = ?" , new String[]{oldWord});
             db.close();
             return true;
@@ -298,7 +299,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public boolean insertActivityTask(MasloCategorys category, Repetition repetition, String content, LocalDateTime timeOfActivity, ArrayList<SubActivity> subActivity, int priority){
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");// for Date in ActivityTask
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");// for Date in ActivityTask
         String DateInFormat=formatter.format(timeOfActivity);//create a string with the date that was sent in the format we want
 
         if(db.isOpen()) {//check if the database opened if not retuning false
@@ -338,7 +339,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public ArrayList<ActivityTask> queryForExactActivityTask(int activityTaskID, int priority, LocalDateTime dateAndTime, String content, Repetition repetition, MasloCategorys masloCategory){
-
+        String DateInFormat = null;
         if (activityTaskID < 0 && priority < 0 && dateAndTime == null && content == null && repetition == null && masloCategory == null)
             return null;
         ArrayList<ActivityTask> activityTasks = new ArrayList<>();
@@ -346,8 +347,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
         if (db.isOpen()) {
             String[] columnsFromActTsk = new String[]{"ActivityTaskID", "DateAndTime", "Content", "Repetition", "Category", "Priority"};// the columns we are looking for in the ActivityTask Table
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");// for Date in ActivityTask
-            String DateInFormat=formatter.format(dateAndTime);//create a string with the date that was sent in the format we want
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");// for Date in ActivityTask
+            if(dateAndTime!=null)
+                DateInFormat=formatter.format(dateAndTime);//create a string with the date that was sent in the format we want
 
             ContentValues values = new ContentValues();
             values.put("activityTaskID ", activityTaskID > 0 ? String.valueOf(activityTaskID) : "activityTaskID");
@@ -421,7 +423,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public ArrayList<ActivityTask> queryForAllActivityTasks(){
         ArrayList<ActivityTask> activities=new ArrayList<>(); //creating an ArrayList that will store all SubActivities
         SQLiteDatabase db = this.getWritableDatabase();//open the database for read/write
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");// for Date in ActivityTask
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");// for Date in ActivityTask
         if(db.isOpen()){
             Cursor cursor = db.rawQuery("select * from ActivityTasks",null); //selecting all the SubActivities of the ActivityTask
             if(cursor!=null && cursor.getCount()>0){
@@ -460,7 +462,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         if(db.isOpen()){
             ContentValues values = new ContentValues(); //will store the new value for the database
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");// for Date in ActivityTask
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");// for Date in ActivityTask
             String DateInFormat=formatter.format(activityTask.getTimeOfActivity());//create a string with the date that was sent in the format we want
             values.put("DateAndTime", DateInFormat);//inset the new date for column @DateAndTime
             values.put("Content", activityTask.getContent());//inset the new content for column @Content

@@ -75,7 +75,6 @@ public class ActivityTask {
      * @param subActivity
      * @return
      */
-    //TODO:add to the book
     public boolean addSubActivity(SubActivity subActivity) {//if the subActivity already exist in the array, do not add it to the array.
         for (SubActivity subActivityCurrent : subActivities
         ) {
@@ -92,7 +91,6 @@ public class ActivityTask {
      * @param content
      * @return
      */
-    //TODO:add to the book
     public boolean removeSubActivity(String content) {//if subActivity exists, remove it from the array, otherwise return false;
         for (SubActivity subActivityCurrent : subActivities
         ) {
@@ -112,7 +110,6 @@ public class ActivityTask {
      * @param newRepetition
      * @return
      */
-    //TODO:add to the book
     public boolean editReminder(String newContent, LocalDateTime newTime, MasloCategorys newCategory, Repetition newRepetition) {
         if (newContent != null) this.setContent(newContent);
         if (newTime != null) this.setTimeOfActivity(newTime);
@@ -128,7 +125,7 @@ public class ActivityTask {
 
     public void setActivityTaskID(int activityTaskID) {
         if (!(activityTaskID <= 0)) this.activityTaskID = activityTaskID;
-        this.activityTaskID = DataBaseHelper.getInstance(null).getMaxIdOfActivityTask() + 1;
+        this.activityTaskID = DataBaseHelper.getInstance(null).getMaxIdOfActivityTask(); //TODO:deleted the +1 because id made all ActivityTasks to be 1 id ahead when fetching from DB,make sure not bugging insertion
     }
 
     public void setPriority(int priority) {

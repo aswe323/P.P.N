@@ -3,6 +3,8 @@
     <string-array name="Spinner_Edit_frequency">
         <item>no_repeating</item>
         <item>every_24_hours</item>
+        <item>every_month</item>
+        <item>every_year</item>
         <item>every_week</item>
         <item>every_sunday</item>
         <item>every_monday</item>

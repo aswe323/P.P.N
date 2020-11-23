@@ -105,7 +105,46 @@ public class key_words_fragment extends Fragment implements View.OnClickListener
 
         scrollView.addView(hoster);
 
+        for(ImageButton imageButton:editReminderButton){ //create the functionality to each edit button
+            final ImageButton Editbtn=imageButton;
+            Editbtn.setId(editReminderButton.indexOf(imageButton));
+
+            Editbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    caller((String) allWords.keySet().toArray()[Editbtn.getId()],(int) allWords.get(allWords.keySet().toArray()[Editbtn.getId()]));
+                }
+            });
+        }
+
+        for(ImageButton imageButton:deleteReminderButton){ //create the functionality to each delete button
+            final ImageButton Editbtn=imageButton;
+            Editbtn.setId(deleteReminderButton.indexOf(imageButton));
+
+            Editbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String reminderText=(String) allWords.keySet().toArray()[Editbtn.getId()];
+                    if(WordPriority.removeWord(reminderText)) {
+                        Toast.makeText(getActivity(), "deleted " + reminderText, Toast.LENGTH_SHORT).show();
+                        //reload the fragment to update the word list
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        key_words_fragment maf = new key_words_fragment();
+                        ft.replace(R.id.fragment_key_words_fragment, maf).commit();
+                    }
+                }
+            });
+        }
+
         return view;
+    }
+
+    private void caller(String word,int priority){ //calls the editingReminder method from edit_reminder_fragment to open the edit fragment with the info of our reminder we want to edit TODO:add to the book
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        edit_words_fragment erf = new edit_words_fragment();//creating the fragment to put instead
+        ft.replace(R.id.fragment_key_words_fragment, erf).commit();//making the transaction
+        getFragmentManager().executePendingTransactions();//used to stop the onCreateView and allow the editingReminder() method to set the information
+        edit_words_fragment.editingword(word,priority);
     }
 
     /**
@@ -127,7 +166,8 @@ public class key_words_fragment extends Fragment implements View.OnClickListener
      *    * * * * * * * * * * * * * * * * * * *
      *
      */
-    private void addWordToScrollViewFuture(String word, int priority){
+    private void addWordToScrollViewFuture(String word, int priority){ //this method dynamically creates the elements of the reminders on our home page,called in onCreateView
+        //hierarchy holder of our elements please look up for the schema
         LinearLayout outerLayout = new LinearLayout(getActivity());
         LinearLayout innerLayout =new LinearLayout(getActivity());
         LinearLayout wordholder =new LinearLayout(getActivity());
@@ -141,7 +181,7 @@ public class key_words_fragment extends Fragment implements View.OnClickListener
         wordholder.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1));
         priorityholder.setOrientation(LinearLayout.VERTICAL);
         priorityholder.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1));
-        LinearLayout.LayoutParams btnSize = new LinearLayout.LayoutParams(180, 120);
+        LinearLayout.LayoutParams btnSize = new LinearLayout.LayoutParams(180, 120); //TODO:need to use some math and magic to make sure it fit any screen size and resolution
         btnSize.setMargins(0,5,15,5);
 
         outerLayout.setOrientation(LinearLayout.VERTICAL);
