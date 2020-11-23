@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                                 tab.setText("past Reminders");
                                 break;
                             case 4:
-                                tab.setText("Edit Reminders");
+                                tab.setText("ALL Reminders");
                                 break;
                             default:
                                 return;

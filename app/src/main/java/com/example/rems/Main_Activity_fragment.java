@@ -90,6 +90,12 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
                 Toast.makeText(getActivity(), "event launched", Toast.LENGTH_SHORT).show();//notifying the event was called
 
                 break;
+            case R.id.buttonShowAllReminders:
+                RemindersColletion rc = new RemindersColletion();//creating the fragment to put insted
+                ft.replace(R.id.main_Activity_fragment, rc).commit();//making the transaction
+
+                Toast.makeText(getActivity(), "event launched", Toast.LENGTH_SHORT).show();//notifying the event was called
+                break;
         }
     }
 
@@ -102,14 +108,17 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
         Button buttonAddNewReminder = view.findViewById(R.id.buttonAddNewReminder); //button to move to the adding reminder layout
         buttonAddNewReminder.setOnClickListener(this);
 
-        scrollView= view.findViewById(R.id.scrollViewMain);
-        hoster= new LinearLayout(getActivity());
+        Button buttonSAR = view.findViewById(R.id.buttonShowAllReminders); //button to move to the adding reminder layout
+        buttonSAR.setOnClickListener(this);
+
+        scrollView = view.findViewById(R.id.scrollViewMain);
+        hoster = new LinearLayout(getActivity());
         hoster.setOrientation(LinearLayout.VERTICAL);
         hoster.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         editReminderButton = new ArrayList<>();
         deleteReminderButton = new ArrayList<>();
         reminderText = new ArrayList<>();
-        topActivities= ActivityTasksUsed.getCloseActivities(); //fetch the next X reminders TODO: change the X to a number in the future
+        topActivities = ActivityTasksUsed.getCloseActivities(); //fetch the next X reminders TODO: change the X to a number in the future
 
         for(ActivityTask taskDisplay:topActivities)
             addWordToScrollViewFuture(taskDisplay);

@@ -417,14 +417,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     //TODO:add to book,change it to get the next 10 or so
+
+    /**
+     * returns at arrayList of ActivityTasks.
+     *
+     * @return ArrayList<ActivityTask>
+     */
+
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public ArrayList<ActivityTask> queryForAllActivityTasks(){
-        ArrayList<ActivityTask> activities=new ArrayList<>(); //creating an ArrayList that will store all SubActivities
+    public ArrayList<ActivityTask> queryForAllActivityTasks() {
+        ArrayList<ActivityTask> activities = new ArrayList<>(); //creating an ArrayList that will store all SubActivities
         SQLiteDatabase db = this.getWritableDatabase();//open the database for read/write
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");// for Date in ActivityTask
-        if(db.isOpen()){
-            Cursor cursor = db.rawQuery("select * from ActivityTasks",null); //selecting all the SubActivities of the ActivityTask
-            if(cursor!=null && cursor.getCount()>0){
+        if (db.isOpen()) {
+            Cursor cursor = db.rawQuery("select * from ActivityTasks", null); //selecting all the SubActivities of the ActivityTask
+            if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 do {
                     LocalDateTime TextToDate = LocalDateTime.parse(cursor.getString(1), formatter);

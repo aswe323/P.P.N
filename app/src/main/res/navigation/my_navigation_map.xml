@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_main_Activity_fragment_to_fragment_Past_Reminders"
             app:destination="@id/fragment_Past_Reminders" />
+        <action
+            android:id="@+id/action_main_Activity_fragment_to_remindersColletion"
+            app:destination="@id/remindersColletion" />
     </fragment>
     <fragment
         android:id="@+id/key_words_fragment"
@@ -64,6 +67,15 @@
         tools:layout="@layout/fragment_past_reminders">
         <action
             android:id="@+id/action_fragment_Past_Reminders_to_main_Activity_fragment"
+            app:destination="@id/main_Activity_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/remindersColletion"
+        android:name="com.example.rems.RemindersColletion"
+        android:label="fragment_reminders_colletion"
+        tools:layout="@layout/fragment_reminders_colletion">
+        <action
+            android:id="@+id/action_remindersColletion_to_main_Activity_fragment"
             app:destination="@id/main_Activity_fragment" />
     </fragment>
 </navigation>
