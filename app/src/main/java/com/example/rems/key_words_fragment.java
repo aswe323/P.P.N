@@ -66,6 +66,10 @@ public class key_words_fragment extends Fragment implements View.OnClickListener
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         switch (view.getId()) {
             case R.id.buttonAddNewWord:
+                for(ImageButton edtbtn:editReminderButton)
+                    edtbtn.setEnabled(false);
+                for(ImageButton edtbtn:deleteReminderButton)
+                    edtbtn.setEnabled(false);
                 edit_words_fragment ewf = new edit_words_fragment();
                 ft.replace(R.id.fragment_key_words_fragment, ewf).commit();
                 Toast.makeText(getActivity(), "event launched", Toast.LENGTH_SHORT).show();

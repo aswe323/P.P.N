@@ -24,11 +24,6 @@ public class SubActivity {
         return subActivityID;
     }
 
-    @Override
-    public boolean equals(@Nullable Object obj) {
-        return super.equals(obj); //TODO:check if sub is same
-    }
-
     public Integer getActivityTaskID() {
         this.ActivityTaskID = DataBaseHelper.getInstance(null).getMaxIdOfActivityTask();
         return ActivityTaskID;

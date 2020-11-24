@@ -74,12 +74,11 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
                         } else
                             Toast.makeText(getActivity(), "Error accrued, make sure to write a word and it not existing already", Toast.LENGTH_SHORT).show();
                     } else
-
+                        //TODO: add a toast to indicate that the entered word is illegal
                         Toast.makeText(getActivity(), "enter a word please", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     if(WordPriority.editWord(oldWord,wordText.getText().toString(),oldScore,thisSeekBar.getProgress())) {
-
                         Toast.makeText(getActivity(), "updated the word " + oldWord + " to " + wordText.getText().toString() + " with priority " + thisSeekBar.getProgress(), Toast.LENGTH_SHORT).show();
                     }
                 }

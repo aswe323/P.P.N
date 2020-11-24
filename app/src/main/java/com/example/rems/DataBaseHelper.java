@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -94,7 +95,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         onCreate(db);// Create tables again
     }
 
-//region methods
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        // Enable foreign key constraints
+        db.execSQL("PRAGMA foreign_keys=ON;");
+    }
+
+    //region methods
 
     public int getMaxIdOfActivityTask() { //getting the latest id that added of the latest ActivityTask that was added to the database
         SQLiteDatabase db = this.getReadableDatabase();//open the database for read\write
@@ -469,7 +477,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("Repetition", activityTask.getRepetition().toString());//inset the new repetition for column @Repetition
             values.put("Category", activityTask.getCategory().toString());//inset the new category for column @Category
             values.put("Priority", activityTask.getPriority());//inset the new priority for column @Priority
+
             db.update("ActivityTasks ", values, "ActivityTaskID = " + ActivityTaskID, null);//TODO: need to make the ID getter when taken from DB if we want to replace the int @ActivityTaskID
+            for(SubActivity subActivity:activityTask.getSubActivities()){
+                    insertSubActivity(subActivity,ActivityTaskID);
+            }
+
+
             db.close();
             return true;
         }

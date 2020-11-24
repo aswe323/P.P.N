@@ -190,7 +190,6 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                         Toast.makeText(getActivity(), "updated: "+reminderContent, Toast.LENGTH_SHORT).show();
                 }
 
-                break;
             case R.id.ButtonCancelReminder:
                 //region
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -295,10 +294,8 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
     public static void editingReminder(ActivityTask activityTask){ //this function is called before the fragment is presented,it's inserting the data of the needed ActivityTask to the elements TODO:add to the book
         isEditFlag=true; //turn edit flag to true so we update instead of insert to Database
         EditedActivityTask=activityTask;//save the ActivityTask to sed for editing in ActivityTasksUsed.editActivityTask();
-        subActivitiesArrayList=activityTask.getSubActivities();
+        //subActivitiesArrayList=activityTask.getSubActivities(); used to get all existing SubActivities //TODO:create some sort of check if in DB has already same SubActivity (as if its has same content and notify user
 
-        ///
-        int idCheck=activityTask.getActivityTaskID();
         //setting all the data to the elements
         discription.setText(activityTask.getContent());
         masloCategory.setSelection(activityTask.getCategory().ordinal());
