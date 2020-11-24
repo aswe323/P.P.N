@@ -190,7 +190,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                         Toast.makeText(getActivity(), "updated: "+reminderContent, Toast.LENGTH_SHORT).show();
                 }
 
-
+                break;
             case R.id.ButtonCancelReminder:
                 //region
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
