@@ -60,8 +60,7 @@ public class RemindersColletion extends Fragment implements View.OnClickListener
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_reminders_colletion, container, false);
 
@@ -95,11 +94,14 @@ public class RemindersColletion extends Fragment implements View.OnClickListener
         switch (v.getId()) {
 
             case R.id.buttonReturnToMainFragment:
+                //region
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 Main_Activity_fragment maf = new Main_Activity_fragment();
                 ft.replace(R.id.fragment_reminders_colletion, maf).commit();
 
                 break;
+
+            //endregion
 
         }
 
