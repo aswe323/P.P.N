@@ -107,10 +107,19 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        String timeChecker="";
                         if(hourOfDay<10)
-                            settimetext.setText("0"+hourOfDay+":"+minute);
+                            timeChecker+="0"+hourOfDay+":";
+                            //settimetext.setText("0"+hourOfDay+":"+minute);
                         else
-                            settimetext.setText(hourOfDay+":"+minute);
+                            timeChecker+=hourOfDay+":";
+                            //settimetext.setText(hourOfDay+":"+minute);
+                        if(minute<10)
+                            timeChecker+="0"+minute;
+                        else
+                            timeChecker+=minute;
+
+                        settimetext.setText(timeChecker);
                     }
                 },hour,minute,android.text.format.DateFormat.is24HourFormat(getContext()));
                 timePickerDialog.show();
@@ -202,7 +211,10 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                 subActivityDialogBox.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         subactivitytext = inputForSubActivityDialog.getText().toString();
-                        subActivitiesArrayList.add(new SubActivity(0,0,subactivitytext));
+                        if(!isEditFlag)
+                            subActivitiesArrayList.add(new SubActivity(0,0,subactivitytext));
+                        else
+                            subActivitiesArrayList.add(new SubActivity(0,EditedActivityTask.getActivityTaskID(),subactivitytext));
                         Toast.makeText(getActivity(), "sub reminder was added: "+subactivitytext, Toast.LENGTH_SHORT).show();
                         return;
                     }

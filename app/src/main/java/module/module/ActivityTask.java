@@ -41,7 +41,10 @@ public class ActivityTask {
         this.content = content;
         this.timeOfActivity = timeOfActivity;
         this.subActivities = subActivities;
-        this.setActivityTaskID(activityTaskID);
+        if(activityTaskID!=0) //if wasn't given id it's mean we created new reminder and need to asign it with new id in else
+            this.activityTaskID=activityTaskID;
+        else
+            this.setActivityTaskID(activityTaskID);
     }
 
     //this constructor is used when the system creates an ActivityTask by itself. notice the lack of Date. this ActivityTask should  be passed to AI_Assignment.assignDate method.
