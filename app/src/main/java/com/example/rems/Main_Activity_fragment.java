@@ -75,7 +75,13 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
         switch (view.getId()) {//recognizing what button was pushed
 
             case R.id.buttonAddNewReminder:
-                //region
+
+                //disable all buttons of edit/delete
+                for(ImageButton imageButton:editReminderButton)
+                    imageButton.setEnabled(false);
+                for(ImageButton imageButton:deleteReminderButton)
+                    imageButton.setEnabled(false);
+
                 edit_reminder_fragment erf = new edit_reminder_fragment();//creating the fragment to put insted
                 ft.replace(R.id.main_Activity_fragment, erf).commit();//making the transaction
 
@@ -91,7 +97,6 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
 
                 Toast.makeText(getActivity(), "event launched", Toast.LENGTH_SHORT).show();//notifying the event was called
                 break;
-            //endregion
             default:
                 Toast.makeText(getActivity(), "event launched", Toast.LENGTH_SHORT).show();//notifying the event was called
                 break;

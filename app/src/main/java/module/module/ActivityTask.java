@@ -66,7 +66,7 @@ public class ActivityTask {
         //timeOfActivity will be assigned in a AI_Assignment method.
         this.subActivities = subActivities;
 
-        this.setActivityTaskID(DataBaseHelper.getInstance(null).getMaxIdOfActivityTask() + 1);
+        this.setActivityTaskID(DataBaseHelper.getInstance(null).getMaxIdOfActivityTask());
 
 
     }

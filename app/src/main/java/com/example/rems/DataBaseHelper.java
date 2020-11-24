@@ -69,7 +69,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "SubActivityID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "ActivityTaskID INTEGER," +
                 "Content TEXT," +
-                "FOREIGN KEY(ActivityTaskID) REFERENCES ActivityTasks(ActivityTaskID)" +
+                "FOREIGN KEY(ActivityTaskID) REFERENCES ActivityTasks(ActivityTaskID) ON DELETE CASCADE" +
                 ")");
 
         //creating table "WordPriority" with columns Word,Priority
