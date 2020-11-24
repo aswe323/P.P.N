@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.ContactsContract;
@@ -65,6 +66,8 @@ public class RemindersColletion extends Fragment {
 
         RecyclerView recyclerView = view.findViewById((R.id.recyclerView));
 
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         //init the data (reminders)
 
         ArrayList<ActivityTask> dataSet = db.queryForAllActivityTasks();

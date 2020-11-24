@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import module.ActivityTask;
+import module.ActivityTasksUsed;
 
 public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerViewCustomAdapter.ViewHolder> {
 
@@ -35,7 +36,7 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.getTextView().setText(myActivityTasks.get(position).getContent());
-
+        holder.setActivityTaskPointer(myActivityTasks.get(position));
     }
 
     @Override
@@ -46,29 +47,35 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
 
+        private ActivityTask activityTaskPointer;
+
+        public void setActivityTaskPointer(ActivityTask activityTaskPointer) {
+            this.activityTaskPointer = activityTaskPointer;
+        }
+
         public ViewHolder(View v) {
             super(v);
 
 
             // set event listeners here?
-            v.findViewById(R.id.deleteButton).setOnClickListener(new View.OnClickListener() {
-
+            v.findViewById(R.id.buttonDelete).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO: implament delete functionality
+                    ActivityTasksUsed.removeActivityTask(activityTaskPointer);
                 }
             });
 
-            v.findViewById(R.id.editButton).setOnClickListener(new View.OnClickListener() {
-
+            v.findViewById(R.id.buttonEdit).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO implament edit functionality
+                    //TODO: @Lior implament edit function.
                 }
             });
+
 
             textView = v.findViewById(R.id.contentDisplay);
         }
+
 
         public TextView getTextView() {
             return this.textView;
