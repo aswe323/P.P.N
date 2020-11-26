@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <TextView
+        android:id="@+id/textActivityContent"
+        android:layout_width="379dp"
+        android:layout_height="204dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="96dp"
+        android:text="textActivityContent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textDateAndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="16dp"
+        android:text="textDateAndTime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textMasloCategory"
+        android:layout_width="130dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="textMasloCategory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textDateAndTime" />
+
+    <TextView
+        android:id="@+id/textRepeat"
+        android:layout_width="118dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="32dp"
+        android:text="textRepeat"
+        app:layout_constraintStart_toEndOf="@+id/textMasloCategory"
+        app:layout_constraintTop_toBottomOf="@+id/textDateAndTime" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSubActivityDisplayer"
+        android:layout_width="347dp"
+        android:layout_height="167dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/textActivityContent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/recyclerViewSubActivityDisplayerTitle"
+        android:layout_width="101dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="4dp"
+        android:text="SubActivitys"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewSubActivityDisplayer"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonEditDisplayedReminder"
+        android:layout_width="303dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginBottom="16dp"
+        android:text="Edit"
+        android:backgroundTint="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

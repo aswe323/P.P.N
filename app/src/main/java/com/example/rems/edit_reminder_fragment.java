@@ -270,20 +270,17 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         buttonAddSubActivity.setOnClickListener(this);
 
         setdatetext = view.findViewById(R.id.SetDateTextView);
-        dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month += 1;
-                if(month<10)
-                    date = year + "-0" + month;
-                else
-                    date = year + "-" + month;
-                if(dayOfMonth<10)
-                    date+="-0" + dayOfMonth;
-                else
-                    date+="-" + dayOfMonth;
-                setdatetext.setText(date);
-            }
+        dateSetListener = (view1, year, month, dayOfMonth) -> {
+            month += 1;
+            if (month < 10)
+                date = year + "-0" + month;
+            else
+                date = year + "-" + month;
+            if (dayOfMonth < 10)
+                date += "-0" + dayOfMonth;
+            else
+                date += "-" + dayOfMonth;
+            setdatetext.setText(date);
         };
         setdatetext.setOnClickListener(this);
 
