@@ -14,7 +14,7 @@ import module.ActivityTask;
 import module.SubActivity;
 
 public class RecyclerViewSubActivityCustomAdapter extends RecyclerView.Adapter<RecyclerViewSubActivityCustomAdapter.ViewHolder> {
-
+//TODO: add to book
 
     ArrayList<SubActivity> mySubActivities;
 

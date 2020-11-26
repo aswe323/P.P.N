@@ -23,6 +23,8 @@ import module.SubActivity;
  */
 public class activity_display extends Fragment {
 
+    //TODO: add to book
+
     private static TextView dateAndTime, repetitionDisplay, masloCategoryDisplay, contentDisplay;
     private static RecyclerView subAcRecyclerView;
 
