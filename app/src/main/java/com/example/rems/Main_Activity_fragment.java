@@ -31,6 +31,7 @@ import module.ActivityTasksUsed;
  */
 public class Main_Activity_fragment extends Fragment implements View.OnClickListener {
 
+    //region members
     private ScrollView scrollView;
     private ArrayList<ActivityTask> topActivities;
     private LinearLayout hoster; //can't add more then one layout to ScrollView so the hoster will hold all the data lines to print (like a collection for layouts).
@@ -39,6 +40,7 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
     private ArrayList<ImageButton> deleteReminderButton;
     private ArrayList<ImageButton> editReminderButton;
     private ArrayList<TextView> reminderText;
+    //endregion
 
     public Main_Activity_fragment() {
         // Required empty public constructor
@@ -59,6 +61,7 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
     }
 
 
+    //region methods
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,12 +112,9 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {//TODO: what exactly is the onCreateView ment for?
 
         View view = inflater.inflate(R.layout.fragment_main__activity_fragment, container, false);
-        Button buttonAddNewReminder = view.findViewById(R.id.buttonAddNewReminder); //button to move to the adding reminder layout
-        buttonAddNewReminder.setOnClickListener(this);
 
-        Button buttonShowAllReminders = view.findViewById(R.id.buttonShowAllReminders);
-        buttonShowAllReminders.setOnClickListener(this);
 
+        //region setup and display of activities
         scrollView = view.findViewById(R.id.scrollViewMain);
         hoster = new LinearLayout(getActivity());
         hoster.setOrientation(LinearLayout.VERTICAL);
@@ -128,46 +128,57 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
             addWordToScrollViewFuture(taskDisplay);
 
         scrollView.addView(hoster);
+        //endregion
 
 
+        //region button click listeners
         for(ImageButton imageButton:editReminderButton){ //create the functionality to each edit button
             final ImageButton Editbtn=imageButton;
             Editbtn.setId(editReminderButton.indexOf(imageButton));
 
-            Editbtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    caller(topActivities.get(Editbtn.getId()));
-                }
-            });
+            Editbtn.setOnClickListener(view1 -> caller(topActivities.get(Editbtn.getId())));
         }
 
-        for(ImageButton imageButton:deleteReminderButton){ //create the functionality to each delete button
-            final ImageButton Editbtn=imageButton;
+        for(ImageButton imageButton:deleteReminderButton) { //create the functionality to each delete button
+            final ImageButton Editbtn = imageButton;
             Editbtn.setId(deleteReminderButton.indexOf(imageButton));
 
-            Editbtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String reminderText=topActivities.get(Editbtn.getId()).getContent();
-                    if(ActivityTasksUsed.removeActivityTask(topActivities.get(Editbtn.getId()))) {
-                        Toast.makeText(getActivity(), "deleted " + reminderText, Toast.LENGTH_SHORT).show();
-                        //reload the fragment to update the reminder list
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        Main_Activity_fragment erf = new Main_Activity_fragment();
-                        ft.replace(R.id.main_Activity_fragment, erf).commit();
-                    }
+            Editbtn.setOnClickListener(view12 -> {
+                String reminderText = topActivities.get(Editbtn.getId()).getContent();
+                if (ActivityTasksUsed.removeActivityTask(topActivities.get(Editbtn.getId()))) {
+                    Toast.makeText(getActivity(), "deleted " + reminderText, Toast.LENGTH_SHORT).show();
+                    //reload the fragment to update the reminder list
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    Main_Activity_fragment erf = new Main_Activity_fragment();
+                    ft.replace(R.id.main_Activity_fragment, erf).commit();
                 }
             });
         }
+
+
+        Button buttonAddNewReminder = view.findViewById(R.id.buttonAddNewReminder); //button to move to the adding reminder layout
+        buttonAddNewReminder.setOnClickListener(this);
+
+        Button buttonShowAllReminders = view.findViewById(R.id.buttonShowAllReminders);
+        buttonShowAllReminders.setOnClickListener(this);
+        //endregion
+
 
         return view;
 
 
         //return inflater.inflate(R.layout.fragment_main__activity_fragment, container, false);
     }
+
+    /**
+     * this method is privet and called only by <b><i>onCreateView</i></b> method.<br>
+     * this method is dynamically creating in the UI the text and the delete\edit buttons of the activityTask.
+     *
+     * @param activityTask contain the relevant info for the text
+     * @return void
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void caller(ActivityTask activityTask){ //calls the editingReminder method from edit_reminder_fragment to open the edit fragment with the info of our reminder we want to edit TODO:add to the book
+    private void caller(ActivityTask activityTask) { //calls the editingReminder method from edit_reminder_fragment to open the edit fragment with the info of our reminder we want to edit TODO:add to the book
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         edit_reminder_fragment erf = new edit_reminder_fragment();//creating the fragment to put instead
         ft.replace(R.id.main_Activity_fragment, erf).commit();//making the transaction
@@ -175,12 +186,6 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
         edit_reminder_fragment.editingReminder(activityTask);
     }
 
-    /**
-     *  this method is privet and called only by <b><i>onCreateView</i></b> method.<br>
-     *  this method is dynamically creating in the UI the text and the delete\edit buttons of the activityTask.
-     *  @param activityTask contain the relevant info for the text
-     *  @return void
-     * */
 
     /*     genera UI element hierarchy
     *
@@ -239,5 +244,6 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
         }
 
     }
+    //endregion
 
 }
