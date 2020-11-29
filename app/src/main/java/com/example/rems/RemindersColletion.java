@@ -26,7 +26,7 @@ import module.ActivityTask;
  * Use the {@link RemindersColletion#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RemindersColletion extends Fragment implements View.OnClickListener {
+public class RemindersColletion extends Fragment implements View.OnClickListener {//show all the activities and search in them
 
     private static DataBaseHelper db = DataBaseHelper.getInstance(null);
 

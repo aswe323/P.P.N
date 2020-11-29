@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import module.ActivityTask;
 import module.ActivityTasksUsed;
 
-public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerViewCustomAdapter.ViewHolder> {
+public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerViewCustomAdapter.ViewHolder> {//used for the recyclerView to get and show the data
 
 
     private ArrayList<ActivityTask> myActivityTasks;

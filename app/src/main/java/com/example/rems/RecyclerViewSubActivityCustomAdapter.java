@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import module.ActivityTask;
 import module.SubActivity;
 
-public class RecyclerViewSubActivityCustomAdapter extends RecyclerView.Adapter<RecyclerViewSubActivityCustomAdapter.ViewHolder> {
+public class RecyclerViewSubActivityCustomAdapter extends RecyclerView.Adapter<RecyclerViewSubActivityCustomAdapter.ViewHolder> {//used for the recyclerView to get and show the data
 //TODO: add to book
 
     ArrayList<SubActivity> mySubActivities;

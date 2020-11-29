@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class customAdapter extends FragmentStateAdapter {
+public class customAdapter extends FragmentStateAdapter { //control the viewPager2
 
 
     public customAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {

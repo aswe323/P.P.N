@@ -4,14 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.AlarmManager;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -113,10 +119,11 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                /*if(tableLayout.getSelectedTabPosition()==1){
-                    ActivityTask_ArrayList=db.queryForExactActivityTask(0,0,null,"tester",null,null);
+                if(tableLayout.getSelectedTabPosition()==1){
+                    scheduleNotification(getApplicationContext(),5000,1);
+                    Toast.makeText(MainActivity.this, "notofication in 10 seconds", Toast.LENGTH_SHORT).show();
                 }
-                if(tableLayout.getSelectedTabPosition()==2)
+                /*if(tableLayout.getSelectedTabPosition()==2)
                     Toast.makeText(MainActivity.this, ""+ActivityTask_ArrayList.get(0).getContent()+"\n"+ActivityTask_ArrayList.get(0).getRepetition(), Toast.LENGTH_SHORT).show();*/
             }
 
@@ -130,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
 
         //endregion
         //region general testing
@@ -183,6 +192,30 @@ public class MainActivity extends AppCompatActivity {
 
 
         //endregion
+    }
+
+    public void scheduleNotification(Context context, long delay, int notificationId) {//delay is after how much time(in millis) from current time you want to schedule the notification
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "M_CH_ID")
+                .setContentTitle("title")
+                .setContentText("content")
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_action_delete)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent activity = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        builder.setContentIntent(activity);
+
+        Notification notification = builder.build();
+
+        Intent notificationIntent = new Intent(context, NotificationSystem.class);
+        notificationIntent.putExtra(NotificationSystem.NOTIFICATION_ID, notificationId);
+        notificationIntent.putExtra(NotificationSystem.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
     }
 
 

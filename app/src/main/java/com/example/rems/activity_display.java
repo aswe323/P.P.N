@@ -21,7 +21,7 @@ import module.SubActivity;
  * Use the {@link activity_display#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class activity_display extends Fragment {
+public class activity_display extends Fragment {//show all the data of a specific ActivityTask
 
     //TODO: add to book
 
