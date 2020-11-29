@@ -75,148 +75,34 @@ public class MainActivity extends AppCompatActivity {
         final ViewPager2 viewPager = findViewById(R.id.ViewPager);
         viewPager.setAdapter(new customAdapter(getSupportFragmentManager(), getLifecycle()));
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tableLayout, viewPager, true,
-                new TabLayoutMediator.TabConfigurationStrategy() {
-                    @Override
-                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                        switch (position) {
-                            case 0:
-                                tab.setText("Home");
-                                break;
-                            case 1:
-                                tab.setText("Word Management");
-                                break;
-                            case 2:
-                                tab.setText("Group And Points");
-                                break;
-                            case 3:
-                                tab.setText("past Reminders");
-                                break;
-                            case 4:
-                                tab.setText("ALL Reminders");
-                                break;
-                            default:
-                                return;
-                        }
+                (tab, position) -> {
+                    switch (position) {
+                        case 0:
+                            tab.setText("Home");
+                            break;
+                        case 1:
+                            tab.setText("Word Management");
+                            break;
+                        case 2:
+                            tab.setText("Group And Points");
+                            break;
+                        case 3:
+                            tab.setText("ALL Reminders");
+                            break;
+                        case 4:
+                            tab.setText("Shouldn't Display");
+                            break;
+                        default:
+                            return;
                     }
                 }
         );
         tabLayoutMediator.attach();
 
-        /***********************!!!!!!!!!!!!!!!!**********************/
-        //SubActivity subActivity=new SubActivity(DataBaseHelper.getMaxIdOfActivityTask())
-        /***********************!!!!!!!!!!!!!!!!**********************/
-        //region legacy viewpager integration
 
-
-        //region ViewPager and PagerAdapter instantiation
-        /*final ViewPager viewPager = findViewById(R.id.ViewPager);
-        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tableLayout.getTabCount());
-        viewPager.setAdapter(pagerAdapter);*/
-        //endregion
-        //region event management (onTabSelected)
-
-        tableLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                if(tableLayout.getSelectedTabPosition()==1){
-                    scheduleNotification(getApplicationContext(),5000,1);
-                    Toast.makeText(MainActivity.this, "notofication in 10 seconds", Toast.LENGTH_SHORT).show();
-                }
-                /*if(tableLayout.getSelectedTabPosition()==2)
-                    Toast.makeText(MainActivity.this, ""+ActivityTask_ArrayList.get(0).getContent()+"\n"+ActivityTask_ArrayList.get(0).getRepetition(), Toast.LENGTH_SHORT).show();*/
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-
-
-        //endregion
-        //region general testing
-        /*
-                //check 1 insert
-                if(tableLayout.getSelectedTabPosition()==1){
-                    DataBaseHelper db=DataBaseHelper.getInstance(getApplicationContext());
-                    //everybody will have id 1 when using getMaxIdOfActivityTask() because we didn't added the activitytask yet into the database
-                    activityTask1=new ActivityTask(1,20,MasloCategorys.Esteem,Repetition.no_repeating,"testing 1234",LocalDateTime.of(2020,6,14,12,25),null);
-                    activityTask2=new ActivityTask(2,69,MasloCategorys.none,Repetition.every_24_hours,"1234 test",LocalDateTime.of(2020,10,10,22,8),null);
-                    activityTask3=new ActivityTask(3,420,MasloCategorys.Physiological_needs,Repetition.every_month,"help to paint the wall",LocalDateTime.of(2020,4,20,0,10),null);
-                    activityTask4=new ActivityTask(4,37,MasloCategorys.none,Repetition.no_repeating,"testing 1234",LocalDateTime.of(2021,3,22,9,45),null);
-                    activityTask5=new ActivityTask(5,20,MasloCategorys.Love_And_Belonging,Repetition.no_repeating,"i need to eat the icecreame",LocalDateTime.of(2020,12,25,16,0),null);
-                    ActivityTask_ArrayList=new ArrayList<>();
-                    ActivityTask_ArrayList.add(activityTask1);
-                    ActivityTask_ArrayList.add(activityTask2);
-                    ActivityTask_ArrayList.add(activityTask3);
-                    ActivityTask_ArrayList.add(activityTask4);
-                    ActivityTask_ArrayList.add(activityTask5);
-                    for (ActivityTask activitytaskiterator:ActivityTask_ArrayList)
-                        if(ActivityTasksUsed.addActivityTask(activitytaskiterator))
-                            Toast.makeText(MainActivity.this, "inserted Activity with ID: "+activitytaskiterator.getActivityTaskID(), Toast.LENGTH_SHORT).show();
-                    if(ActivityTasksUsed.addActivityTask(activityTask1))
-                        Toast.makeText(MainActivity.this, "inserted Activity with ID: "+activityTask1.getActivityTaskID(), Toast.LENGTH_SHORT).show();
-                    else
-                        Toast.makeText(MainActivity.this, "the Activity with ID: "+activityTask1.getActivityTaskID()+" is already existing in the fricking db", Toast.LENGTH_SHORT).show();
-                }
-                //check 2,query to get the map
-                if(tableLayout.getSelectedTabPosition()==2){
-
-                }
-                //check 3,update the priority
-                if(tableLayout.getSelectedTabPosition()==3){
-
-                }
-                //check 4,update the word
-                if(tableLayout.getSelectedTabPosition()==0){
-
-                }
-                //check 5,delete the word
-
-
-                if(tableLayout.getSelectedTabPosition()==1) {
-                    db.insertPriorityWord("test1", 100);
-                    db.insertPriorityWord("test2", 200);
-                    db.insertPriorityWord("test3", 50);
-                }
-
-                //Toast.makeText(MainActivity.this, ""+tableLayout.getSelectedTabPosition(), Toast.LENGTH_SHORT).show();*/
-        //endregion
-
-
-        //endregion
     }
 
-    public void scheduleNotification(Context context, long delay, int notificationId) {//delay is after how much time(in millis) from current time you want to schedule the notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "M_CH_ID")
-                .setContentTitle("title")
-                .setContentText("content")
-                .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ic_action_delete)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
-        Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent activity = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        builder.setContentIntent(activity);
-
-        Notification notification = builder.build();
-
-        Intent notificationIntent = new Intent(context, NotificationSystem.class);
-        notificationIntent.putExtra(NotificationSystem.NOTIFICATION_ID, notificationId);
-        notificationIntent.putExtra(NotificationSystem.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        long futureInMillis = SystemClock.elapsedRealtime() + delay;
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
-    }
 
 
 

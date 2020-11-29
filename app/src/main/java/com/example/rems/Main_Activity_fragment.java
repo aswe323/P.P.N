@@ -78,8 +78,7 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
         switch (view.getId()) {//recognizing what button was pushed
 
             case R.id.buttonAddNewReminder:
-
-                //disable all buttons of edit/delete
+                //region disable all buttons of edit/delete
                 for(ImageButton imageButton:editReminderButton)
                     imageButton.setEnabled(false);
                 for(ImageButton imageButton:deleteReminderButton)
@@ -92,14 +91,14 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
 
                 break;
             //endregion
-
-            case R.id.buttonShowAllReminders:
-                //region
+/*            case R.id.buttonShowAllReminders:
+                //region move to ReminderCollection
                 RemindersColletion rc = new RemindersColletion();//creating the fragment to put insted
                 ft.replace(R.id.main_Activity_fragment, rc).commit();//making the transaction
 
                 Toast.makeText(getActivity(), "event launched", Toast.LENGTH_SHORT).show();//notifying the event was called
                 break;
+                //endregion*/
             default:
                 Toast.makeText(getActivity(), "event launched", Toast.LENGTH_SHORT).show();//notifying the event was called
                 break;
@@ -159,8 +158,8 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
         Button buttonAddNewReminder = view.findViewById(R.id.buttonAddNewReminder); //button to move to the adding reminder layout
         buttonAddNewReminder.setOnClickListener(this);
 
-        Button buttonShowAllReminders = view.findViewById(R.id.buttonShowAllReminders);
-        buttonShowAllReminders.setOnClickListener(this);
+/*        Button buttonShowAllReminders = view.findViewById(R.id.buttonShowAllReminders);
+        buttonShowAllReminders.setOnClickListener(this);*/
         //endregion
 
 

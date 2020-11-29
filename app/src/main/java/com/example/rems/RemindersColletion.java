@@ -93,7 +93,7 @@ public class RemindersColletion extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.buttonReturnToMainFragment:
+           /* case R.id.buttonReturnToMainFragment:
                 //region
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 Main_Activity_fragment maf = new Main_Activity_fragment();
@@ -101,7 +101,7 @@ public class RemindersColletion extends Fragment implements View.OnClickListener
 
                 break;
 
-            //endregion
+            //endregion*/
 
         }
 

@@ -24,7 +24,7 @@ public class customAdapter extends FragmentStateAdapter { //control the viewPage
             case 2:
                 return new groups_and_points_fragment();
             case 3:
-                return new Fragment_Past_Reminders();
+                return new RemindersColletion();
             case 4:
                 return new edit_reminder_fragment();
             default:
