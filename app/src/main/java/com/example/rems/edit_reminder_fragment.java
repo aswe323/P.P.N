@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -26,6 +27,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
@@ -46,14 +49,16 @@ import module.SubActivity;
  */
 public class edit_reminder_fragment extends Fragment implements View.OnClickListener {
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    //region the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static int returnToID = R.id.main_Activity_fragment;
+
     private Switch automaticAssignment;
     private static Spinner masloCategory;
     private static Spinner repetition;
     private static EditText discription;
     private static DateTimeFormatter formatter;
     private LocalDateTime TextToDate;
-    private String date="";
+    private String date = "";
     private static TextView settimetext;
     private static TextView setdatetext;
     private Button buttonIdentifier;
@@ -68,6 +73,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
     private static boolean isEditFlag=false; //if i opened a reminder from my "next reminders" list in the home button flag will be true and it's means we need to call Update query and not inset
     private static ActivityTask EditedActivityTask;
     private static Context deleteinProduction;
+    //endregion
 
     public edit_reminder_fragment() {
         // Required empty public constructor
@@ -79,10 +85,10 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
      *
      * @return A new instance of fragment edit_reminder_fragment.
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static edit_reminder_fragment newInstance() {
         edit_reminder_fragment fragment = new edit_reminder_fragment();
         Bundle args = new Bundle();
-
         fragment.setArguments(args);
         return fragment;
     }
@@ -182,20 +188,18 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                     EditedActivityTask.setRepetition(Repetition.valueOf(repetition.getSelectedItem().toString()));
                     EditedActivityTask.setContent(discription.getText().toString());
                     formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                    String datemaker=""+setdatetext.getText()+" "+settimetext.getText();
+                    String datemaker = "" + setdatetext.getText() + " " + settimetext.getText();
                     TextToDate = LocalDateTime.parse(datemaker, formatter);
                     EditedActivityTask.setTimeOfActivity(TextToDate);
                     EditedActivityTask.setSubActivities(subActivitiesArrayList);
-                    if(ActivityTasksUsed.editActivityTask(EditedActivityTask))
-                        Toast.makeText(getActivity(), "updated: "+reminderContent, Toast.LENGTH_SHORT).show();
+                    if (ActivityTasksUsed.editActivityTask(EditedActivityTask))
+                        Toast.makeText(getActivity(), "updated: " + reminderContent, Toast.LENGTH_SHORT).show();
                 }
 
             case R.id.ButtonCancelReminder:
                 //region
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                Main_Activity_fragment maf = new Main_Activity_fragment();
-                ft.replace(R.id.fragment_edit_reminder, maf).commit();
-
+                returnBack();
+                setReturnToID(R.id.main_Activity_fragment);
                 break;
 
             //endregion
@@ -240,14 +244,44 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
 
     }
 
+    public void returnBack() {//this method was seperated from onClick to allow overriding the destination of the return button.
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment destinationFragment = new Main_Activity_fragment();
+
+        switch (returnToID) {
+            case R.id.fragment_reminders_colletion:
+                destinationFragment = new RemindersColletion();
+                break;
+            case R.id.main_Activity_fragment:
+                destinationFragment = new Main_Activity_fragment();
+                break;
+
+
+        }
+        ft.replace(R.id.fragment_edit_reminder, destinationFragment).commit();
+
+
+    }
+
+    ;
+
+    /**
+     * used to set the return destination of the fragment after it is being closed. will be reset to main_activity_fragment after closed.
+     *
+     * @param id
+     */
+    public static void setReturnToID(@IdRes int id) {
+        returnToID = id;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_edit_reminder_fragment, container, false);
         View view = inflater.inflate(R.layout.fragment_edit_reminder_fragment, container, false);
-        deleteinProduction=getActivity();
-        isEditFlag=false;
+        deleteinProduction = getActivity();
+        isEditFlag = false;
 
         automaticAssignment = view.findViewById(R.id.switchForAi);
         masloCategory = view.findViewById(R.id.spinnerForCategory);
@@ -293,7 +327,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         EditedActivityTask=activityTask;//save the ActivityTask to sed for editing in ActivityTasksUsed.editActivityTask();
         //subActivitiesArrayList=activityTask.getSubActivities(); used to get all existing SubActivities //TODO:create some sort of check if in DB has already same SubActivity (as if its has same content and notify user
 
-        //setting all the data to the elements
+        //setting all the data to the elementsString DateInFormat=formatter.format(activityTask.getTimeOfActivity());
         discription.setText(activityTask.getContent());
         masloCategory.setSelection(activityTask.getCategory().ordinal());
         repetition.setSelection(activityTask.getRepetition().ordinal());
@@ -303,5 +337,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateInFormat=formatter.format(activityTask.getTimeOfActivity());
         setdatetext.setText(DateInFormat);
+
+
     }
 }

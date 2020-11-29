@@ -31,7 +31,7 @@
             android:id="@+id/action_main_Activity_fragment_to_fragment_Past_Reminders"
             app:destination="@id/fragment_Past_Reminders" />
         <action
-            android:id="@+id/action_main_Activity_fragment_to_remindersColletion"
+            android:id="@+id/action_main_Activity_fragment_to_remindersColletion3"
             app:destination="@id/remindersColletion" />
     </fragment>
     <fragment
@@ -75,7 +75,7 @@
         android:label="fragment_reminders_colletion"
         tools:layout="@layout/fragment_reminders_colletion">
         <action
-            android:id="@+id/action_remindersColletion_to_main_Activity_fragment"
-            app:destination="@id/main_Activity_fragment" />
+            android:id="@+id/action_remindersColletion_to_edit_reminder_fragment3"
+            app:destination="@id/edit_reminder_fragment" />
     </fragment>
 </navigation>

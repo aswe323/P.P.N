@@ -1,16 +1,27 @@
 package com.example.rems;
 
 
+import android.app.FragmentManager;
+import android.app.TabActivity;
+import android.content.Context;
+import android.os.Build;
+import android.os.Bundle;
 import android.service.autofill.TextValueSanitizer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
@@ -32,25 +43,26 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
         private final TextView textView;//a pointer to the UI element in the xml file.
         private ActivityTask activityTaskPointer;// a pointer to the data point this viewHolder is referencing. required for the event listeners to know what to do with each respected button.
 
-
+        @RequiresApi(api = Build.VERSION_CODES.O)
         public ViewHolder(View v) { // the constructor for the class.
             super(v);
             //region eventListeners
-            v.findViewById(R.id.buttonDelete).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ActivityTasksUsed.removeActivityTask(activityTaskPointer);
-                }
-            });
+            v.findViewById(R.id.buttonDelete).setOnClickListener(v1 -> ActivityTasksUsed.removeActivityTask(activityTaskPointer));
 
-            v.findViewById(R.id.buttonEdit).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //TODO: @Lior implament edit function.
-                }
+            v.findViewById(R.id.buttonEdit).setOnClickListener(v12 -> {
+
+                FragmentTransaction ft = ((FragmentActivity) v12.getContext()).getSupportFragmentManager().beginTransaction();
+
+                edit_reminder_fragment erf = new edit_reminder_fragment();//creating the fragment to put instead
+                edit_reminder_fragment.setReturnToID(R.id.fragment_reminders_colletion);
+                ft.replace(R.id.fragment_reminders_colletion, erf).commit();
+                ((FragmentActivity) v12.getContext()).getSupportFragmentManager().executePendingTransactions();
+                edit_reminder_fragment.editingReminder(activityTaskPointer);
+
+
             });
-            //endregion
             textView = v.findViewById(R.id.contentDisplay);//setting the textView member to the textView UI element in the xml.
+            //endregion
         }
 
         public void setActivityTaskPointer(ActivityTask activityTaskPointer) {
@@ -63,6 +75,7 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
     }//inner static class that defines the ViewHolder that will contain the data.
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

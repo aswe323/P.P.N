@@ -1,5 +1,6 @@
 package com.example.rems;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -29,22 +30,15 @@ import module.ActivityTask;
 public class RemindersColletion extends Fragment implements View.OnClickListener {//show all the activities and search in them
 
     private static DataBaseHelper db = DataBaseHelper.getInstance(null);
+    private Context context;
 
 
     public RemindersColletion() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RemindersColletion.
-     */
     // TODO: Rename and change types and number of parameters
-    public static RemindersColletion newInstance(String param1, String param2) {
+    public static RemindersColletion newInstance() {
         RemindersColletion fragment = new RemindersColletion();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -93,15 +87,6 @@ public class RemindersColletion extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
 
-           /* case R.id.buttonReturnToMainFragment:
-                //region
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                Main_Activity_fragment maf = new Main_Activity_fragment();
-                ft.replace(R.id.fragment_reminders_colletion, maf).commit();
-
-                break;
-
-            //endregion*/
 
         }
 
