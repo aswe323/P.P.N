@@ -69,7 +69,7 @@ public class ActivityTasksUsed {
             }
         }
 
-        if (returned == null) {
+        if (returned.isEmpty()) {
             returned = db.queryForExactActivityTask(0, priority, localDateTime, content, repetition, masloCategorys);
             usedTasks.addAll(returned);
         }

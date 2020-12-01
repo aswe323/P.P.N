@@ -10,11 +10,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -24,22 +22,27 @@ import module.ActivityTask;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link RemindersColletion#newInstance} factory method to
+ * Use the {@link RemindersCollection#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RemindersColletion extends Fragment implements View.OnClickListener {//show all the activities and search in them
+public class RemindersCollection extends Fragment implements View.OnClickListener {//show all the activities and search in them
 
     private static DataBaseHelper db = DataBaseHelper.getInstance(null);
     private Context context;
 
+    private static boolean externalDataSet = false;
+    private static ArrayList<ActivityTask> mdataSet = new ArrayList<>();
 
-    public RemindersColletion() {
+    private FloatingActionButton buttonSearchReminders;
+
+
+    public RemindersCollection() {
         // Required empty public constructor
     }
 
     // TODO: Rename and change types and number of parameters
-    public static RemindersColletion newInstance() {
-        RemindersColletion fragment = new RemindersColletion();
+    public static RemindersCollection newInstance() {
+        RemindersCollection fragment = new RemindersCollection();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -58,8 +61,6 @@ public class RemindersColletion extends Fragment implements View.OnClickListener
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_reminders_colletion, container, false);
 
-        FloatingActionButton buttonReturnToMainFragment = view.findViewById(R.id.buttonReturnToMainFragment);
-        buttonReturnToMainFragment.setOnClickListener(this);
         //get hold of the RecyclerView element
 
         RecyclerView recyclerView = view.findViewById((R.id.recyclerView));
@@ -68,27 +69,36 @@ public class RemindersColletion extends Fragment implements View.OnClickListener
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         //init the data (reminders)
 
-        ArrayList<ActivityTask> dataSet = db.queryForAllActivityTasks();
+        mdataSet = externalDataSet ? mdataSet : db.queryForAllActivityTasks();
+        externalDataSet = false;
 
 
         //create the adapter with the data
 
-        RecyclerViewCustomAdapter adapter = new RecyclerViewCustomAdapter(dataSet);
+        RecyclerViewCustomAdapter adapter = new RecyclerViewCustomAdapter(mdataSet);
 
         //attach the RecyclerView element to the adapter(setAdapter)
 
         recyclerView.setAdapter(adapter);
 
+        buttonSearchReminders = view.findViewById(R.id.buttonSearchReminders);
+        buttonSearchReminders.setOnClickListener(v -> {
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            SearchFragment sf = new SearchFragment();
+            ft.replace(R.id.fragment_reminders_colletion, sf).commit();
+        });
 
         return view;
     }
 
+    public static void setDataSet(ArrayList<ActivityTask> dataSet) {
+        externalDataSet = true;
+        mdataSet = dataSet;
+    }
+
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-
-
-        }
 
     }
+
 }

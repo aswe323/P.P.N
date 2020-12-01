@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout android:id="@+id/fragment_search"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".searchFragment">
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".SearchFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,35 +19,43 @@
 
         <!--when clicked a floating window opening for the user to choose a date-->
 
-        <Spinner
-            android:id="@+id/spinnerForCategory"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="200dp"
-            android:layout_marginBottom="340dp"
-            android:entries="@array/Spinner_Edit_category"
-            android:popupBackground="#56379F"
-            android:theme="@style/edit_reminder_Spinner"
+        <EditText
+            android:id="@+id/editTextNumberSearch"
+            android:layout_width="137dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="392dp"
+            android:ems="10"
+            android:inputType="number"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Spinner
-            android:id="@+id/spinnerForRepeat"
-            android:layout_width="190dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="4dp"
-            android:entries="@array/Spinner_Edit_frequency"
-            android:popupBackground="#56379F"
-            android:theme="@style/edit_reminder_Spinner"
-            app:layout_constraintEnd_toStartOf="@+id/spinnerForCategory"
-            app:layout_constraintTop_toTopOf="@+id/spinnerForCategory" />
+        <EditText
+            android:id="@+id/editTextContentSearch"
+            android:layout_width="371dp"
+            android:layout_height="233dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="88dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:textColor="#FFFFFF"
+            android:hint="Search By Content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/SetTimeTextView"
+            android:id="@+id/setTimeTextViewSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="56dp"
+            android:layout_marginStart="200dp"
+            android:layout_marginBottom="388dp"
             android:text="select to choose time"
             android:textColor="#FFFFFF"
             android:textSize="20dp"
@@ -53,59 +64,95 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/SetDateTextView"
+            android:id="@+id/setDateTextViewSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="11dp"
             android:text="select to choose date"
             android:textColor="#FFFFFF"
             android:textSize="20dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/SetTimeTextView"
-            app:layout_constraintStart_toEndOf="@+id/SetTimeTextView" />
-
-        <EditText
-            android:id="@+id/editTextTextMultiLine"
-            android:layout_width="371dp"
-            android:layout_height="233dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="92dp"
-            android:ems="10"
-            android:gravity="start|top"
-            android:inputType="textMultiLine"
-            android:text="Search By Content"
-            android:textColor="#FFFFFF"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <EditText
-            android:id="@+id/editTextNumber"
-            android:layout_width="137dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="392dp"
-            android:ems="10"
-            android:inputType="number"
-            android:textColor="#FFFFFF"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toTopOf="@+id/setTimeTextViewSearch"
+            app:layout_constraintEnd_toEndOf="@+id/setTimeTextViewSearch" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="85dp"
             android:layout_height="23dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:layout_marginBottom="8dp"
-            android:text="Priority"
+            android:text="Priority:"
             android:textColor="#FFFFFF"
             android:textSize="20dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/editTextNumber"
-            app:layout_constraintStart_toStartOf="@+id/editTextNumber" />
+            app:layout_constraintBottom_toTopOf="@+id/editTextNumberSearch"
+            app:layout_constraintStart_toStartOf="@+id/editTextNumberSearch" />
+
+        <Spinner
+            android:id="@+id/spinnerForRepeatSearch"
+            android:layout_width="190dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="4dp"
+            android:entries="@array/Spinner_Edit_frequency"
+            android:popupBackground="#56379F"
+            android:theme="@style/edit_reminder_Spinner"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerForCategorySearch"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerForCategorySearch" />
+
+        <Spinner
+            android:id="@+id/spinnerForCategorySearch"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="204dp"
+            android:layout_marginBottom="344dp"
+            android:entries="@array/Spinner_Edit_category"
+            android:popupBackground="#56379F"
+            android:theme="@style/edit_reminder_Spinner"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Switch
+            android:id="@+id/switchOnlyPastReminders"
+            android:layout_width="244dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="16dp"
+            android:text="Only Past Reminders"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/buttonSearchAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/background"
+            android:clickable="true"
+            android:src="@android:drawable/ic_menu_search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/buttonCancelSearchAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/background"
+            android:backgroundTint="@color/background"
+            android:clickable="true"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/buttonSearchAction" />
+
+
+        buttonCancelSearchAction
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

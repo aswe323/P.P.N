@@ -71,7 +71,7 @@
     </fragment>
     <fragment
         android:id="@+id/remindersColletion"
-        android:name="com.example.rems.RemindersColletion"
+        android:name="com.example.rems.RemindersCollection"
         android:label="fragment_reminders_colletion"
         tools:layout="@layout/fragment_reminders_colletion">
         <action

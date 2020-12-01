@@ -15,12 +15,10 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -28,9 +26,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.material.tabs.TabLayout;
-
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -250,7 +245,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
 
         switch (returnToID) {
             case R.id.fragment_reminders_colletion:
-                destinationFragment = new RemindersColletion();
+                destinationFragment = new RemindersCollection();
                 break;
             case R.id.main_Activity_fragment:
                 destinationFragment = new Main_Activity_fragment();
@@ -262,8 +257,6 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
 
 
     }
-
-    ;
 
     /**
      * used to set the return destination of the fragment after it is being closed. will be reset to main_activity_fragment after closed.

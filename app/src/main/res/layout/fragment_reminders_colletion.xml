@@ -5,9 +5,11 @@
     android:id="@+id/fragment_reminders_colletion"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
     android:background="@color/background"
 
-    tools:context=".RemindersColletion">
+    tools:context=".RemindersCollection">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +35,7 @@
             android:layout_marginBottom="16dp"
             android:backgroundTint="@color/background"
             android:clickable="true"
-            android:src="@drawable/groupsandpoints_buttons"
+            android:src="@android:drawable/ic_menu_search"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
