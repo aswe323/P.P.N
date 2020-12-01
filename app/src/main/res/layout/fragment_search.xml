@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".searchFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--when clicked a drop bar opening for the user to choose Maslo category, default: none-->
+
+        <!--when clicked a floating window opening for the user to choose a date-->
+
+        <Spinner
+            android:id="@+id/spinnerForCategory"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="200dp"
+            android:layout_marginBottom="340dp"
+            android:entries="@array/Spinner_Edit_category"
+            android:popupBackground="#56379F"
+            android:theme="@style/edit_reminder_Spinner"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Spinner
+            android:id="@+id/spinnerForRepeat"
+            android:layout_width="190dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="4dp"
+            android:entries="@array/Spinner_Edit_frequency"
+            android:popupBackground="#56379F"
+            android:theme="@style/edit_reminder_Spinner"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerForCategory"
+            app:layout_constraintTop_toTopOf="@+id/spinnerForCategory" />
+
+        <TextView
+            android:id="@+id/SetTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="56dp"
+            android:text="select to choose time"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/SetDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="select to choose date"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/SetTimeTextView"
+            app:layout_constraintStart_toEndOf="@+id/SetTimeTextView" />
+
+        <EditText
+            android:id="@+id/editTextTextMultiLine"
+            android:layout_width="371dp"
+            android:layout_height="233dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="92dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:text="Search By Content"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editTextNumber"
+            android:layout_width="137dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="392dp"
+            android:ems="10"
+            android:inputType="number"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="85dp"
+            android:layout_height="23dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Priority"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/editTextNumber"
+            app:layout_constraintStart_toStartOf="@+id/editTextNumber" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
