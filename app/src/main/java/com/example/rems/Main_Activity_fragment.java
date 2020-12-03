@@ -40,6 +40,8 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
     private ArrayList<ImageButton> deleteReminderButton;
     private ArrayList<ImageButton> editReminderButton;
     private ArrayList<TextView> reminderText;
+    private TextView pointTextMain;
+
     //endregion
 
     public Main_Activity_fragment() {
@@ -123,22 +125,26 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
         reminderText = new ArrayList<>();
         topActivities = ActivityTasksUsed.getCloseActivities(); //fetch the next X reminders TODO: change the X to a number in the future
 
+        pointTextMain = view.findViewById(R.id.PointTextMain);
+        int points = ActivityTasksUsed.getUserPersonalScore();
+        String displayedScore = "Your current points:" + points;
+        pointTextMain.setText(displayedScore);
+
         for (ActivityTask taskDisplay : topActivities)
             addWordToScrollViewFuture(taskDisplay);
 
         scrollView.addView(hoster);
         //endregion
 
-
         //region button click listeners
-        for(ImageButton imageButton:editReminderButton){ //create the functionality to each edit button
-            final ImageButton Editbtn=imageButton;
+        for (ImageButton imageButton : editReminderButton) { //create the functionality to each edit button
+            final ImageButton Editbtn = imageButton;
             Editbtn.setId(editReminderButton.indexOf(imageButton));
 
             Editbtn.setOnClickListener(view1 -> caller(topActivities.get(Editbtn.getId())));
         }
 
-        for(ImageButton imageButton:deleteReminderButton) { //create the functionality to each delete button
+        for (ImageButton imageButton : deleteReminderButton) { //create the functionality to each delete button
             final ImageButton Editbtn = imageButton;
             Editbtn.setId(deleteReminderButton.indexOf(imageButton));
 

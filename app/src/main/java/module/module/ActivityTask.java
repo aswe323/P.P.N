@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 public class ActivityTask {
 
-    //TODO: make sure the ID is assigned correctly! <-- CURRENT; pre-optimazation is the devils curse.
     private int activityTaskID;
     private int priority;
     private MasloCategorys category;
@@ -35,7 +34,7 @@ public class ActivityTask {
      * @param subActivities
      */
     public ActivityTask(int activityTaskID, int priority, MasloCategorys category, Repetition repetition, String content, LocalDateTime timeOfActivity, ArrayList<SubActivity> subActivities) {
-        this.priority = priority;
+        this.priority = priority != 0 ? priority : 1;
         this.category = category;
         this.repetition = repetition;
         this.content = content;
@@ -58,8 +57,8 @@ public class ActivityTask {
      * @param subActivities
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public ActivityTask(int priority, MasloCategorys category, Repetition repetition, String content, ArrayList<SubActivity> subActivities) {
-        this.priority = priority;// the priority is
+    public ActivityTask(int priority, MasloCategorys category, Repetition repetition, String content, ArrayList<SubActivity> subActivities) {//TODO:
+        this.priority = priority != 0 ? priority : 1;
         this.category = category;
         this.repetition = repetition;
         this.content = content;

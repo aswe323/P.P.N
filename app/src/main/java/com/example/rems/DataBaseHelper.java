@@ -106,28 +106,43 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public int getMaxIdOfActivityTask() { //getting the latest id that added of the latest ActivityTask that was added to the database
         SQLiteDatabase db = this.getReadableDatabase();//open the database for read\write
-        int maxId=0;
+        int maxId = 0;
         Cursor cursor = db.rawQuery("SELECT MAX(ActivityTaskID) FROM ActivityTasks", null);//to browse the max id of the table ActivityTasks
-        if(cursor!=null && cursor.getCount()>0)
+        if (cursor != null && cursor.getCount() > 0)
             maxId = (cursor.moveToFirst() ? cursor.getInt(0) : 0);//go to the start of the cursor and check the ID column and return the int value,if the column is empty return 0 to the int
         cursor.close();
         return maxId;
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int countCompletedTasks() {//TODO: add to book
+        ArrayList<ActivityTask> completed = queryForAllActivityTasks();
+        completed.forEach(activityTask ->
+                {
+                    if (activityTask.getPriority() > 0) {
+                        completed.remove(activityTask);
+                    }
+                }
+        );
+        return completed.size();
+
+    }
+
     /*
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-    *                                                                                                 *
-    * in this section there are methods for the table @WordPriority will be int the order of C.R.U.D  *
-    *                                                                                                 *
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *                                                                                                 *
+     * in this section there are methods for the table @WordPriority will be int the order of C.R.U.D  *
+     *                                                                                                 *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      */
     //region WordPriority
-    public boolean insertPriorityWord(String word, int priority){
+    public boolean insertPriorityWord(String word, int priority) {
 
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
         //check if the database opened if not retuning false
-        if(db.isOpen()) {
+        if (db.isOpen()) {
             ContentValues values = new ContentValues(); //will hold Strings of the values to insert into the table
             values.put("Word", word);//insert the value to Content values
             values.put("Priority", priority);//insert the value to values
@@ -348,7 +363,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public ArrayList<ActivityTask> queryForExactActivityTask(int activityTaskID, int priority, LocalDateTime dateAndTime, String content, Repetition repetition, MasloCategorys masloCategory){
         String DateInFormat = null;
-        if (activityTaskID < 0 && priority < 0 && dateAndTime == null && content == null && repetition == null && masloCategory == null)
+        if (activityTaskID < 0 && priority == 0 && dateAndTime == null && content == null && repetition == null && masloCategory == null)
             return null;
         ArrayList<ActivityTask> activityTasks = new ArrayList<>();
 

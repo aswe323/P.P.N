@@ -7,6 +7,8 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:layoutDirection="ltr"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".edit_reminder_fragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -107,67 +109,84 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewRepeat" />
         <!--when clicked a floating window opening for the user to choose time-->
+        <!--when clicked a floating window opening for the user to choose a date-->
+
+        <!--when clicked a new ActivityTask is creates and sent to the addActivityTask in ActivityTaskUsed-->
+        <!--when clicked all the data installed is deleted and going back to the Home Page-->
+
         <TextView
             android:id="@+id/SetTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
             android:text="select to choose time"
             android:textColor="#FFFFFF"
             android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewForCategory" />
-        <!--when clicked a floating window opening for the user to choose a date-->
+
         <TextView
             android:id="@+id/SetDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
             android:text="select to choose date"
             android:textColor="#FFFFFF"
             android:textSize="20dp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/SetTimeTextView" />
+            app:layout_constraintStart_toEndOf="@+id/SetTimeTextView"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerForCategory" />
 
         <Button
             android:id="@+id/ButtonAddSubActivity"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="32dp"
             android:background="@drawable/groupsandpoints_buttons"
             android:text="Add a sub reminder"
             android:textAllCaps="false"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/SetDateTextView" />
-        <!--when clicked a new ActivityTask is creates and sent to the addActivityTask in ActivityTaskUsed-->
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ButtonSaveReminder" />
+
         <Button
             android:id="@+id/ButtonSaveReminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="32dp"
             android:background="@drawable/groupsandpoints_buttons"
             android:text="Save"
             android:textAllCaps="false"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ButtonAddSubActivity" />
-        <!--when clicked all the data installed is deleted and going back to the Home Page-->
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <Button
             android:id="@+id/ButtonCancelReminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginBottom="32dp"
             android:background="@drawable/groupsandpoints_buttons"
             android:text="Cancel"
             android:textAllCaps="false"
-            app:layout_constraintStart_toEndOf="@+id/ButtonSaveReminder"
-            app:layout_constraintTop_toBottomOf="@+id/ButtonAddSubActivity" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ButtonAddSubActivity" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/buttonTaskComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:clickable="true"
+            android:backgroundTint="@color/background"
+            android:src="@android:drawable/checkbox_on_background"
+            app:layout_constraintBottom_toTopOf="@+id/ButtonCancelReminder"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

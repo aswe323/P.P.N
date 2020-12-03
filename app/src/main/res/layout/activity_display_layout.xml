@@ -9,11 +9,22 @@
     >
 
     <TextView
+        android:id="@+id/textView"
+        android:layout_width="299dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/groupsnpints_windowlayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/contentDisplay"
         android:layout_width="274dp"
         android:layout_height="47dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
+        android:textStyle="bold"
         android:text="Temp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,5 +48,6 @@
         app:layout_constraintStart_toEndOf="@+id/contentDisplay"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_action_edit" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

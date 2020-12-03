@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_Activity_fragment"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_Activity_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:clickable="true"
+    android:focusable="true"
     android:layoutDirection="ltr"
     tools:context=".MainActivity">
 
@@ -14,6 +16,7 @@
         android:id="@+id/MainConstarintlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ScrollView
             android:id="@+id/scrollViewMain"
             android:layout_width="match_parent"
@@ -22,7 +25,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
 
 
         </ScrollView>
@@ -47,8 +49,8 @@
                 android:id="@+id/PointTextMain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
                 android:layout_marginLeft="80dp"
+                android:layout_marginTop="25dp"
                 android:text="Your current points: 42"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp"

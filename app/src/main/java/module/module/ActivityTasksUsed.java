@@ -9,13 +9,35 @@ import com.example.rems.DataBaseHelper;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class ActivityTasksUsed {
     static private ArrayList<ActivityTask> usedTasks = new ArrayList<>();
 
     static private DataBaseHelper db = DataBaseHelper.getInstance(null);//TODO:make sure that the main call the method with the Context
+    static private int userPersonalScore = db.countCompletedTasks();
 
 
     //region methods ActivityTask
+
+    /**
+     * used to mark an activityTask as completed, changes the priority of the activityTask to negative.
+     *
+     * @param activityTask to be marked as completed
+     * @return true on success.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    static public Boolean markComplete(ActivityTask activityTask) {//TODO: add to book
+        int priority = activityTask.getPriority();
+        if (priority >= 0) {
+            activityTask.setPriority(priority * -1);
+            editActivityTask(activityTask);
+            userPersonalScore = db.countCompletedTasks();
+            return true;
+        }
+        return false;
+    }
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     static public Boolean addActivityTask(ActivityTask activityTask) {//adding the new ActivityTask to the dataBase if: a same ActivityTask data doesn't match existing ActivityTask, if added successfully adding the ArrayList used to control and manipulate the data in the system
         if (db.queryForExactActivityTask(
@@ -50,7 +72,7 @@ public class ActivityTasksUsed {
     static public Boolean editActivityTask(ActivityTask activityTask) {
         int taskID = activityTask.getActivityTaskID();
         if (db.updateActivityTask(activityTask, taskID)) {
-            usedTasks.remove(activityTask);
+            usedTasks.remove(activityTask);//ambiguous
             usedTasks.add(activityTask);
             return true;
         }
@@ -80,8 +102,15 @@ public class ActivityTasksUsed {
 
     //TODO:add to book,change it to get the next 10 or so
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static ArrayList<ActivityTask> getCloseActivities(){
-        return db.queryForAllActivityTasks();
+    public static ArrayList<ActivityTask> getCloseActivities() {
+        ArrayList<ActivityTask> returned = db.queryForAllActivityTasks();
+        returned.removeIf(activityTask -> activityTask.getPriority() <= 0);
+        return returned;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static int getUserPersonalScore() {
+        return userPersonalScore;
     }
 
     //endregion ActivityTask

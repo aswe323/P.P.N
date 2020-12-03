@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="ltr"
+    android:clickable="true"
+    android:focusable="true"
     android:background="@color/background"
     tools:context=".Fragment_Past_Reminders">
 
@@ -12,6 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ScrollView
             android:layout_width="409dp"
             android:layout_height="600dp"

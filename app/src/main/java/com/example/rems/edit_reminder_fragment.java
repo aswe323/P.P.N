@@ -26,6 +26,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -68,6 +70,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
     private static boolean isEditFlag=false; //if i opened a reminder from my "next reminders" list in the home button flag will be true and it's means we need to call Update query and not inset
     private static ActivityTask EditedActivityTask;
     private static Context deleteinProduction;
+    private static FloatingActionButton buttonTaskComplete;
     //endregion
 
     public edit_reminder_fragment() {
@@ -142,9 +145,14 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                 Toast.makeText(getActivity(), "time set", Toast.LENGTH_SHORT).show();//notifying the event was called
                 break;
             //endregion
+            case R.id.buttonTaskComplete:
+                //region
+                ActivityTasksUsed.markComplete(EditedActivityTask);
+                ActivityTasksUsed.getUserPersonalScore();
+                //endregion
             case R.id.ButtonSaveReminder:
                 //region
-                if(!isEditFlag){ //if i opened a reminder from my "next reminders" list in the home button flag will be true and it's means we need to call Update query and not inset
+                if (!isEditFlag) { //if i opened a reminder from my "next reminders" list in the home button flag will be true and it's means we need to call Update query and not inset
                     if (automaticAssignment.isChecked()) {
                         //if the automantic assignment option is checked.
                         ActivityTasksUsed.addActivityTask(new ActivityTask(0,
@@ -232,8 +240,9 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                 automaticAssignment.setChecked(false);
                 Toast.makeText(getActivity(), "feature not ready yet", Toast.LENGTH_SHORT).show();
                 break;
-            //endregion
 
+            //wrg
+            //endregion
             //endregion
         }
 
@@ -310,6 +319,11 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         };
         setdatetext.setOnClickListener(this);
 
+        buttonTaskComplete = view.findViewById(R.id.buttonTaskComplete);
+        buttonTaskComplete.setEnabled(false);
+        buttonTaskComplete.hide();
+
+        buttonTaskComplete.setOnClickListener(this);
 
         return view;
     }
@@ -325,11 +339,20 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         masloCategory.setSelection(activityTask.getCategory().ordinal());
         repetition.setSelection(activityTask.getRepetition().ordinal());
         formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String DateInFormat=formatter.format(activityTask.getTimeOfActivity());
+        String DateInFormat = formatter.format(activityTask.getTimeOfActivity());
         settimetext.setText(DateInFormat);
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateInFormat=formatter.format(activityTask.getTimeOfActivity());
+        DateInFormat = formatter.format(activityTask.getTimeOfActivity());
         setdatetext.setText(DateInFormat);
+
+        buttonTaskComplete.setEnabled(true);
+        if (activityTask.getPriority() > 0) {
+            buttonTaskComplete.setImageResource(android.R.drawable.checkbox_off_background);
+        } else {
+            buttonTaskComplete.setImageResource(android.R.drawable.checkbox_on_background);
+
+        }
+        buttonTaskComplete.show();
 
 
     }
