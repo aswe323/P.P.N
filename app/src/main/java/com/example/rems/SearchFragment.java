@@ -20,11 +20,14 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -38,7 +41,7 @@ import module.Repetition;
  * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFragment extends Fragment implements View.OnClickListener {
+public class SearchFragment extends Fragment implements View.OnClickListener { //TODO:add to the book
 
 
     //region Search Elements
@@ -173,26 +176,51 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
                 //checking if the date was set.
                 int priority = Integer.parseInt(editTextNumberSearch.getText().toString());
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                if (!setDateTextViewSearch.getText().toString().equals("select to choose date") && !setTimeTextViewSearch.getText().toString().equals("select to choose time")) {
+                DateTimeFormatter formatter;
+                if (!setDateTextViewSearch.getText().toString().equals("select to choose date") && !setTimeTextViewSearch.getText().toString().equals("select to choose time")) {//if i search by date and time
+                    formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
                     String datemaker = "" + setDateTextViewSearch.getText() + " " + setTimeTextViewSearch.getText();
                     TextToDate = LocalDateTime.parse(datemaker, formatter);
-                } else {
+
+                    ArrayList<ActivityTask> dataSet = ActivityTasksUsed.findExactActivityTask(
+                            priority,
+                            TextToDate,
+                            Repetition.valueOf(spinnerForRepeatSearch.getSelectedItem().toString()),
+                            MasloCategorys.valueOf(spinnerForCategorySearch.getSelectedItem().toString()),
+                            editTextContentSearch.getText().toString()
+                    );
+
+                    if (switchOnlyPastReminders.isChecked()) {
+                        dataSet.removeIf(activityTask -> activityTask.getTimeOfActivity().isAfter(LocalDateTime.now()));
+                    }
+
+                    RemindersCollection.setDataSet(dataSet);
+                }
+                else if(!setDateTextViewSearch.getText().toString().equals("select to choose date") || !setTimeTextViewSearch.getText().toString().equals("select to choose time")) {
+                    Toast.makeText(getActivity(), "will not search by date\\time must enter date and time to search with those parameters", Toast.LENGTH_SHORT).show();
+                    setDateTextViewSearch.setText("select to choose date");
+                    setTimeTextViewSearch.setText("select to choose time");
                     TextToDate = null;
+                    break;
                 }
-                ArrayList<ActivityTask> dataSet = ActivityTasksUsed.findExactActivityTask(
-                        priority,
-                        TextToDate,
-                        Repetition.valueOf(spinnerForRepeatSearch.getSelectedItem().toString()),
-                        MasloCategorys.valueOf(spinnerForCategorySearch.getSelectedItem().toString()),
-                        editTextContentSearch.getText().toString()
-                );
+                else{
+                    TextToDate = null;
 
-                if (switchOnlyPastReminders.isChecked()) {
-                    dataSet.removeIf(activityTask -> activityTask.getTimeOfActivity().isAfter(LocalDateTime.now()));
+                    ArrayList<ActivityTask> dataSet = ActivityTasksUsed.findExactActivityTask(
+                            priority,
+                            TextToDate,
+                            Repetition.valueOf(spinnerForRepeatSearch.getSelectedItem().toString()),
+                            MasloCategorys.valueOf(spinnerForCategorySearch.getSelectedItem().toString()),
+                            editTextContentSearch.getText().toString()
+                    );
+
+                    if (switchOnlyPastReminders.isChecked()) {
+                        dataSet.removeIf(activityTask -> activityTask.getTimeOfActivity().isAfter(LocalDateTime.now()));
+                    }
+
+                    RemindersCollection.setDataSet(dataSet);
                 }
 
-                RemindersCollection.setDataSet(dataSet);
                 //endregion
             case R.id.buttonCancelSearchAction:
                 //region switch/create and move to ReminderCollection fragment.
