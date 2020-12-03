@@ -250,12 +250,8 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
             case R.id.main_Activity_fragment:
                 destinationFragment = new Main_Activity_fragment();
                 break;
-
-
         }
         ft.replace(R.id.fragment_edit_reminder, destinationFragment).commit();
-
-
     }
 
     /**

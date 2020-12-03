@@ -58,7 +58,6 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
                 ((FragmentActivity) v12.getContext()).getSupportFragmentManager().executePendingTransactions();
                 edit_reminder_fragment.editingReminder(activityTaskPointer);
 
-
             });
             textView = v.findViewById(R.id.contentDisplay);//setting the textView member to the textView UI element in the xml.
             //endregion
