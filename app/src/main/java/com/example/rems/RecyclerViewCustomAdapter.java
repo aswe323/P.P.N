@@ -51,12 +51,15 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
 
             v.findViewById(R.id.buttonEdit).setOnClickListener(v12 -> {
 
-                FragmentTransaction ft = ((FragmentActivity) v12.getContext()).getSupportFragmentManager().beginTransaction();
-                edit_reminder_fragment erf = new edit_reminder_fragment();//creating the fragment to put instead
-                edit_reminder_fragment.setReturnToID(R.id.fragment_reminders_colletion);
-                ft.replace(R.id.fragment_reminders_colletion, erf).commit();
-                ((FragmentActivity) v12.getContext()).getSupportFragmentManager().executePendingTransactions();
-                edit_reminder_fragment.editingReminder(activityTaskPointer);
+
+                if (!edit_reminder_fragment.isActive()) {
+                    FragmentTransaction ft = ((FragmentActivity) v12.getContext()).getSupportFragmentManager().beginTransaction();
+                    edit_reminder_fragment erf = new edit_reminder_fragment();//creating the fragment to put instead
+                    edit_reminder_fragment.setReturnToID(R.id.fragment_reminders_colletion);
+                    ft.replace(R.id.fragment_reminders_colletion, erf).commit();
+                    ((FragmentActivity) v12.getContext()).getSupportFragmentManager().executePendingTransactions();
+                    edit_reminder_fragment.editingReminder(activityTaskPointer);
+                }
 
             });
             textView = v.findViewById(R.id.contentDisplay);//setting the textView member to the textView UI element in the xml.

@@ -80,19 +80,21 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
         switch (view.getId()) {//recognizing what button was pushed
 
             case R.id.buttonAddNewReminder:
-                //region disable all buttons of edit/delete
-                for(ImageButton imageButton:editReminderButton)
-                    imageButton.setEnabled(false);
-                for(ImageButton imageButton:deleteReminderButton)
-                    imageButton.setEnabled(false);
+                if (!edit_reminder_fragment.isActive()) {
+                    //region disable all buttons of edit/delete
+                    for (ImageButton imageButton : editReminderButton)
+                        imageButton.setEnabled(false);
+                    for (ImageButton imageButton : deleteReminderButton)
+                        imageButton.setEnabled(false);
 
-                edit_reminder_fragment erf = new edit_reminder_fragment();//creating the fragment to put insted
-                ft.replace(R.id.main_Activity_fragment, erf).commit();//making the transaction
+                    edit_reminder_fragment erf = new edit_reminder_fragment();//creating the fragment to put insted
+                    ft.replace(R.id.main_Activity_fragment, erf).commit();//making the transaction
 
-                Toast.makeText(getActivity(), "event launched", Toast.LENGTH_SHORT).show();//notifying the event was called
+                    Toast.makeText(getActivity(), "event launched", Toast.LENGTH_SHORT).show();//notifying the event was called
 
-                break;
-            //endregion
+                    break;
+                }
+                //endregion
 /*            case R.id.buttonShowAllReminders:
                 //region move to ReminderCollection
                 RemindersColletion rc = new RemindersColletion();//creating the fragment to put insted
@@ -184,11 +186,14 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void caller(ActivityTask activityTask) { //calls the editingReminder method from edit_reminder_fragment to open the edit fragment with the info of our reminder we want to edit TODO:add to the book
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        edit_reminder_fragment erf = new edit_reminder_fragment();//creating the fragment to put instead
-        ft.replace(R.id.main_Activity_fragment, erf).commit();//making the transaction
-        getFragmentManager().executePendingTransactions();//used to stop the onCreateView and allow the editingReminder() method to set the information
-        edit_reminder_fragment.editingReminder(activityTask);
+        if (!edit_reminder_fragment.isActive()) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            edit_reminder_fragment erf = new edit_reminder_fragment();//creating the fragment to put instead
+            edit_reminder_fragment.setReturnToID(R.id.main_Activity_fragment);
+            ft.replace(R.id.main_Activity_fragment, erf).commit();//making the transaction
+            getFragmentManager().executePendingTransactions();//used to stop the onCreateView and allow the editingReminder() method to set the information
+            edit_reminder_fragment.editingReminder(activityTask);
+        }
     }
 
 

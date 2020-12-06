@@ -54,11 +54,13 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
     //region the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static int returnToID = R.id.main_Activity_fragment;
 
+
     private static ScrollView SubActivitiesScrollView;
     private static LinearLayout hoster;
     private static ArrayList<ImageButton> deleteReminderButton;
     private static ArrayList<SubActivity> subactivities;
-    private static boolean isReopen=false;
+    private static boolean isReopen = false;
+    private static boolean mIsActive;
     private ArrayList<TextView> reminderText;
     private static View Mview;
 
@@ -102,6 +104,14 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public static boolean isActive() {
+        return mIsActive;
+    }
+
+    public static void setmIsActive(boolean mIsActive) {
+        edit_reminder_fragment.mIsActive = mIsActive;
     }
 
     @Override
@@ -215,7 +225,6 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
             case R.id.ButtonCancelReminder:
                 //region
                 returnBack();
-                setReturnToID(R.id.main_Activity_fragment);
                 break;
 
             //endregion
@@ -273,7 +282,9 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                 destinationFragment = new Main_Activity_fragment();
                 break;
         }
-        ft.replace(R.id.fragment_edit_reminder, destinationFragment).commit();
+        ft.replace(this.getId(), destinationFragment).commit();
+        edit_reminder_fragment.setmIsActive(false);
+
     }
 
     /**
@@ -295,6 +306,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         this.Mview=view;
         context=getActivity();
         isEditFlag = false;
+        edit_reminder_fragment.setmIsActive(true);
 
         SubActivitiesScrollView=(ScrollView) view.findViewById(R.id.subActivitiesWindow);
         hoster = new LinearLayout(getActivity());
@@ -367,31 +379,36 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
 
         //View view=edit_words_fragment.newInstance().getView();
         //SubActivitiesScrollView=(ScrollView) Mview.findViewById(R.id.subActivitiesWindow);
-        subactivities=activityTask.getSubActivities();
-        for(SubActivity addSubActivity:subactivities)
+        subactivities = activityTask.getSubActivities();
+        for (SubActivity addSubActivity : subactivities)
             addSubActivityToScrollView(addSubActivity);
-        //if(!isReopen)
-            SubActivitiesScrollView.addView(hoster);
-        isReopen=false;
+        SubActivitiesScrollView.addView(hoster);
+
 
         for (ImageButton imageButton : deleteReminderButton) { //create the functionality to each delete button
             final ImageButton Editbtn = imageButton;
             Editbtn.setId(deleteReminderButton.indexOf(imageButton));
 
             Editbtn.setOnClickListener(view12 -> {
-                SubActivity subActivityToDelete=subactivities.get(Editbtn.getId());
-                ArrayList<ActivityTask> activityTaskOfSubActivity=ActivityTasksUsed.findExactActivityTask(subActivityToDelete.getActivityTaskID(),0,null,null,null,null);
+                SubActivity subActivityToDelete = subactivities.get(Editbtn.getId());
+                ArrayList<ActivityTask> activityTaskOfSubActivity = ActivityTasksUsed.findExactActivityTask(subActivityToDelete.getActivityTaskID(), 0, null, null, null, null);
 
                 if (ActivityTasksUsed.removeSubActivity(subActivityToDelete)) {
                     Toast.makeText(context, "deleted: ", Toast.LENGTH_SHORT).show();
                     //reload the fragment to update the reminder list
-                    isReopen=true;
+                    isReopen = true;
+
 
                     FragmentTransaction ft = ((FragmentActivity) Mview.getContext()).getSupportFragmentManager().beginTransaction();
+
                     edit_reminder_fragment erf = new edit_reminder_fragment();
                     ft.replace(R.id.main_Activity_fragment, erf).commit();
-                    ((FragmentActivity) Mview.getContext()).getSupportFragmentManager().executePendingTransactions();//used to stop the onCreateView and allow the editingReminder() method to set the information
+                    ((FragmentActivity) view12.getContext()).getSupportFragmentManager().executePendingTransactions();//used to stop the onCreateView and allow the editingReminder() method to set the information
                     editingReminder(activityTaskOfSubActivity.get(0));
+
+                    SubActivitiesScrollView.requestLayout();
+
+
                 }
             });
         }
