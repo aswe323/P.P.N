@@ -183,6 +183,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener { /
                     TextToDate = LocalDateTime.parse(datemaker, formatter);
 
                     ArrayList<ActivityTask> dataSet = ActivityTasksUsed.findExactActivityTask(
+                            0,
                             priority,
                             TextToDate,
                             Repetition.valueOf(spinnerForRepeatSearch.getSelectedItem().toString()),
@@ -207,6 +208,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener { /
                     TextToDate = null;
 
                     ArrayList<ActivityTask> dataSet = ActivityTasksUsed.findExactActivityTask(
+                            0,
                             priority,
                             TextToDate,
                             Repetition.valueOf(spinnerForRepeatSearch.getSelectedItem().toString()),

@@ -33,7 +33,4 @@ public class SubActivity {
         return ActivityTaskID;
     }
 
-    public static ArrayList<SubActivity> getSubActivities(int ActivityTaskID){
-        return db.queryForSubActivity(ActivityTaskID);
-    }
 }

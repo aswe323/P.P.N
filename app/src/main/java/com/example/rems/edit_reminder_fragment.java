@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.annotation.IdRes;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -56,7 +57,8 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
     private static ScrollView SubActivitiesScrollView;
     private static LinearLayout hoster;
     private static ArrayList<ImageButton> deleteReminderButton;
-    private static ArrayList<ImageButton> editReminderButton;
+    private static ArrayList<SubActivity> subactivities;
+    private static boolean isReopen=false;
     private ArrayList<TextView> reminderText;
     private static View Mview;
 
@@ -283,6 +285,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         returnToID = id;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -297,7 +300,9 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         hoster = new LinearLayout(getActivity());
         hoster.setOrientation(LinearLayout.VERTICAL);
         hoster.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        //ArrayList<SubActivity> exsistingSubActivities =
+        deleteReminderButton = new ArrayList<>();
+        subactivities=new ArrayList<>();
+
         automaticAssignment = view.findViewById(R.id.switchForAi);
         masloCategory = view.findViewById(R.id.spinnerForCategory);
         repetition = view.findViewById(R.id.spinnerForRepeat);
@@ -343,13 +348,6 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         return view;
     }
 
-    private static void setScrollview(){
-
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //view = inflater.inflate(R.layout.fragment_edit_reminder_fragment, null);
-
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void editingReminder(ActivityTask activityTask){ //this function is called before the fragment is presented,it's inserting the data of the needed ActivityTask to the elements TODO:add to the book
         isEditFlag=true; //turn edit flag to true so we update instead of insert to Database
@@ -368,12 +366,35 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         setdatetext.setText(DateInFormat);
 
         //View view=edit_words_fragment.newInstance().getView();
-        SubActivitiesScrollView=(ScrollView) Mview.findViewById(R.id.subActivitiesWindow);
-        ArrayList<SubActivity> subactivities=activityTask.getSubActivities();
+        //SubActivitiesScrollView=(ScrollView) Mview.findViewById(R.id.subActivitiesWindow);
+        subactivities=activityTask.getSubActivities();
         for(SubActivity addSubActivity:subactivities)
             addSubActivityToScrollView(addSubActivity);
-        //if(SubActivitiesScrollView.)
-        SubActivitiesScrollView.addView(hoster);
+        //if(!isReopen)
+            SubActivitiesScrollView.addView(hoster);
+        isReopen=false;
+
+        for (ImageButton imageButton : deleteReminderButton) { //create the functionality to each delete button
+            final ImageButton Editbtn = imageButton;
+            Editbtn.setId(deleteReminderButton.indexOf(imageButton));
+
+            Editbtn.setOnClickListener(view12 -> {
+                SubActivity subActivityToDelete=subactivities.get(Editbtn.getId());
+                ArrayList<ActivityTask> activityTaskOfSubActivity=ActivityTasksUsed.findExactActivityTask(subActivityToDelete.getActivityTaskID(),0,null,null,null,null);
+
+                if (ActivityTasksUsed.removeSubActivity(subActivityToDelete)) {
+                    Toast.makeText(context, "deleted: ", Toast.LENGTH_SHORT).show();
+                    //reload the fragment to update the reminder list
+                    isReopen=true;
+
+                    FragmentTransaction ft = ((FragmentActivity) Mview.getContext()).getSupportFragmentManager().beginTransaction();
+                    edit_reminder_fragment erf = new edit_reminder_fragment();
+                    ft.replace(R.id.main_Activity_fragment, erf).commit();
+                    ((FragmentActivity) Mview.getContext()).getSupportFragmentManager().executePendingTransactions();//used to stop the onCreateView and allow the editingReminder() method to set the information
+                    editingReminder(activityTaskOfSubActivity.get(0));
+                }
+            });
+        }
 
         buttonTaskComplete.setEnabled(true);
         if (activityTask.getPriority() > 0) {
@@ -391,7 +412,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
      *    * * * * * * * * * * * * * * * * * * *
      *    *      innerLayout                  *
      *    *   * * * * * * * * * * * * * * *   *
-     *    *   * TXT         edit | delete *   *
+     *    *   * TXT              delete   *   *
      *    *   * * * * * * * * * * * * * * *   *
      *    *                                   *
      *    * * * * * * * * * * * * * * * * * * *
@@ -401,10 +422,9 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         //hierarchy holder of our elements please look up for the schema
         LinearLayout outerLayout = new LinearLayout(context);
         LinearLayout innerLayout =new LinearLayout(context);
-        ImageButton btnEdit = new ImageButton(context);
         ImageButton btnDelete = new ImageButton(context);
         TextView reminderText = new TextView(context);
-        LinearLayout.LayoutParams btnSize = new LinearLayout.LayoutParams(180, 120); //TODO:need to use some math and magic to make sure it fit any screen size and resolution
+        LinearLayout.LayoutParams btnSize = new LinearLayout.LayoutParams(90, 60); //TODO:need to use some math and magic to make sure it fit any screen size and resolution
         btnSize.setMargins(0,5,15,5);
 
         outerLayout.setOrientation(LinearLayout.VERTICAL);
@@ -415,15 +435,10 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         layoutParamsInnerLayout.setMargins(0,7,0,11);
         innerLayout.setLayoutParams(layoutParamsInnerLayout);
 
-        /*btnEdit.setImageResource(R.drawable.ic_action_edit);
-        btnEdit.setBackgroundResource(R.drawable.main_edit_button_raunding);
-        btnEdit.setLayoutParams(btnSize);
-        editReminderButton.add(btnEdit);*/
-
-        /*btnDelete.setImageResource(R.drawable.ic_action_delete);
+        btnDelete.setImageResource(R.drawable.ic_baseline_close_24);
         btnDelete.setBackgroundResource(R.drawable.main_edit_button_raunding);
         btnDelete.setLayoutParams(btnSize);
-        deleteReminderButton.add(btnDelete);*/
+        deleteReminderButton.add(btnDelete);
 
         reminderText.setText(""+subActivity.getContent());
         reminderText.setTextColor(Color.BLACK);
@@ -436,7 +451,6 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         if(innerLayout!=null && outerLayout!=null && SubActivitiesScrollView != null){
             outerLayout.addView(innerLayout);
             innerLayout.addView(reminderText);
-            innerLayout.addView(btnEdit);
             innerLayout.addView(btnDelete);
             hoster.addView(outerLayout);
         }

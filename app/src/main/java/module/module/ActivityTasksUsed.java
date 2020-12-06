@@ -81,7 +81,7 @@ public class ActivityTasksUsed {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)//TODO: add to book
-    static public ArrayList<ActivityTask> findExactActivityTask(int priority, LocalDateTime localDateTime, Repetition repetition, MasloCategorys masloCategorys, String content) {
+    static public ArrayList<ActivityTask> findExactActivityTask(int activityTaskID,int priority, LocalDateTime localDateTime, Repetition repetition, MasloCategorys masloCategorys, String content) {
         ArrayList<ActivityTask> returned = new ArrayList<>();
         for (ActivityTask task : usedTasks) {
             if (priority == task.getPriority() && localDateTime == task.getTimeOfActivity()
@@ -92,7 +92,7 @@ public class ActivityTasksUsed {
         }
 
         if (returned.isEmpty()) {
-            returned = db.queryForExactActivityTask(0, priority, localDateTime, content, repetition, masloCategorys);
+            returned = db.queryForExactActivityTask(activityTaskID, priority, localDateTime, content, repetition, masloCategorys);
             usedTasks.addAll(returned);
         }
 
@@ -111,6 +111,10 @@ public class ActivityTasksUsed {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static int getUserPersonalScore() {
         return userPersonalScore;
+    }
+
+    public static boolean removeSubActivity(SubActivity subActivity){
+        return db.deleteSubActivity(subActivity);
     }
 
     //endregion ActivityTask
