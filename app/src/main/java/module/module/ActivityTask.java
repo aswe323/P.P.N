@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class ActivityTask {
 
+    //TODO: make sure the ID is assigned correctly! <-- CURRENT; pre-optimazation is the devils curse.
     private int activityTaskID;
     private int priority;
     private MasloCategorys category;

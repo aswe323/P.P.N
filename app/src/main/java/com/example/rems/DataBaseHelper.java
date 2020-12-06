@@ -118,13 +118,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public int countCompletedTasks() {//TODO: add to book
         ArrayList<ActivityTask> completed = queryForAllActivityTasks();
-        completed.forEach(activityTask ->
+        for(int i=0;i<completed.size();i++){
+            ActivityTask activityTask=completed.get(i);
+            if (activityTask.getPriority() > 0) {
+                completed.remove(activityTask);
+            }
+        }
+        /*completed.forEach(activityTask ->
                 {
                     if (activityTask.getPriority() > 0) {
                         completed.remove(activityTask);
                     }
                 }
-        );
+        );*/
         return completed.size();
 
     }

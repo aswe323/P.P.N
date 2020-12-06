@@ -13,6 +13,8 @@ import android.app.AlarmManager;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +40,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
@@ -100,11 +103,25 @@ public class MainActivity extends AppCompatActivity {
         );
         tabLayoutMediator.attach();
         tableLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 //region test for notification
-                scheduleNotification(getApplication(),10000,1);
-                Toast.makeText(getApplication(), "notification was made ", Toast.LENGTH_SHORT).show();
+                /*ActivityTask_ArrayList=ActivityTasksUsed.findExactActivityTask(0,null,null,null,"buy pizza");
+                LocalDateTime oneMinute =LocalDateTime.of(2020,12,4,19,34);
+                Duration d1 = Duration.between(oneMinute, LocalDateTime.now());
+                long seconds = Math.abs(d1.getSeconds());
+                long hours = seconds / 3600;
+                seconds -= (hours * 3600);
+                long minutes = seconds / 60;
+                seconds -= (minutes * 60);
+                if(tableLayout.getSelectedTabPosition()==1)
+                    NotificationSystem.scheduleNotification(getApplication(),10000,1);
+                if(tableLayout.getSelectedTabPosition()==2)
+                    NotificationSystem.scheduleNotification(getApplication(),20000,2);
+                if(tableLayout.getSelectedTabPosition()==3)
+                    NotificationSystem.cancelNotification(getApplication(),2);
+                Toast.makeText(getApplication(), "notification was made ", Toast.LENGTH_SHORT).show();*/
                 //endregion
             }
 
@@ -120,30 +137,4 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    //region test for notification
-    public void scheduleNotification(Context context, long delay, int notificationId) {//delay is after how much time(in millis) from current time you want to schedule the notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,"1")
-                .setContentTitle("title")
-                .setContentText("text")
-                .setAutoCancel(true)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-
-        Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent activity = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        builder.setContentIntent(activity);
-
-        Notification notification = builder.build();
-
-        Intent notificationIntent = new Intent(context, NotificationSystem.class);
-        notificationIntent.putExtra(NotificationSystem.NOTIFICATION_ID, notificationId);
-        notificationIntent.putExtra(NotificationSystem.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        long futureInMillis = SystemClock.elapsedRealtime() + delay;
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
-    }
-    //endregion
 }

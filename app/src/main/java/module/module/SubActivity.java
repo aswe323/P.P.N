@@ -4,7 +4,11 @@ import androidx.annotation.Nullable;
 
 import com.example.rems.DataBaseHelper;
 
+import java.util.ArrayList;
+
 public class SubActivity {
+    static private DataBaseHelper db = DataBaseHelper.getInstance(null);//TODO:make sure that the main call the method with the Context
+
     private Integer subActivityID;
     private Integer ActivityTaskID;
     private String content;
@@ -27,5 +31,9 @@ public class SubActivity {
     public Integer getActivityTaskID() {
         this.ActivityTaskID = DataBaseHelper.getInstance(null).getMaxIdOfActivityTask();
         return ActivityTaskID;
+    }
+
+    public static ArrayList<SubActivity> getSubActivities(int ActivityTaskID){
+        return db.queryForSubActivity(ActivityTaskID);
     }
 }
