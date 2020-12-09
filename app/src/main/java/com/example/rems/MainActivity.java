@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         db = DataBaseHelper.getInstance(getApplicationContext());
         wordPriority = new WordPriority();
+        wordPriority.setTimeWords();
         final TabLayout tableLayout = findViewById(R.id.Tablayouting);
         final ViewPager2 viewPager = findViewById(R.id.ViewPager);
         viewPager.setAdapter(new customAdapter(getSupportFragmentManager(), getLifecycle()));

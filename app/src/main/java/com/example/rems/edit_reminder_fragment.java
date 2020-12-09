@@ -62,7 +62,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
     private static boolean isReopen = false;
     private static boolean mIsActive;
     private ArrayList<TextView> reminderText;
-    private static View Mview;
+    private static View Mview; //TODO:find solution for this,used in creation of subactivities
 
     private static Context context; //TODO:find solution for this,used in creation of subactivities
     private Switch automaticAssignment;

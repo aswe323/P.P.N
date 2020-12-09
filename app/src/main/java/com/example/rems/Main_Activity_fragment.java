@@ -185,7 +185,7 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
      * @return void
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void caller(ActivityTask activityTask) { //calls the editingReminder method from edit_reminder_fragment to open the edit fragment with the info of our reminder we want to edit TODO:add to the book
+    private void caller(ActivityTask activityTask) { //calls the editingReminder method from edit_reminder_fragment to open the edit fragment with the info of our reminder we want to edit
         if (!edit_reminder_fragment.isActive()) {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             edit_reminder_fragment erf = new edit_reminder_fragment();//creating the fragment to put instead

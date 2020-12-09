@@ -143,7 +143,7 @@ public class key_words_fragment extends Fragment implements View.OnClickListener
         return view;
     }
 
-    private void caller(String word,int priority){ //calls the editingReminder method from edit_reminder_fragment to open the edit fragment with the info of our reminder we want to edit TODO:add to the book
+    private void caller(String word,int priority){ //calls the editingReminder method from edit_reminder_fragment to open the edit fragment with the info of our reminder we want to edit
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         edit_words_fragment erf = new edit_words_fragment();//creating the fragment to put instead
         ft.replace(R.id.fragment_key_words_fragment, erf).commit();//making the transaction

@@ -128,7 +128,7 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
         return view;
     }
 
-    public static void editingword(String word,int priority){//this function is called before the fragment is presented,it's inserting the data of the needed WordPriority to the elements TODO:add to the book
+    public static void editingword(String word,int priority){//this function is called before the fragment is presented,it's inserting the data of the needed WordPriority to the elements
         isEditFlag=true; //turn edit flag to true so we update instead of insert to Database
         oldWord=word;
         oldScore=priority;
