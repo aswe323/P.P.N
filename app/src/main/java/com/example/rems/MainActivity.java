@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.joestelmach.natty.*;
+
+
 import android.app.AlarmManager;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -38,6 +41,9 @@ import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.joestelmach.natty.*;
+
+import org.antlr.v4.runtime.tree.*;
+
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -117,11 +123,25 @@ public class MainActivity extends AppCompatActivity {
                     int line = group.getLine();
                     int column = group.getPosition();
                     String matchingValue = group.getText();
-                    String syntaxTree = group.getSyntaxTree().toStringTree();
+                    Tree tree = (Tree) group.getSyntaxTree();
+                    String syntaxTree = tree.toStringTree();
                     Map parseMap = group.getParseLocations();
                     boolean isRecurreing = group.isRecurring();
                     Date recursUntil = (Date) group.getRecursUntil();
                 }
+/*
+                for(int i=0;i<groups.size();i++){
+                    List dates = group.getDates();
+                    int line = group.getLine();
+                    int column = group.getPosition();
+                    String matchingValue = group.getText();
+                    Tree tree = (Tree) group.getSyntaxTree();
+                    String syntaxTree = tree.toStringTree();
+                    Map parseMap = group.getParseLocations();
+                    boolean isRecurreing = group.isRecurring();
+                    Date recursUntil = (Date) group.getRecursUntil();
+                }
+*/
 
                 //region test for notification
                 /*ActivityTask_ArrayList=ActivityTasksUsed.findExactActivityTask(0,null,null,null,"buy pizza");

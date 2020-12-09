@@ -110,6 +110,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         return mIsActive;
     }
 
+
     public static void setmIsActive(boolean mIsActive) {
         edit_reminder_fragment.mIsActive = mIsActive;
     }
