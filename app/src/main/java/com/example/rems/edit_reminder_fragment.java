@@ -43,6 +43,7 @@ import module.ActivityTasksUsed;
 import module.MasloCategorys;
 import module.Repetition;
 import module.SubActivity;
+import module.WordPriority;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -179,7 +180,8 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                 if (!isEditFlag) { //if i opened a reminder from my "next reminders" list in the home button flag will be true and it's means we need to call Update query and not inset
                     if (automaticAssignment.isChecked()) {
                         //if the automantic assignment option is checked.
-                        ActivityTasksUsed.addActivityTask(new ActivityTask(0,
+                        ActivityTasksUsed.addActivityTask(new ActivityTask(
+                                WordPriority.getPriorityFromSentence(discription.getText().toString()),
                                 MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
                                 Repetition.valueOf(repetition.getSelectedItem().toString()),
                                 discription.getText().toString(),
@@ -198,7 +200,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                         TextToDate = LocalDateTime.parse(datemaker, formatter);
                         ActivityTasksUsed.addActivityTask(new ActivityTask(
                                 0,
-                                0,
+                                WordPriority.getPriorityFromSentence(discription.getText().toString()),
                                 MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),//MasloCategory
                                 Repetition.valueOf(repetition.getSelectedItem().toString()),//Repetition
                                 discription.getText().toString(),
@@ -219,6 +221,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                     TextToDate = LocalDateTime.parse(datemaker, formatter);
                     EditedActivityTask.setTimeOfActivity(TextToDate);
                     EditedActivityTask.setSubActivities(subActivitiesArrayList);
+                    EditedActivityTask.setPriority(WordPriority.getPriorityFromSentence(EditedActivityTask.getContent()));
                     if (ActivityTasksUsed.editActivityTask(EditedActivityTask))
                         Toast.makeText(getActivity(), "updated: " + reminderContent, Toast.LENGTH_SHORT).show();
                 }

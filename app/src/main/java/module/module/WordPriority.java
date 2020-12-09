@@ -1,6 +1,12 @@
 package module;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.example.rems.DataBaseHelper;
+
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,16 +100,35 @@ public class WordPriority {
 
     }
 
-    public static boolean removeWord(String word){
-        if(db.deletePrioritiyWord(word))
-            return priorityWords.remove(word)!=null ? true:false;
+    public static boolean removeWord(String word) {
+        if (db.deletePrioritiyWord(word))
+            return priorityWords.remove(word) != null ? true : false;
         else
             return false;
     }
-    public static Integer getWordpriority(String word){
+
+    public static Integer getWordpriority(String word) {
         return priorityWords.get(word);
     }
-    public static boolean findWord(String word){
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static Integer getPriorityFromSentence(String sentence) {
+        Integer returned = 0;
+
+        Map<String, Integer> filtered = new HashMap<>(priorityWords);
+
+
+        filtered.forEach((word, priority) -> {
+            if (!sentence.contains(word)) filtered.remove(word);
+        });
+
+        for (Integer priority : filtered.values()) returned = +priority;
+        return returned;
+    }
+
+
+    public static boolean findWord(String word) {
         return priorityWords.containsKey(word);
     }
 

@@ -132,7 +132,8 @@ public class ActivityTask {
     }
 
     public void setPriority(int priority) {
-        this.priority = priority;
+        this.priority = priority != 0 ? priority : 1;
+        ;
     }
 
     public void setCategory(MasloCategorys category) {
