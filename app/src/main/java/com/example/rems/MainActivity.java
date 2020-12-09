@@ -37,12 +37,14 @@ import android.widget.Toast;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.joestelmach.natty.*;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import module.ActivityTask;
@@ -107,6 +109,20 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+
+                Parser parser = new Parser();
+                List groups = parser.parse("the day before next thursday");
+                for(DateGroup group:groups) {
+                    List dates = group.getDates();
+                    int line = group.getLine();
+                    int column = group.getPosition();
+                    String matchingValue = group.getText();
+                    String syntaxTree = group.getSyntaxTree().toStringTree();
+                    Map parseMap = group.getParseLocations();
+                    boolean isRecurreing = group.isRecurring();
+                    Date recursUntil = (Date) group.getRecursUntil();
+                }
+
                 //region test for notification
                 /*ActivityTask_ArrayList=ActivityTasksUsed.findExactActivityTask(0,null,null,null,"buy pizza");
                 LocalDateTime oneMinute =LocalDateTime.of(2020,12,4,19,34);
