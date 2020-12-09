@@ -40,10 +40,10 @@ import android.widget.Toast;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
 import com.joestelmach.natty.*;
-
 import org.antlr.v4.runtime.tree.*;
-
+import org.slf4j.impl.*;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -115,15 +115,15 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+                List<com.joestelmach.natty.DateGroup> groups;
                 Parser parser = new Parser();
-                List groups = parser.parse("the day before next thursday");
+                groups = parser.parse("the day before next thursday");
                 for(DateGroup group:groups) {
                     List dates = group.getDates();
                     int line = group.getLine();
                     int column = group.getPosition();
                     String matchingValue = group.getText();
-                    Tree tree = (Tree) group.getSyntaxTree();
+                    org.antlr.runtime.tree.CommonTree tree = (org.antlr.runtime.tree.CommonTree) group.getSyntaxTree();
                     String syntaxTree = tree.toStringTree();
                     Map parseMap = group.getParseLocations();
                     boolean isRecurreing = group.isRecurring();
