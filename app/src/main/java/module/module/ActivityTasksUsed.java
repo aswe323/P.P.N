@@ -100,11 +100,15 @@ public class ActivityTasksUsed {
 
     }
 
-    //TODO:add to book,change it to get the next 10 or so
+    //TODO:add to book,change it to get the next 10 or sO
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static ArrayList<ActivityTask> getCloseActivities() {
+        final LocalDateTime timeNdateNow=LocalDateTime.now();
+        final LocalDateTime upToNextDay=LocalDateTime.now().plusDays(1);
         ArrayList<ActivityTask> returned = db.queryForAllActivityTasks();
-        returned.removeIf(activityTask -> activityTask.getPriority() <= 0);
+        returned.removeIf(activityTask -> activityTask.getPriority() <= 0 ||
+                            (activityTask.getTimeOfActivity().isBefore(timeNdateNow) ||
+                            activityTask.getTimeOfActivity().isAfter(upToNextDay)));//delete if priority is less or equal to 0 and the time is before now and more then 24 hours
         return returned;
     }
 
@@ -116,11 +120,8 @@ public class ActivityTasksUsed {
     public static boolean removeSubActivity(SubActivity subActivity){
         return db.deleteSubActivity(subActivity);
     }
-
     //endregion ActivityTask
 
-    //region methods WordPriority
 
-    //endregion WordPriority
 
 }

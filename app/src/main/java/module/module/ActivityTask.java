@@ -8,9 +8,15 @@ import androidx.annotation.RequiresApi;
 
 import com.example.rems.DataBaseHelper;
 import com.example.rems.MainActivity;
+import com.joestelmach.natty.DateGroup;
+import com.joestelmach.natty.Parser;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class ActivityTask {
 
@@ -180,5 +186,36 @@ public class ActivityTask {
         return subActivities;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private LocalDateTime AItimeSetter(String content,int priority){
+        Map<String ,String> timewords=WordPriority.getTimeWords();
+        List<DateGroup> groups;
+        Parser parser = new Parser();
+        groups = parser.parse(content);
+        if (groups.size()>0){//TODO:check the date to not be in the past + check if the user ask before\after a specific time
+            List dates = groups.get(0).getDates();
+            LocalDateTime ldt= ((Date) dates.get(0)).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+            if(content.contains("before") || content.contains("Before")){
+                content.indexOf("before");
+            }
+
+            if(ldt.isBefore(LocalDateTime.now())) //check if the date is in the past then do not return it.
+                return ldt;
+        }
+        //TODO: return
+        return AItimeSetterWithPriority(priority);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private LocalDateTime AItimeSetterWithPriority(int priority){
+        ArrayList<ActivityTask> todayTasks = ActivityTasksUsed.findExactActivityTask(
+                                                                            0,
+                                                                            0,
+                                                                                    LocalDateTime.now(),
+                                                                            null,
+                                                                            null,
+                                                                            null);
+        return null;
+    }
 
 }

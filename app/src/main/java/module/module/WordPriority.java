@@ -6,9 +6,6 @@ import androidx.annotation.RequiresApi;
 
 import com.example.rems.DataBaseHelper;
 
-import org.antlr.v4.runtime.misc.NotNull;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,6 +54,9 @@ public class WordPriority {
             else
                 timeWords.put(conjunction[i-days.length-hours.length],"conjunction");
         }
+    }
+    public static Map<String, String> getTimeWords(){
+        return  timeWords;
     }
 
     public static void setPriorityWords() {
@@ -115,15 +115,11 @@ public class WordPriority {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static Integer getPriorityFromSentence(String sentence) {
         Integer returned = 0;
-
         Map<String, Integer> filtered = new HashMap<>(priorityWords);
 
+        filtered.entrySet().removeIf(e->!sentence.contains(e.getKey()));
 
-        filtered.forEach((word, priority) -> {
-            if (!sentence.contains(word)) filtered.remove(word);
-        });
-
-        for (Integer priority : filtered.values()) returned = +priority;
+        for (Integer priority : filtered.values()) returned += priority;
         return returned;
     }
 

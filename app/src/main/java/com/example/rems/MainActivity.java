@@ -45,13 +45,19 @@ import com.joestelmach.natty.*;
 import org.antlr.v4.runtime.tree.*;
 import org.slf4j.impl.*;
 
-import java.sql.Date;
+
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import module.ActivityTask;
 import module.ActivityTasksUsed;
@@ -115,33 +121,35 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                List<com.joestelmach.natty.DateGroup> groups;
+                /*List<com.joestelmach.natty.DateGroup> groups;
                 Parser parser = new Parser();
-                groups = parser.parse("the day before next thursday");
+                groups = parser.parse("drink tea before 15 PM tomorrow");
                 for(DateGroup group:groups) {
-                    List dates = group.getDates();
-                    int line = group.getLine();
-                    int column = group.getPosition();
-                    String matchingValue = group.getText();
-                    org.antlr.runtime.tree.CommonTree tree = (org.antlr.runtime.tree.CommonTree) group.getSyntaxTree();
-                    String syntaxTree = tree.toStringTree();
-                    Map parseMap = group.getParseLocations();
-                    boolean isRecurreing = group.isRecurring();
-                    Date recursUntil = (Date) group.getRecursUntil();
+                    List dates = groups.get(0).getDates(); // hold the date i need
+                    LocalDateTime ldt= ((Date) dates.get(0)).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                    String DateInFormat=formatter.format(ldt);
+                    Toast.makeText(getApplication(), ""+DateInFormat, Toast.LENGTH_SHORT).show();
+                }*/
+                if(tableLayout.getSelectedTabPosition()==1){
+
+                    /*String mydata = "s";
+                    Pattern pattern = Pattern.compile("[a-z]]");
+                    Matcher matcher = pattern.matcher(mydata);
+                    boolean res=matcher.matches();*/
+                    String regex =".*'([^']*)'.*";
+                    Pattern pattern = Pattern.compile(".*'([^']*)'.*");
+                    String mydata = "some string with 'the data i want' inside";
+
+                    Matcher matcher = pattern.matcher(mydata);
+                    String ch=matcher.group(1);
+                    /*if(matcher.matches()) {
+                        System.out.println(matcher.group(1));
+                    }*/
+                    //check=matcher.group(1);
+                    //check=matcher.group(2);
+                    //Toast.makeText(getApplication(), ""+matcher.group(1), Toast.LENGTH_SHORT).show();
                 }
-/*
-                for(int i=0;i<groups.size();i++){
-                    List dates = group.getDates();
-                    int line = group.getLine();
-                    int column = group.getPosition();
-                    String matchingValue = group.getText();
-                    Tree tree = (Tree) group.getSyntaxTree();
-                    String syntaxTree = tree.toStringTree();
-                    Map parseMap = group.getParseLocations();
-                    boolean isRecurreing = group.isRecurring();
-                    Date recursUntil = (Date) group.getRecursUntil();
-                }
-*/
 
                 //region test for notification
                 /*ActivityTask_ArrayList=ActivityTasksUsed.findExactActivityTask(0,null,null,null,"buy pizza");

@@ -130,7 +130,7 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         switch (view.getId()) {//recognizing what button was pushed
 
             case R.id.SetTimeTextView:
-                //region
+                //region set time region
                 final int hour=calendar.get(calendar.HOUR_OF_DAY);
                 final int minute=calendar.get(calendar.MINUTE);
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
@@ -155,9 +155,9 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
 
                 Toast.makeText(getActivity(), "time set", Toast.LENGTH_SHORT).show();//notifying the event was called
                 break;
-            //endregion
+            //endregion set time region
             case R.id.SetDateTextView:
-                //region
+                //region set date region
                 final int year = calendar.get(Calendar.YEAR);
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -166,20 +166,21 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                 dialog.getWindow().setBackgroundDrawable((new ColorDrawable(Color.TRANSPARENT)));
                 dialog.show();
 
-
                 Toast.makeText(getActivity(), "time set", Toast.LENGTH_SHORT).show();//notifying the event was called
                 break;
-            //endregion
+                //endregion set date region
             case R.id.buttonTaskComplete:
-                //region
+                //region mark reminder as done region
                 ActivityTasksUsed.markComplete(EditedActivityTask);
                 ActivityTasksUsed.getUserPersonalScore();
-                //endregion
+                //endregion mark reminder as done region
             case R.id.ButtonSaveReminder:
-                //region
+                //region save reminder region
+
+                //region create new reminder region
                 if (!isEditFlag) { //if i opened a reminder from my "next reminders" list in the home button flag will be true and it's means we need to call Update query and not inset
                     if (automaticAssignment.isChecked()) {
-                        //if the automantic assignment option is checked.
+                        //if the automatic assignment option is checked.
                         ActivityTasksUsed.addActivityTask(new ActivityTask(
                                 WordPriority.getPriorityFromSentence(discription.getText().toString()),
                                 MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()),
@@ -189,12 +190,11 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                         Toast.makeText(getActivity(), "auto assigned", Toast.LENGTH_SHORT).show();//notifying the event was called
                     } else {
                         //if the user choose to select time and date by himself.
-
                         if (settimetext.getText().toString().equals("select to choose time") || setdatetext.getText().toString().equals("select to choose date")) {
                             Toast.makeText(getActivity(), "select date and time", Toast.LENGTH_SHORT).show();//notifying the event was called
                             return;
                         }
-
+                        //create the reminder
                         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
                         String datemaker=""+setdatetext.getText()+" "+settimetext.getText();
                         TextToDate = LocalDateTime.parse(datemaker, formatter);
@@ -206,11 +206,13 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                                 discription.getText().toString(),
                                 TextToDate,
                                 subActivitiesArrayList
-                                //yyyy-MM-dd HH:mm:ss
+                                //yyyy-MM-dd HH:mm
                         ));
                         Toast.makeText(getActivity(), "manually assigned", Toast.LENGTH_SHORT).show();//notifying the event was called
                     }
                 }
+                //endregion create new reminder region
+                //region update reminder region
                 else{
                     String reminderContent=EditedActivityTask.getContent();
                     EditedActivityTask.setCategory(MasloCategorys.valueOf(masloCategory.getSelectedItem().toString()));
@@ -225,15 +227,14 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                     if (ActivityTasksUsed.editActivityTask(EditedActivityTask))
                         Toast.makeText(getActivity(), "updated: " + reminderContent, Toast.LENGTH_SHORT).show();
                 }
-
+                //endregion update reminder region
+                //endregion save reminder region
             case R.id.ButtonCancelReminder:
-                //region
                 returnBack();
                 break;
 
-            //endregion
             case R.id.ButtonAddSubActivity:
-                //region
+                //region add sub reminder region
                 subActivityDialogBox = new AlertDialog.Builder(getContext());
                 subActivityDialogBox.setTitle("sub reminder:");
                 subActivityDialogBox.setMessage("enter the sub reminder here: ");
@@ -260,16 +261,14 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
                         });
                 subActivityDialogBox.show();
                 break;
-            //endregion
-            case R.id.switchForAi://neccesery for prototype.
-                //region
+            //endregion add sub reminder region
+
+            /* needed only to prevent from user to call the AI
+            case R.id.switchForAi://necessary for prototype.
                 automaticAssignment.setChecked(false);
                 Toast.makeText(getActivity(), "feature not ready yet", Toast.LENGTH_SHORT).show();
-                break;
+                break;*/
 
-            //wrg
-            //endregion
-            //endregion
         }
 
     }
@@ -360,10 +359,10 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         buttonTaskComplete.setOnClickListener(this);
 
 
-
         return view;
     }
 
+    //region dynamic element creator region
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void editingReminder(ActivityTask activityTask){ //this function is called before the fragment is presented,it's inserting the data of the needed ActivityTask to the elements TODO:add to the book
         isEditFlag=true; //turn edit flag to true so we update instead of insert to Database
@@ -477,4 +476,5 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
         }
 
     }
+    //endregion dynamic element creator region
 }

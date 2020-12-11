@@ -421,7 +421,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
             //whereArgsArray=whereString.split(" ");//create the String Array for the where values for the query
             if (db.isOpen()) {
-                Cursor cursor = db.query("ActivityTasks", columnsFromActTsk, selectionArgs, whereArgsArray, null, null, null); //!!!!!bug was in args,could not read the empty spaces,needed to split a string to the exact size
+                Cursor cursor = db.query("ActivityTasks", columnsFromActTsk, selectionArgs, whereArgsArray, null, null, null);
                 if(cursor!=null && cursor.getCount()>0){ //if the cursor isn't empty enter
                     cursor.moveToFirst();
                     do {
