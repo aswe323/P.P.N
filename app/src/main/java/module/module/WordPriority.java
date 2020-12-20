@@ -24,19 +24,19 @@ public class WordPriority {
         return priorityWords;
     }
 
-    public static void setTimeWords(){//this is called when opening the app to hard code the map of timeWords
+    public static void setTimeWords(){//this is called when opening the app to hard code the map of timeWords TODO:add to the book
         timeWords=new HashMap<>();
 
         //day of the week,month,month numeric,day of the month.
         //for day of the month and month numeric it must come together as like 1/12 ot 26.4 option for year later,will be checked if identify 6/7/2021 or 7/21
         //!!!working by WORLD STANDARD DD/MM/YYYY not MM/DD/YYYY
-        String[] days={"sunday","monday","tuesday","wednesday","thursday","friday","saturday",
+        String[] days={"today","tomorrow","sunday","monday","tuesday","wednesday","thursday","friday","saturday",
                 "january","february","march","april","may","june","july","august","september","october","november","december",
                 "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
 
         //if i see number then : it means next number is minuets,no need to add each number up to 59 to the list
         //if i see twenty/thirty ill check for first second....ninth
-        String[] hours={"today","tomorrow","AM","PM","st","nd","rd","th",
+        String[] hours={"AM","PM","st","nd","rd","th",
                 "first","second","third","fourth","fifth","sixth","seventh","eighth","ninth","tenth","eleventh","twelfth","thirteenth","fourteenth","fifteenth","sixteenth","seventeenth","eighteenth","nineteenth","twentieth",
                 "twenty","thirtieth","thirty",
                 ":","00","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23",

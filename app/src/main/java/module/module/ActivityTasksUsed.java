@@ -97,12 +97,11 @@ public class ActivityTasksUsed {
         }
 
         return returned;
-
     }
 
-    //TODO:add to book,change it to get the next 10 or sO
+    //TODO:add to book
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static ArrayList<ActivityTask> getCloseActivities() {
+    public static ArrayList<ActivityTask> getCloseActivities() { //gets the activities of the next 24 hours
         final LocalDateTime timeNdateNow=LocalDateTime.now();
         final LocalDateTime upToNextDay=LocalDateTime.now().plusDays(1);
         ArrayList<ActivityTask> returned = db.queryForAllActivityTasks();
@@ -111,7 +110,9 @@ public class ActivityTasksUsed {
                             activityTask.getTimeOfActivity().isAfter(upToNextDay)));//delete if priority is less or equal to 0 and the time is before now and more then 24 hours
         return returned;
     }
-
+    public static ArrayList<ActivityTask> getTodaysActivities(String theDay){//TODO:add to book
+        return db.queryForToDaysActivities(theDay);
+    }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static int getUserPersonalScore() {
         return userPersonalScore;

@@ -121,55 +121,10 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                /*List<com.joestelmach.natty.DateGroup> groups;
-                Parser parser = new Parser();
-                groups = parser.parse("drink tea before 15 PM tomorrow");
-                for(DateGroup group:groups) {
-                    List dates = groups.get(0).getDates(); // hold the date i need
-                    LocalDateTime ldt= ((Date) dates.get(0)).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                    String DateInFormat=formatter.format(ldt);
-                    Toast.makeText(getApplication(), ""+DateInFormat, Toast.LENGTH_SHORT).show();
-                }*/
-                if(tableLayout.getSelectedTabPosition()==1){
-
-                    /*String mydata = "s";
-                    Pattern pattern = Pattern.compile("[a-z]]");
-                    Matcher matcher = pattern.matcher(mydata);
-                    boolean res=matcher.matches();*/
-                    String regex =".*'([^']*)'.*";
-                    Pattern pattern = Pattern.compile(".*'([^']*)'.*");
-                    String mydata = "some string with 'the data i want' inside";
-
-                    Matcher matcher = pattern.matcher(mydata);
-                    String ch=matcher.group(1);
-                    /*if(matcher.matches()) {
-                        System.out.println(matcher.group(1));
-                    }*/
-                    //check=matcher.group(1);
-                    //check=matcher.group(2);
-                    //Toast.makeText(getApplication(), ""+matcher.group(1), Toast.LENGTH_SHORT).show();
-                }
-
-                //region test for notification
-                /*ActivityTask_ArrayList=ActivityTasksUsed.findExactActivityTask(0,null,null,null,"buy pizza");
-                LocalDateTime oneMinute =LocalDateTime.of(2020,12,4,19,34);
-                Duration d1 = Duration.between(oneMinute, LocalDateTime.now());
-                long seconds = Math.abs(d1.getSeconds());
-                long hours = seconds / 3600;
-                seconds -= (hours * 3600);
-                long minutes = seconds / 60;
-                seconds -= (minutes * 60);
-                if(tableLayout.getSelectedTabPosition()==1)
-                    NotificationSystem.scheduleNotification(getApplication(),10000,1);
-                if(tableLayout.getSelectedTabPosition()==2)
-                    NotificationSystem.scheduleNotification(getApplication(),20000,2);
-                if(tableLayout.getSelectedTabPosition()==3)
-                    NotificationSystem.cancelNotification(getApplication(),2);
-                Toast.makeText(getApplication(), "notification was made ", Toast.LENGTH_SHORT).show();*/
-                //endregion
+                //tests,can be deleted.
+                ActivityTask atest=new ActivityTask(1,MasloCategorys.Esteem,Repetition.no_repeating,"this and that",null);
+                Toast.makeText(getApplication(), "event launched", Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
@@ -181,5 +136,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public static boolean checkIfWordExist(String str, String word){
+        String regex=".*?\\b(?i)("+word+")\\b.*";
+        return  str.matches(regex);
     }
 }

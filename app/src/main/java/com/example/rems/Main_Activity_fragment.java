@@ -125,7 +125,7 @@ public class Main_Activity_fragment extends Fragment implements View.OnClickList
         editReminderButton = new ArrayList<>();
         deleteReminderButton = new ArrayList<>();
         reminderText = new ArrayList<>();
-        topActivities = ActivityTasksUsed.getCloseActivities(); //fetch the next X reminders TODO: change the X to a number in the future
+        topActivities = ActivityTasksUsed.getCloseActivities(); //fetch the next next 24H reminders
 
         pointTextMain = view.findViewById(R.id.PointTextMain);
         int points = ActivityTasksUsed.getUserPersonalScore();
