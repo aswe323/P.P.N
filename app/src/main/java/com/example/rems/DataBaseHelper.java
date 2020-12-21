@@ -24,7 +24,6 @@ import module.MasloCategorys;
 import module.Repetition;
 import module.SubActivity;
 
-import static java.sql.Types.NULL;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -79,6 +78,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "Priority INTEGER NOT NULL" +
                 ")");
 
+        //creating table "WordPriority" with columns Word,Priority
+        db.execSQL("CREATE TABLE BucketWords (" +
+                "Word TEXT PRIMARY KEY," +
+                "Range TEXT NOT NULL" +
+                ")");
+
         Toast.makeText(context, "DataBase was created", Toast.LENGTH_SHORT).show();
     }
 
@@ -88,7 +93,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         //delete the old database by dropping the tables
         db.execSQL("DROP TABLE IF EXISTS " + "ActivityTasks");
         db.execSQL("DROP TABLE IF EXISTS " + "SubActivity");
-        db.execSQL("DROP TABLE IF EXISTS " + "WordPriority");//TODO: what about the data? you created the database again with the tables, but lost ALL of the data you had there.
+        db.execSQL("DROP TABLE IF EXISTS " + "WordPriority");
+        db.execSQL("DROP TABLE IF EXISTS " + "BucketWords");//TODO: what about the data? you created the database again with the tables, but lost ALL of the data you had there.
         // you didn't UPDATE anything.. you resetted the DB.
         //pls fix.
         //Toast.makeText(context, "database was created", Toast.LENGTH_SHORT).show();
@@ -193,7 +199,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     //
-    //args bug was fixed,needed to change the whereClause to "Word = ?",and create new String array with @word in whereArgs
     //TODO:Update the map of ActivityTaskUsed after every update
     //
     public boolean updatePrioritiyOfWord(String word, Integer newPriority) {
@@ -228,6 +233,106 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         if (db.isOpen()) {
             if (db.delete("WordPriority", "Word = ?", new String[]{word}) > 0)
+                return true; //db.delete returns the number of effected rows, if it is larger the 0, somthign was deleted.
+            db.close();
+            return true;//note that Word is also the PK of the row, so there can only be 0/1 as a return value;
+        }
+        return false;
+    }
+    //endregion
+
+    /*
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *                                                                                                 *
+     * in this section there are methods for the table @BucketWords will be int the order of C.R.U.D  *
+     *                                                                                                 *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     */
+    //region BucketWords
+    public boolean insertBucketWord(String word, String range) { //TODO:add to the book
+
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
+        //check if the database opened if not retuning false
+        if (db.isOpen()) {
+            ContentValues values = new ContentValues(); //will hold Strings of the values to insert into the table
+            values.put("Word", word);//insert the value to Content values
+            values.put("Range", range);//insert the value to values
+            //check if the item was added successfully if not retuning false
+            if (values.size() < 1)
+                return false;
+            else
+            if(db.insert("BucketWords", null, values)==-1) {//insert into table BucketWords the new word, if returned -1 insert failed
+                db.close();
+                return false;
+            }
+            db.close();
+
+            //test toast
+            Toast.makeText(context, "inserted word: "+word+" with range of: "+range, Toast.LENGTH_SHORT).show();
+
+            return true;
+        }
+        return false;
+    }
+
+    public Map<String, String> queryForBucketWords() {// get ALL of the priority words from the table. and return them as a Map. TODO:add to the book
+        Map<String, String> returned = new HashMap<>();//the Map that will be returned
+
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
+        if (db.isOpen()) {
+            Cursor data = db.rawQuery("select * from BucketWords", null);//we don't need Args because we wan't ALL of the data.
+            if(!(data!=null && data.getCount()>0)) //check if there is data that was taken from the database,if not return the nulled map;
+                return returned;
+            data.moveToFirst();//required because the cursor is set on the 0th element, which hold is nothing.
+            do {
+                returned.put(data.getString(0), data.getString(1));//BucketWords only got 2 columns, the Word(String), and the range(String).
+            } while (data.moveToNext());
+            data.close();
+
+            //test toast
+            Toast.makeText(context, "sented a map of bucket words", Toast.LENGTH_SHORT).show();
+        }
+
+        return returned;
+    }
+
+    //
+    //TODO:Update the map of ActivityTaskUsed after every update
+    //
+    public boolean updateRangeOfWord(String word, String newRange) { //update the range of a word TODO:add to the book
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
+        if (db.isOpen()) {
+            ContentValues values = new ContentValues();
+            values.put("Range", newRange);
+            db.update("BucketWords", values, "Word = ?", new String[]{word});
+            db.close();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateBucketWord(String oldWord,String newWord,String Range) {//update the bucket word  TODO:add to the book
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
+        if (db.isOpen()) {
+            ContentValues values = new ContentValues();
+            values.put("Word", newWord);
+            values.put("Range", Range);
+            db.update("BucketWords", values, "Word = ?" , new String[]{oldWord});
+            db.close();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteBucketWord(String word) {//delete a bucket word TODO:add to the book
+        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
+
+        if (db.isOpen()) {
+            if (db.delete("BucketWords", "Word = ?", new String[]{word}) > 0)
                 return true; //db.delete returns the number of effected rows, if it is larger the 0, somthign was deleted.
             db.close();
             return true;//note that Word is also the PK of the row, so there can only be 0/1 as a return value;
