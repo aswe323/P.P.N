@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         db = DataBaseHelper.getInstance(getApplicationContext());
         wordPriority = new WordPriority();
-        wordPriority.setTimeWords();
         final TabLayout tableLayout = findViewById(R.id.Tablayouting);
         final ViewPager2 viewPager = findViewById(R.id.ViewPager);
         viewPager.setAdapter(new customAdapter(getSupportFragmentManager(), getLifecycle()));
@@ -122,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 //tests,can be deleted.
-                ActivityTask atest=new ActivityTask(1,MasloCategorys.Esteem,Repetition.no_repeating,"this and that",null);
+                String test="9:91-15:21";
+                String[] splittest=test.split("-");
                 Toast.makeText(getApplication(), "event launched", Toast.LENGTH_SHORT).show();
             }
             @Override

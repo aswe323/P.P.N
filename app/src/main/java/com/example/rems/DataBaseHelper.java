@@ -78,7 +78,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "Priority INTEGER NOT NULL" +
                 ")");
 
-        //creating table "WordPriority" with columns Word,Priority
+        //creating table "BucketWords" with columns Word,Priority
         db.execSQL("CREATE TABLE BucketWords (" +
                 "Word TEXT PRIMARY KEY," +
                 "Range TEXT NOT NULL" +
@@ -249,6 +249,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      */
     //region BucketWords
+
+    /**
+     * This method is used to add the new bucket word to the database.<br>
+     * the method connect to the database, if connection failed returning false else adding to a ContentValues the @Word and the @Range.<br>
+     * if ContentValues isn't empty we call an insert method to table BucketWords with our ContentValues,if inserting was successful pushing a toast and returning true.
+     *
+     * @param word String representing the word.
+     * @param range String representing the rage of the bucket word.
+     * @return true on successful insertion, false on insertion fail.
+     */
     public boolean insertBucketWord(String word, String range) { //TODO:add to the book
 
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
@@ -276,7 +286,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    public Map<String, String> queryForBucketWords() {// get ALL of the priority words from the table. and return them as a Map. TODO:add to the book
+    /**
+     * a method used to read all the bucket words from the database.<br>
+     * the method create a map to contain the bucket words that will be returned and connect to the database.<br>
+     * if connection failed returning false else using a Cursor to fetch the data with a query from the database,
+     * if the Cursor isn't empty and not null we use a loop to put the contained bucket words in the Cursor to a map that then will be returned.
+     *
+     * @return map containing all the bucket words from the database.
+     */
+    public Map<String, String> queryForBucketWords() {// get ALL of the bucket words from the table. and return them as a Map. TODO:add to the book
         Map<String, String> returned = new HashMap<>();//the Map that will be returned
 
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
@@ -298,22 +316,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return returned;
     }
 
-    //
-    //TODO:Update the map of ActivityTaskUsed after every update
-    //
-    public boolean updateRangeOfWord(String word, String newRange) { //update the range of a word TODO:add to the book
-        SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
-
-        if (db.isOpen()) {
-            ContentValues values = new ContentValues();
-            values.put("Range", newRange);
-            db.update("BucketWords", values, "Word = ?", new String[]{word});
-            db.close();
-            return true;
-        }
-        return false;
-    }
-
+    /**
+     * this method used for updating a bucket word itself.<br>
+     * the method connect to the database, if connection failed returning false else adding to a ContentValues the @Word and the @Range then calls the update query to update the bucket word itself.
+     *
+     * @param oldWord String used to identify which word to update.
+     * @param newWord String of the new word to update too.
+     * @param Range String to save the range the word has from being deleted.
+     * @return true on successful update, false on failure.
+     */
     public boolean updateBucketWord(String oldWord,String newWord,String Range) {//update the bucket word  TODO:add to the book
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 
@@ -328,6 +339,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    /**
+     * this method is used to delete a bucket word.
+     * the method connect to the database, if connection failed returning false else calling a delete query and returning true.
+     *
+     * @param word String used to identify which word to delete.
+     * @return true on successful delete, false on failure.
+     */
     public boolean deleteBucketWord(String word) {//delete a bucket word TODO:add to the book
         SQLiteDatabase db = this.getWritableDatabase();//open the database to write in it
 

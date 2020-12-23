@@ -43,11 +43,13 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
     private Button cancelWordButton;
     private static EditText wordText;
     private static boolean isEditFlag = false; //if i opened a reminder from my "next reminders" list in the home button flag will be true and it's means we need to call Update query and not inset
+    private static boolean isBucketFlag = false; //used to distinguish if it's a priority word or bucket word
     private static String oldWord;
     private static int oldScore;
     private static TextView SetTimeTo;
     private static TextView SetTimeFrom;
     private static Switch switchTimeBucketWords;
+    private static String totalRange="";
 
     public edit_words_fragment() {
         // Required empty public constructor
@@ -81,44 +83,51 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
     {
         switch (view.getId()) {
             case R.id.buttonAddWord:
+                //if the word is not edited:
                 if(!isEditFlag){
-                    if (!wordText.getText().toString().equals("") && !wordText.getText().toString().equals(" ") && wordText.getText().toString().matches("[a-zA-Z0-9]+")) {
-
-                        boolean checked = switchTimeBucketWords.isChecked();
-                        if (!(checked)) {
-                            //region Priority Word
+                    //if the word is no a bucket word:
+                    if(!isBucketFlag){
+                        if(!wordText.getText().toString().equals("") && !wordText.getText().toString().equals(" ") && wordText.getText().toString().matches("[a-zA-Z0-9]+")) {
                             if (WordPriority.addWord(wordText.getText().toString(), thisSeekBar.getProgress())) {
                                 if (db.insertPriorityWord(wordText.getText().toString(), thisSeekBar.getProgress()))
                                     Toast.makeText(getActivity(), "the word " + wordText.getText().toString() + " with priority " + thisSeekBar.getProgress() + " added successfully", Toast.LENGTH_SHORT).show();
                             } else
                                 Toast.makeText(getActivity(), "Error accrued, make sure to write a word and it not existing already", Toast.LENGTH_SHORT).show();
-                            //endregion
-                        } else if (checked) {//TODO: make sure to use the WordPriority methods. NOT the db ones.
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-                            try {
-                                LocalTime from = LocalTime.parse(SetTimeFrom.getText().toString(), formatter);
-                                LocalTime to = LocalTime.parse(SetTimeTo.getText().toString(), formatter);
-                                //region Bucket Word
-                                if (!from.isBefore(to) && db.insertBucketWord(wordText.getText().toString(), SetTimeFrom.getText().toString() + "_" + SetTimeTo.getText().toString())) {
-                                    Toast.makeText(getActivity(), "Inserted Bucket Word ", Toast.LENGTH_LONG).show();
-                                } else {
-                                    Toast.makeText(getActivity(), "Left hand must be before right hand.", Toast.LENGTH_LONG).show();
-
-                                }
-                            } catch (Exception e) {
-                                Toast.makeText(getActivity(), "Bad Time format bucket word insertion", Toast.LENGTH_LONG).show();
-                            }
-                            //endregion
+                        } else{
+                            Toast.makeText(getActivity(), "make sure you entered a word or the word is legal word (no chars like 3,*,$)", Toast.LENGTH_LONG).show();
+                            break;
                         }
-                    } else
-                        Toast.makeText(getActivity(), "make sure you entered a word or the word is legal word (no chars like 3,*,$)", Toast.LENGTH_LONG).show();
-                    break;
-                } else{
-                    if(WordPriority.editWord(oldWord,wordText.getText().toString(),oldScore,thisSeekBar.getProgress())) {
-                        Toast.makeText(getActivity(), "updated the word " + oldWord + " to " + wordText.getText().toString() + " with priority " + thisSeekBar.getProgress(), Toast.LENGTH_SHORT).show();
+                    }
+                    else{//if the word is bucket word:
+                        if(SetTimeTo.getText().toString().matches("[0-9:]+")&&SetTimeFrom.getText().toString().matches("[0-9:]+")){//if the time was set then enter
+                            if(!wordText.getText().toString().equals("") && !wordText.getText().toString().equals(" ") && wordText.getText().toString().matches("[a-zA-Z0-9]+")){
+                                totalRange+=""+SetTimeFrom.getText().toString()+"-"+SetTimeTo.getText().toString();
+                                if(WordPriority.addBucketWord(wordText.getText().toString(),totalRange))
+                                    Toast.makeText(getActivity(), "bucket word was added", Toast.LENGTH_LONG).show();
+                                else
+                                    Toast.makeText(getActivity(), "make sure that the bucket word doesn't exist already", Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(getActivity(), "make sure you entered a word or the word is legal word (no chars like 3,*,$)", Toast.LENGTH_LONG).show();
+                                break;
+                            }
+                        }else{
+                            Toast.makeText(getActivity(), "set the time range (starts-ends)", Toast.LENGTH_LONG).show();
+                            break;
+                        }
+                    }
+
+                } else{//if the word is edited:
+                    //if the word is no a bucket word:
+                    if(!isBucketFlag) {
+                        if (WordPriority.editWord(oldWord, wordText.getText().toString(), oldScore, thisSeekBar.getProgress())) {
+                            Toast.makeText(getActivity(), "updated the word " + oldWord + " to " + wordText.getText().toString() + " with priority " + thisSeekBar.getProgress(), Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        if (WordPriority.updateBucketWordWord(oldWord, wordText.getText().toString(), totalRange)) {
+                            Toast.makeText(getActivity(), "updated the word " + oldWord + " to " + wordText.getText().toString() + " with priority " + thisSeekBar.getProgress(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
-                //break;
 
             case  R.id.buttonCancelWord:
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -135,10 +144,10 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
         db = DataBaseHelper.getInstance(null);
         //accessing seekBar and the Text of Seekbar by ID and setting progress to 0
 
-
         switchTimeBucketWords = view.findViewById(R.id.switchTimeBucketWords);
         switchTimeBucketWords.setOnClickListener(v -> {
             if (switchTimeBucketWords.isChecked()) {
+                isBucketFlag = true;
                 thisSeekBar.setVisibility(View.GONE);
                 thisSeekBarTextView.setVisibility(View.GONE);
                 thisSeekBar.setEnabled(false);
@@ -149,6 +158,7 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
                 SetTimeTo.setEnabled(true);
                 SetTimeFrom.setEnabled(true);
             } else {
+                isBucketFlag = false;
                 thisSeekBar.setVisibility(View.VISIBLE);
                 thisSeekBarTextView.setVisibility(View.VISIBLE);
                 thisSeekBar.setEnabled(true);
@@ -246,6 +256,18 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
 
         addWordButton.setText("save");
         thisSeekBar.setProgress(priority);
+        wordText.setText(word);
+    }
+    public static void editingBucketWord(String word,String Range){//this function is called before the fragment is presented,it's inserting the data of the needed WordPriority to the elements
+        String[] FromTo;
+        isEditFlag=true; //turn edit flag to true so we update instead of insert to Database
+        oldWord=word;
+        totalRange=Range;
+        FromTo=Range.split("-");
+        SetTimeFrom.setText(FromTo[0]);
+        SetTimeTo.setText(FromTo[1]);
+
+        addWordButton.setText("save");
         wordText.setText(word);
     }
 
