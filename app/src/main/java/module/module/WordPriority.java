@@ -103,7 +103,7 @@ public class WordPriority {
      * @return true if inserted successfully else return false
      */
     public static boolean addBucketWord(String word,String range){ //TODO:add to the book
-        if((word==null || word=="") || priorityWords.containsKey(word))
+        if((word==null || word=="") || bucketWords.containsKey(word))
             return false;
 
         bucketWords.put(word,range);

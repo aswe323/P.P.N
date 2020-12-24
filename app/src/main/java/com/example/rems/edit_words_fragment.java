@@ -38,7 +38,7 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
     private DataBaseHelper db;
     private static SeekBar thisSeekBar;
     private Calendar calendar = Calendar.getInstance();
-    private TextView thisSeekBarTextView;
+    private static TextView thisSeekBarTextView;
     private static Button addWordButton;
     private Button cancelWordButton;
     private static EditText wordText;
@@ -123,8 +123,9 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
                             Toast.makeText(getActivity(), "updated the word " + oldWord + " to " + wordText.getText().toString() + " with priority " + thisSeekBar.getProgress(), Toast.LENGTH_SHORT).show();
                         }
                     }else{
+                        totalRange=""+SetTimeFrom.getText().toString()+"-"+SetTimeTo.getText().toString();
                         if (WordPriority.updateBucketWordWord(oldWord, wordText.getText().toString(), totalRange)) {
-                            Toast.makeText(getActivity(), "updated the word " + oldWord + " to " + wordText.getText().toString() + " with priority " + thisSeekBar.getProgress(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "updated the word " + oldWord + " to " + wordText.getText().toString() + " with range " + totalRange, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -260,6 +261,17 @@ public class edit_words_fragment extends Fragment implements View.OnClickListene
     }
     public static void editingBucketWord(String word,String Range){//this function is called before the fragment is presented,it's inserting the data of the needed WordPriority to the elements
         String[] FromTo;
+        switchTimeBucketWords.setChecked(true);
+        isBucketFlag = true;
+        thisSeekBar.setVisibility(View.GONE);
+        thisSeekBarTextView.setVisibility(View.GONE);
+        thisSeekBar.setEnabled(false);
+        thisSeekBar.setEnabled(false);
+        SetTimeFrom.setVisibility(View.VISIBLE);
+        SetTimeTo.setVisibility(View.VISIBLE);
+        SetTimeTo.setEnabled(true);
+        SetTimeFrom.setEnabled(true);
+
         isEditFlag=true; //turn edit flag to true so we update instead of insert to Database
         oldWord=word;
         totalRange=Range;

@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static boolean checkIfWordExist(String str, String word) {
+    public static boolean checkIfWordExist(String str, String word) {//Todo:delete
         String regex = ".*?\\b(?i)(" + word + ")\\b.*";
         return str.matches(regex);
     }

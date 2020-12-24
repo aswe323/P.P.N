@@ -1,11 +1,13 @@
 package com.example.rems;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,13 +34,23 @@ public class key_words_fragment extends Fragment implements View.OnClickListener
 
     private ScrollView scrollView;
     private Map<String, Integer> allWords;
+    private Map<String, String> allBucketWords;
     private LinearLayout hoster; //can't add more then one layout to ScrollView so the hoster will hold all the data lines to print (like a collection for layouts).
+    private LinearLayout PriorityWordsSectionHolder;
+    private LinearLayout BucketWordsSectionHolder;
+    private TextView prioritySectionText;
+    private TextView bucketSectionText;
     //those ArrayLists will hold the buttons for edit/delete and word/priority of all the words ordered,
     //so every word will have matching button indexes for the program to easily know what word to work on.
     private ArrayList<ImageButton> deleteReminderButton;
     private ArrayList<ImageButton> editReminderButton;
     private ArrayList<TextView> wordText;
     private ArrayList<TextView> wordPriority;
+    //bucket words variables
+    private ArrayList<ImageButton> deleteBucketButton;
+    private ArrayList<ImageButton> editBucketButton;
+    private ArrayList<TextView> BucketWordText;
+    private ArrayList<TextView> BucketRange;
 
     public key_words_fragment() {
         // Required empty public constructor
@@ -98,17 +110,55 @@ public class key_words_fragment extends Fragment implements View.OnClickListener
         hoster= new LinearLayout(getActivity());
         hoster.setOrientation(LinearLayout.VERTICAL);
         hoster.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        //region call to show all priority words
+        //set the "priority words" Title to divide between priority words and bucket words
+        prioritySectionText = new TextView(getActivity());
+        prioritySectionText.setText("Priority words");
+        prioritySectionText.setTextSize(30);
+        prioritySectionText.setGravity(Gravity.CENTER);
+        prioritySectionText.setTextColor(Color.BLACK);
+        prioritySectionText.setTypeface(null,Typeface.BOLD);
+        PriorityWordsSectionHolder=new LinearLayout(getActivity());
+        PriorityWordsSectionHolder.setOrientation(LinearLayout.VERTICAL);
+        PriorityWordsSectionHolder.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        PriorityWordsSectionHolder.addView(prioritySectionText);
+        hoster.addView(PriorityWordsSectionHolder);
+        //add the priority words to the UI
         editReminderButton = new ArrayList<>();
         deleteReminderButton = new ArrayList<>();
         wordText = new ArrayList<>();
         wordPriority = new ArrayList<>();
         allWords= WordPriority.getPriorityWords(); //fetch all words
-
         for(Map.Entry<String,Integer> entry:allWords.entrySet())
            addWordToScrollViewFuture(entry.getKey(),entry.getValue());
+        //endregion
 
-        scrollView.addView(hoster);
+        //region call to show all bucket words
+        //set the "bucket words" Title to divide between priority words and bucket words
+        bucketSectionText = new TextView(getActivity());
+        bucketSectionText.setText("Bucket words");
+        bucketSectionText.setTextSize(30);
+        bucketSectionText.setGravity(Gravity.CENTER);
+        bucketSectionText.setTextColor(Color.BLACK);
+        bucketSectionText.setTypeface(null,Typeface.BOLD);
+        BucketWordsSectionHolder=new LinearLayout(getActivity());
+        BucketWordsSectionHolder.setOrientation(LinearLayout.VERTICAL);
+        BucketWordsSectionHolder.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        BucketWordsSectionHolder.addView(bucketSectionText);
+        hoster.addView(BucketWordsSectionHolder);
+        //add the bucket words to the UI
+        editBucketButton = new ArrayList<>();
+        deleteBucketButton = new ArrayList<>();
+        BucketWordText = new ArrayList<>();
+        BucketRange = new ArrayList<>();
+        allBucketWords= WordPriority.getBucketWords(); //fetch all words
+        for(Map.Entry<String,String> entry:allBucketWords.entrySet())
+            addBucketWordToScrollViewFuture(entry.getKey(),entry.getValue());
+        //endregion
 
+        scrollView.addView(hoster); //add the words to the scrollView
+
+        //region add functionality to buttons of priority words
         for(ImageButton imageButton:editReminderButton){ //create the functionality to each edit button
             final ImageButton Editbtn=imageButton;
             Editbtn.setId(editReminderButton.indexOf(imageButton));
@@ -139,6 +189,39 @@ public class key_words_fragment extends Fragment implements View.OnClickListener
                 }
             });
         }
+        //endregion
+        //region add functionality to buttons of bucket words
+        for(ImageButton imageButton:editBucketButton){ //create the functionality to each edit button
+            final ImageButton Editbtn=imageButton;
+            Editbtn.setId(editBucketButton.indexOf(imageButton));
+
+            Editbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bucketWordCaller((String) allBucketWords.keySet().toArray()[Editbtn.getId()],(String) allBucketWords.get(allBucketWords.keySet().toArray()[Editbtn.getId()]));
+                }
+            });
+        }
+
+        for(ImageButton imageButton:deleteBucketButton){ //create the functionality to each delete button
+            final ImageButton Editbtn=imageButton;
+            Editbtn.setId(deleteBucketButton.indexOf(imageButton));
+
+            Editbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String reminderText=(String) allBucketWords.keySet().toArray()[Editbtn.getId()];
+                    if(WordPriority.deleteBucketWord(reminderText)) {
+                        Toast.makeText(getActivity(), "deleted " + reminderText, Toast.LENGTH_SHORT).show();
+                        //reload the fragment to update the word list
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        key_words_fragment maf = new key_words_fragment();
+                        ft.replace(R.id.fragment_key_words_fragment, maf).commit();
+                    }
+                }
+            });
+        }
+        //endregion
 
         return view;
     }
@@ -150,10 +233,17 @@ public class key_words_fragment extends Fragment implements View.OnClickListener
         getFragmentManager().executePendingTransactions();//used to stop the onCreateView and allow the editingReminder() method to set the information
         edit_words_fragment.editingword(word,priority);
     }
+    private void bucketWordCaller(String word,String range){ //calls the editingReminder method from edit_reminder_fragment to open the edit fragment with the info of our reminder we want to edit
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        edit_words_fragment erf = new edit_words_fragment();//creating the fragment to put instead
+        ft.replace(R.id.fragment_key_words_fragment, erf).commit();//making the transaction
+        getFragmentManager().executePendingTransactions();//used to stop the onCreateView and allow the editingReminder() method to set the information
+        edit_words_fragment.editingBucketWord(word,range);
+    }
 
     /**
      *  this method is privet and called only by <b><i>onCreateView</i></b> method.<br>
-     *  this method is dynamically creating in the UI the text and the delete\edit buttons of the activityTask.
+     *  this method is dynamically creating in the UI the text and the delete\edit buttons of the priority word.
      *  @param - contain the relevant info for the text
      *  @return void
      * */
@@ -170,7 +260,7 @@ public class key_words_fragment extends Fragment implements View.OnClickListener
      *    * * * * * * * * * * * * * * * * * * *
      *
      */
-    private void addWordToScrollViewFuture(String word, int priority){ //this method dynamically creates the elements of the reminders on our home page,called in onCreateView
+    private void addWordToScrollViewFuture(String word, int priority){ //this method dynamically creates the elements of the priority word on our fragment,called in onCreateView
         //hierarchy holder of our elements please look up for the schema
         LinearLayout outerLayout = new LinearLayout(getActivity());
         LinearLayout innerLayout =new LinearLayout(getActivity());
@@ -229,7 +319,80 @@ public class key_words_fragment extends Fragment implements View.OnClickListener
             innerLayout.addView(btnDelete);
             hoster.addView(outerLayout);
         }
+    }
 
+
+    /*     genera UI element hierarchy
+     *
+     *         outerLayout
+     *    * * * * * * * * * * * * * * * * * * *
+     *    *      innerLayout                  *
+     *    *   * * * * * * * * * * * * * * *   *
+     *    *   * TXT  | TXT  edit | delete *   *
+     *    *   * * * * * * * * * * * * * * *   *
+     *    *                                   *
+     *    * * * * * * * * * * * * * * * * * * *
+     *
+     */
+    private void addBucketWordToScrollViewFuture(String word, String range) { //this method dynamically creates the elements of the bucket word on our keyword fragment,called in onCreateView
+        //hierarchy holder of our elements please look up for the schema
+        LinearLayout outerLayout = new LinearLayout(getActivity());
+        LinearLayout innerLayout = new LinearLayout(getActivity());
+        LinearLayout wordholder = new LinearLayout(getActivity());
+        LinearLayout Rabgeholder = new LinearLayout(getActivity());
+        ImageButton btnEdit = new ImageButton(getActivity());
+        ImageButton btnDelete = new ImageButton(getActivity());
+        TextView BucketWordText = new TextView(getActivity());
+        TextView BucketRange = new TextView(getActivity());
+
+        wordholder.setOrientation(LinearLayout.VERTICAL);
+        wordholder.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+        Rabgeholder.setOrientation(LinearLayout.VERTICAL);
+        Rabgeholder.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.7f));
+        LinearLayout.LayoutParams btnSize = new LinearLayout.LayoutParams(180, 120); //TODO:need to use some math and magic to make sure it fit any screen size and resolution
+        btnSize.setMargins(0, 5, 15, 5);
+
+        outerLayout.setOrientation(LinearLayout.VERTICAL);
+        outerLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        innerLayout.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams layoutParamsInnerLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        layoutParamsInnerLayout.setMargins(0, 20, 0, 11);
+        innerLayout.setLayoutParams(layoutParamsInnerLayout);
+
+        btnEdit.setImageResource(R.drawable.ic_action_edit);
+        btnEdit.setBackgroundResource(R.drawable.main_edit_button_raunding);
+        btnEdit.setLayoutParams(btnSize);
+        editBucketButton.add(btnEdit);
+
+        btnDelete.setImageResource(R.drawable.ic_action_delete);
+        btnDelete.setBackgroundResource(R.drawable.main_edit_button_raunding);
+        btnDelete.setLayoutParams(btnSize);
+        deleteBucketButton.add(btnDelete);
+
+        BucketWordText.setText("" + word);
+        BucketWordText.setTextColor(Color.BLACK);
+        BucketWordText.setTextSize(30);
+        LinearLayout.LayoutParams paramstxt = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        paramstxt.setMargins(20, 5, 0, 0);
+        BucketWordText.setLayoutParams(paramstxt);
+        wordholder.addView(BucketWordText);
+
+        BucketRange.setText("" + range);
+        BucketRange.setTextColor(Color.BLACK);
+        BucketRange.setTextSize(30);
+        BucketRange.setLayoutParams(paramstxt);
+        Rabgeholder.addView(BucketRange);
+
+
+        if (innerLayout != null && outerLayout != null && scrollView != null) {
+            outerLayout.addView(innerLayout);
+            innerLayout.addView(wordholder);
+            innerLayout.addView(Rabgeholder);
+            innerLayout.addView(btnEdit);
+            innerLayout.addView(btnDelete);
+            hoster.addView(outerLayout);
+        }
     }
 
 }
