@@ -110,6 +110,11 @@ public class ActivityTasksUsed {
                             activityTask.getTimeOfActivity().isAfter(upToNextDay)));//delete if priority is less or equal to 0 and the time is before now and more then 24 hours
         return returned;
     }
+
+    //TODO:add to the book
+    public static ArrayList<ActivityTask> getActivitiesByRange(LocalDateTime TimeFrom,LocalDateTime TimeTo){
+        return db.queryForActivitiesInRange(TimeFrom,TimeTo);
+    }
     public static ArrayList<ActivityTask> getTodaysActivities(String theDay){//TODO:add to book
         return db.queryForToDaysActivities(theDay);
     }

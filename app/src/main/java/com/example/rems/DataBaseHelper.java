@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 
 import java.sql.Date;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -608,6 +609,46 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();//open the database for read/write
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");// for Date in ActivityTask
         String rawQueryString="select * from ActivityTasks where DateAndTime > DATE('"+theDay+"','localtime') and DateAndTime < DATE('"+theDay+"','localtime','+1 day') GROUP by DateAndTime";
+        if(db.isOpen()){
+            Cursor cursor = db.rawQuery(rawQueryString,null); //selecting all the ActivityTask of today
+            if(cursor!=null && cursor.getCount()>0){
+                cursor.moveToFirst();
+                do {
+                    LocalDateTime TextToDate = LocalDateTime.parse(cursor.getString(1), formatter);
+                    ArrayList<SubActivity> relatedSubAct = queryForSubActivity(cursor.getInt(0));
+                    ActivityTask activityTask = new ActivityTask(//FOREACH record in the retrivedActTsk Cursor, we create a task.
+                            cursor.getInt(0),//activityTaskID
+                            cursor.getInt(5),//priority
+                            MasloCategorys.valueOf(cursor.getString(4)),//MasloCategory
+                            Repetition.valueOf(cursor.getString(3)),//Repetition
+                            cursor.getString(2),//Content
+                            TextToDate,//DateTime
+                            relatedSubAct//SubActivities
+                    ); //create the SubActivity object from the DB data
+
+                    activities.add(activityTask);
+                } while (cursor.moveToNext());//move to the next line,if there is no more lines then end the loop
+            }
+            cursor.close();
+        }
+        db.close();
+        return activities;
+    }
+
+    /**
+     * this method is used to get all reminders in a specific range ordered by the earlier first.<br>
+     * make sure the starting time of the range is sent to TimeFrom and the end of the time is sent to TimeTo
+     * @param TimeFrom starting time of the range
+     * @param TimeTo ending time of the range
+     * @return ArrayList of ActivityTask in the range
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public ArrayList<ActivityTask> queryForActivitiesInRange(LocalDateTime TimeFrom, LocalDateTime TimeTo){//TODO:add to the book
+        ArrayList<ActivityTask> activities=new ArrayList<>(); //creating an ArrayList that will store all SubActivities
+        SQLiteDatabase db = this.getWritableDatabase();//open the database for read/write
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");// for Date in ActivityTask
+
+        String rawQueryString="select * from ActivityTasks where DateAndTime between '"+TimeFrom+"' and '"+TimeTo+"' GROUP by DateAndTime";
         if(db.isOpen()){
             Cursor cursor = db.rawQuery(rawQueryString,null); //selecting all the ActivityTask of today
             if(cursor!=null && cursor.getCount()>0){

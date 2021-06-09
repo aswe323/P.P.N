@@ -180,6 +180,10 @@ public class edit_reminder_fragment extends Fragment implements View.OnClickList
 
                 //region create new reminder region
                 if (!isEditFlag) { //if i opened a reminder from my "next reminders" list in the home button flag will be true and it's means we need to call Update query and not inset
+                    if(discription.getText().toString().equals("")){
+                        Toast.makeText(getActivity(), "make sure to write a description to the reminder", Toast.LENGTH_SHORT).show();//notifying the event was called
+                        break;
+                    }
                     if (automaticAssignment.isChecked()) {
                         //if the automatic assignment option is checked.
                         ActivityTasksUsed.addActivityTask(new ActivityTask(
